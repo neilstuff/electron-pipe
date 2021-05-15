@@ -1,0 +1,37 @@
+.disable-select {
+    user-select: none;
+    /* supported by Chrome and Opera */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+}
+
+::-webkit-scrollbar-track:vertical {
+    width: 10px;
+    background: rgba(240, 240, 240, 0.04);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+    width: 10px;
+    background: rgba(240, 240, 240, 0.04);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 1px solid rgba(134, 134, 134, 0.6);
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+}
