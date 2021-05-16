@@ -370,6 +370,7 @@ function createTree(div, backColor, contextMenu, callbacks) {
 
         createNode: function(text, expanded, icon, parentNode, tag, contextMenu) {
             let nodeTree = this;
+
             node = {
                 id: 'node_' + this.nodeCounter,
                 text: text,
@@ -404,6 +405,9 @@ function createTree(div, backColor, contextMenu, callbacks) {
                 setIcon: function(icon) {
                     this.icon = icon;
                     nodeTree.setIcon(this, icon);
+                },
+                selectNode: function() {
+                    nodeTree.selectNode(this);
                 },
                 collapseNode: function() {
                     nodeTree.collapseNode(this);
@@ -645,12 +649,19 @@ function createTree(div, backColor, contextMenu, callbacks) {
             this.toggleNode(node);
         },
         selectNode: function(node) {
+
+            if (!this.rendered) {
+                this.selectedNode = node;
+                return;
+            }
+
             var span = node.elementLi.getElementsByTagName("span")[0];
             span.className = 'node_selected';
 
             if (this.selectedNode != null && this.selectedNode != node) {
                 this.selectedNode.elementLi.getElementsByTagName("span")[0].className = 'node';
             }
+
             this.selectedNode = node;
 
         },
