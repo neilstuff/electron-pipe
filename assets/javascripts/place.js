@@ -11,6 +11,11 @@ class Place extends Artifact {
         this.__incrementSelectable = false;
         this.__decrementSelectable = false;
 
+        this.__editing = false;
+        this.__color = 'rgba(255, 255, 255, 1.0)';
+
+        this.__frame = 'frame';
+
     }
 
     get tokens() {
@@ -50,18 +55,22 @@ class Place extends Artifact {
 
     drawTokens(context, tokens, color = "rgba(0,0,0,0.6)") {
 
+        context.fillStyle = this.__color == 'rgba(255, 255, 255, 1.0)' ? 'rgba(0, 0, 0, 0.9)' : this.__color;
+        context.setLineDash([1, 0]);
+
         if (tokens == 1) {
             context.beginPath();
-            context.fillStyle = "rgba(0, 0, 0, 0.6)";
-
             context.arc(this.__center.x, this.__center.y, 5, 0, 2 * Math.PI);
             context.fill();
-        } else if (this.tokens > 1) {
+            context.stroke();
+        } else
+        if (this.tokens > 1) {
             context.beginPath();
-            context.fillStyle = "rgba(0, 0, 0, 0.6)";
+
 
             context.arc(this.__center.x, this.__center.y - 5, 3, 0, 2 * Math.PI);
             context.fill();
+            context.stroke();
             this.drawTokenCount(context, tokens);
         }
 
@@ -70,6 +79,7 @@ class Place extends Artifact {
     decorate(context) {
 
         if (this.__selected) {
+            context.save();
             context.beginPath();
 
             context.strokeStyle = "rgba(0, 0, 255, 0.2)";
@@ -80,8 +90,10 @@ class Place extends Artifact {
             context.rect(this.__center.x - 18, this.__center.y - 18, 36, 36);
 
             context.stroke();
+            context.restore();
 
         } else if (this.__selectable) {
+            context.save();
             context.beginPath();
             context.strokeStyle = "rgba(0, 0, 0, 0.1)";
 
@@ -91,6 +103,8 @@ class Place extends Artifact {
             context.rect(this.__center.x - 18, this.__center.y - 18, 36, 36);
 
             context.stroke();
+            context.restore();
+
         }
 
         this.drawTokens(context, this.tokens);
@@ -103,7 +117,6 @@ class Place extends Artifact {
             }
 
             context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
-            context.stroke();
 
             if (this.__decrementSelectable) {
                 context.globalAlpha = 1.0;
@@ -112,7 +125,6 @@ class Place extends Artifact {
             }
 
             context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
-            context.stroke();
 
         }
 
@@ -123,10 +135,11 @@ class Place extends Artifact {
     draw(context) {
 
         context.beginPath();
-        context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        context.strokeStyle = "rgba(0, 0, 0, 0.4)";
         context.lineWidth = 2;
         context.setLineDash([1, 0]);
-        context.fillStyle = "rgba(255, 255, 255, 1.0)";
+        context.fillStyle = this.__color.replace(',1)', ',0.3)');
+        console.log(this.__color);
         context.arc(this.__center.x, this.__center.y, 16, 0, 2 * Math.PI);
         context.fill();
         context.stroke();
@@ -207,6 +220,47 @@ class Place extends Artifact {
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.decrementToken();
         }
+
+    }
+
+    edit(editor) {
+        var node = document.createElement("div");
+        var place = this;
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 12}px; ` +
+            `top: ${this.__center.y - 30}px;` +
+            `z-index: 2; padding:4px;"`);
+
+        var picker = new Picker({
+            parent: node,
+            color: place.__color,
+            onDone: function(color) {
+                place.__editing = false;
+                place.__color = color.rgbaString;
+                editor.draw();
+
+            },
+            onClose: function(color) {
+                $('#frame')[0].removeChild(node);
+                place.__editing = false;
+                editor.draw();
+            }
+
+        });
+
+        this.__editing = true;
+
+        picker.openHandler();
+
+    }
+
+    dblclick(editor, mousePos) {
+
+        this.edit(editor);
+
+        return true;
 
     }
 
