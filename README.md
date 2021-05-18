@@ -1,3 +1,3 @@
 # electron-pipe
 
-A Petri-Net Editor/Simulator base on Pipe.
+A Petri-Net Editor/Simulator based on Pipe.
