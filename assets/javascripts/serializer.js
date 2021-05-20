@@ -29,7 +29,7 @@ class Serializer {
                 extra.containers.push(this.__editor.artifacts[iArtifact].serialize);
             }
 
-            if (this.__editor.artifacts[iArtifact].sourceArc.length > 0) {
+            if (this.__editor.artifacts[iArtifact].sourceArcs.length > 0) {
                 properties.arcs = properties.arcs.concat(this.__editor.artifacts[iArtifact].serializeArcs);
             }
 
