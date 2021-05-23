@@ -1009,6 +1009,7 @@ class Editor extends Engine {
 
             this.draw();
             return;
+
         }
 
         var segment = this.getSegment(mousePos.x, mousePos.y);

@@ -153,7 +153,7 @@ class Transition extends Artifact {
 
     actionable(mousePos) {
 
-        if (!this.environment.editors) {
+        if (!this.environment.editors || !this.selected) {
             this.reset();
             return;
 
@@ -180,7 +180,7 @@ class Transition extends Artifact {
 
     action(editor, mousePos) {
 
-        if (!this.environment.editors) {
+        if (!this.environment.editors || !this.selected) {
             this.reset();
             return;
 

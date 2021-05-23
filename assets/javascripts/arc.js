@@ -681,7 +681,7 @@ class Arc {
 
     actionable(mousePos) {
 
-        if (!this.environment.editors) {
+        if (!this.environment.editors || !this.selected) {
 
             this.reset();
 
@@ -745,10 +745,8 @@ class Arc {
 
     action(editor, mousePos) {
 
-        if (!this.environment.editors) {
-            this.__incrementSelectable = false;
-            this.__decrementSelectable = false;
-
+        if (!this.environment.editors || !this.selected) {
+            this.reset();
             return;
 
         }
