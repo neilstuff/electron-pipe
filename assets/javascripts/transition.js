@@ -31,6 +31,7 @@ class Transition extends Artifact {
     }
 
     decorate(context) {
+
         if (this.__selected) {
             context.beginPath();
             context.strokeStyle = "rgba(0, 0, 255, 0.3)";
@@ -53,12 +54,12 @@ class Transition extends Artifact {
 
         }
 
-        if (this.environment.editors) {
+        if (this.environment.editors && this.selected) {
 
             if (this.__fillSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
@@ -66,7 +67,7 @@ class Transition extends Artifact {
             if (this.__renameSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);

@@ -529,6 +529,8 @@ class Arc {
         line(context, this.__selected, this.__selectable, sourceX, sourceY, targetX, targetY);
 
         this.drawArrow(context, sourceX, sourceY, targetX, targetY);
+
+
         this.drawButtons(context, sourceX, sourceY, targetX, targetY);
 
     }
@@ -560,13 +562,13 @@ class Arc {
         }
 
         let count = `${this.__tokens}`;
-        let offset = this.getTextWidth(count, "16px Arial");
+        let offset = this.getTextWidth(count, "14px Arial");
 
         context.fillStyle = this.__color;
         context.fillRect(x - offset - 10, y - 16, offset + 8, 22);
 
         context.fillStyle = getComposite(this.__color, "rgba(255, 255, 255, 1.0)", "rgba(0, 0, 0, 1.0)");
-        context.font = "16px Arial";
+        context.font = "14px Arial";
         context.fillText(count, x - offset - 6, y);
         context.stroke();
 
@@ -581,50 +583,52 @@ class Arc {
         var xMid = (xCenter + x) / 2;
         var yMid = (yCenter + y) / 2;
 
+
+        context.globalAlpha = 1.0;
+        this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+        context.globalAlpha = 1.0;
+
         let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
 
-        if (this.environment.decorate && this.environment.editors) {
+        if (this.environment.decorate && this.environment.editors && this.selected) {
+
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[1], xMid + 12, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+            context.drawImage(this.__images[1], xMid + 12, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32), 16, 16);
             context.stroke();
 
             if (this.__decrementSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[0], xMid + 12, yMid + this.yCor(18, aDir + 0.5) - iY);
+            context.drawImage(this.__images[0], xMid + 12, yMid + this.yCor(18, aDir + 0.5) - iY, 16, 16);
             context.stroke();
 
             if (this.__renameSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[3], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+            context.drawImage(this.__images[3], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32), 16, 16);
             context.stroke();
 
             if (this.__fillSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[2], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) - iY);
+            context.drawImage(this.__images[2], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) - iY, 16, 16);
             context.stroke();
 
         }
-
-        context.globalAlpha = 0.8;
-
-        this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
 
     }
 

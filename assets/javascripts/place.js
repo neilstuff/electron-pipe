@@ -116,12 +116,12 @@ class Place extends Artifact {
 
         context.restore();
 
-        if (this.environment.editors) {
+        if (this.environment.editors && this.selected) {
 
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
@@ -129,7 +129,7 @@ class Place extends Artifact {
             if (this.__decrementSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
@@ -137,7 +137,7 @@ class Place extends Artifact {
             if (this.__fillSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
@@ -145,7 +145,7 @@ class Place extends Artifact {
             if (this.__renameSelectable) {
                 context.globalAlpha = 1.0;
             } else {
-                context.globalAlpha = 0.4;
+                context.globalAlpha = 0.6;
             }
 
             context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);

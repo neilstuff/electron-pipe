@@ -822,7 +822,7 @@ class Editor extends Engine {
 
     }
 
-    enableConectionButtons() {
+    enableConnectionButtons() {
 
         var filtered = this.artifacts.filter(function(value, index, arr) {
 
@@ -873,7 +873,7 @@ class Editor extends Engine {
                 target.selected = true;
             }
 
-            this.enableConectionButtons();
+            this.enableConnectionButtons();
 
             this.draw();
 
@@ -889,6 +889,9 @@ class Editor extends Engine {
             if (target != null && target != this.__source && target.type != this.__source.type && target.joinable) {
                 var sourceArc = target.addSource(this.environment.connector, this.__source);
                 this.__source.addTarget(this.environment.connector, target, sourceArc);
+
+                sourceArc.selected = true;
+
             }
 
             this.__drawConnector = false;
