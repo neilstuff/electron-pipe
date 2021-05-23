@@ -4,7 +4,7 @@ class Inhibitor extends Arc {
 
     }
 
-    drawArrow(context, xCenter, yCenter, x, y, selected, selectable) {
+    drawArrow(context, xCenter, yCenter, x, y) {
         var aDir = Math.atan2(xCenter - x, yCenter - y);
 
         var i1 = 0;
@@ -13,10 +13,10 @@ class Inhibitor extends Arc {
         context.beginPath();
         context.lineWidth = 1;
 
-        if (selected) {
+        if (this.sselected) {
             context.strokeStyle = "rgba(0, 0, 255, 0.4)";
             context.fillStyle = "rgba(255, 255,255,1.0)";
-        } else if (selectable) {
+        } else if (this.sselectable) {
             context.strokeStyle = "rgba(0, 0, 255, 0.4)";
             context.fillStyle = "rgba(255, 255,255,1.0)";
             context.setLineDash([1, 0]);

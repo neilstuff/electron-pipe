@@ -434,8 +434,10 @@ class Artifact {
     selectableArcs(point) {
 
         for (var arc in this.__arcsSource) {
+
+            this.__arcsSource[arc].selectable = false;
+
             if (this.__arcsSource[arc].source.selectable || this.__arcsSource[arc].target.selectable) {
-                this.__arcsSource[arc].selectable = false;
                 continue;
             }
 
@@ -519,10 +521,10 @@ class Artifact {
 
     }
 
-    arcAction(point) {
+    arcAction(editor, point) {
 
         for (var arc in this.__arcsSource) {
-            this.__arcsSource[arc].action(point);
+            this.__arcsSource[arc].action(editor, point);
         }
 
     }

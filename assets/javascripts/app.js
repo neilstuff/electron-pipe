@@ -140,6 +140,8 @@ $(async() => {
 
     images.push(await loadImage(`assets/images/plus.png`));
     images.push(await loadImage(`assets/images/minus.png`));
+    images.push(await loadImage(`assets/images/paint-bucket-small.png`));
+    images.push(await loadImage(`assets/images/edit-icon.png`));
 
     environment.mode = EDITOR;
 

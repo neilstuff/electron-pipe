@@ -11,6 +11,8 @@ class Transition extends Artifact {
 
         this.__frame = 'frame';
 
+        this.reset();
+
     }
 
     set color(color) {
@@ -19,6 +21,13 @@ class Transition extends Artifact {
 
     set frame(frame) {
         this.__frame = frame;
+    }
+
+    reset(status = false) {
+        this.__incrementSelectable = status;
+        this.__decrementSelectable = status;
+        this.__fillSelectable = status;
+        this.__renameSelectable = status;
     }
 
     decorate(context) {
@@ -44,11 +53,31 @@ class Transition extends Artifact {
 
         }
 
+        if (this.environment.editors) {
+
+            if (this.__fillSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+
+            if (this.__renameSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
+        }
+
         context.stroke();
 
     }
 
     draw(context) {
+        context.save();
 
         context.beginPath();
         context.lineWidth = 2;
@@ -68,6 +97,9 @@ class Transition extends Artifact {
         context.globalAlpha = 1.0;
 
         this.drawLabel(context);
+
+        context.restore();
+
 
     }
 
@@ -120,13 +152,50 @@ class Transition extends Artifact {
 
     actionable(mousePos) {
 
+        if (!this.environment.editors) {
+            this.reset();
+            return;
+
+        }
+
+        let x = mousePos.x;
+        let y = mousePos.y;
+
+        this.reset();
+
+        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__fillSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__renameSelectable = true;
+            return true;
+        }
+
         return false;
 
     }
 
-    dblclick(editor, mousePos) {
+    action(editor, mousePos) {
 
-        this.edit(editor);
+        if (!this.environment.editors) {
+            this.reset();
+            return;
+
+        }
+
+        let x = mousePos.x;
+        let y = mousePos.y;
+
+        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.edit(editor);
+        }
+
+    }
+
+    dblclick(editor, mousePos) {
 
         return true;
 

@@ -77,6 +77,16 @@ class Arc {
 
         }
 
+        this.getTextWidth = function(text, font) {
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext("2d");
+            context.font = font;
+            var metrics = context.measureText(text);
+            return metrics.width;
+        }
+
+        this.reset();
+
     }
 
     get id() {
@@ -149,6 +159,14 @@ class Arc {
 
     get nodeMap() {
         return this.__nodeMap;
+    }
+
+
+    reset(status = false) {
+        this.__incrementSelectable = status;
+        this.__decrementSelectable = status;
+        this.__fillSelectable = status;
+        this.__renameSelectable = status;
     }
 
     incrementToken() {
@@ -510,7 +528,7 @@ class Arc {
 
         line(context, this.__selected, this.__selectable, sourceX, sourceY, targetX, targetY);
 
-        this.drawArrow(context, sourceX, sourceY, targetX, targetY, this.__selected, this.__selectable);
+        this.drawArrow(context, sourceX, sourceY, targetX, targetY);
         this.drawButtons(context, sourceX, sourceY, targetX, targetY);
 
     }
@@ -541,16 +559,8 @@ class Arc {
 
         }
 
-        function getTextWidth(text, font) {
-            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-            var context = canvas.getContext("2d");
-            context.font = font;
-            var metrics = context.measureText(text);
-            return metrics.width;
-        }
-
         let count = `${this.__tokens}`;
-        let offset = getTextWidth(count, "16px Arial");
+        let offset = this.getTextWidth(count, "16px Arial");
 
         context.fillStyle = this.__color;
         context.fillRect(x - offset - 10, y - 16, offset + 8, 22);
@@ -571,6 +581,8 @@ class Arc {
         var xMid = (xCenter + x) / 2;
         var yMid = (yCenter + y) / 2;
 
+        let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
+
         if (this.environment.decorate && this.environment.editors) {
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;
@@ -578,7 +590,7 @@ class Arc {
                 context.globalAlpha = 0.4;
             }
 
-            context.drawImage(this.__images[1], xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+            context.drawImage(this.__images[1], xMid + 12, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
             context.stroke();
 
             if (this.__decrementSelectable) {
@@ -587,12 +599,31 @@ class Arc {
                 context.globalAlpha = 0.4;
             }
 
-            context.drawImage(this.__images[0], xMid + 10, yMid + this.yCor(18, aDir + 0.5) - iY);
+            context.drawImage(this.__images[0], xMid + 12, yMid + this.yCor(18, aDir + 0.5) - iY);
+            context.stroke();
+
+            if (this.__renameSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[3], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+            context.stroke();
+
+            if (this.__fillSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[2], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) - iY);
             context.stroke();
 
         }
 
         context.globalAlpha = 0.8;
+
         this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
 
     }
@@ -647,19 +678,17 @@ class Arc {
     actionable(mousePos) {
 
         if (!this.environment.editors) {
-            this.__incrementSelectable = false;
-            this.__decrementSelectable = false;
+
+            this.reset();
 
             return;
 
         }
 
+        let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
         let x = mousePos.x;
         let y = mousePos.y;
 
-
-        this.__incrementSelectable = false;
-        this.__decrementSelectable = false;
 
         var source = this.__source;
 
@@ -675,26 +704,42 @@ class Arc {
         var yMid = (source.y + this.__target.y) / 2;
         var iY = aDir > 0 ? 14 : 28;
 
+        this.reset();
+
         if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
             y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
             y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
             this.__incrementSelectable = true;
             return true;
-
         } else if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
             y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
             this.__decrementSelectable = true;
             return true;
+
+        } else if (x > xMid - 22 - textWidth &&
+            x < xMid - 22 - textWidth + 16 &&
+            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
+            this.__renameSelectable = true;
+            return true;
+
+        } else if (x > xMid - 22 - textWidth &&
+            x < xMid - 22 - textWidth + 16 &&
+            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
+            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+            this.__fillSelectable = true;
+            return true;
+
         }
 
         return false;
 
     }
 
-    action(mousePos) {
+    action(editor, mousePos) {
 
         if (!this.environment.editors) {
             this.__incrementSelectable = false;
@@ -704,6 +749,7 @@ class Arc {
 
         }
 
+        let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
         let x = mousePos.x;
         let y = mousePos.y;
         var source = this.__source;
@@ -729,6 +775,13 @@ class Arc {
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
             y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
             this.__tokens = this.__tokens + 1;
+        } else if (x > xMid - 22 - textWidth &&
+            x < xMid - 22 - textWidth + 16 &&
+            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
+            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+
+            this.edit(editor);
+
         }
 
     }

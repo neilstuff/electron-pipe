@@ -8,9 +8,6 @@ class Place extends Artifact {
 
         this.__tokens = 0;
 
-        this.__incrementSelectable = false;
-        this.__decrementSelectable = false;
-
         this.__editing = false;
         this.__color = 'rgba(255, 255, 255, 1.0)';
 
@@ -24,6 +21,13 @@ class Place extends Artifact {
 
     set tokens(tokens) {
         this.__tokens = tokens;
+    }
+
+    reset(status = false) {
+        this.__incrementSelectable = status;
+        this.__decrementSelectable = status;
+        this.__fillSelectable = status;
+        this.__renameSelectable = status;
     }
 
     drawTokenCount(context, tokens) {
@@ -106,10 +110,14 @@ class Place extends Artifact {
             context.restore();
 
         }
+        context.save();
 
         this.drawTokens(context, this.tokens);
 
+        context.restore();
+
         if (this.environment.editors) {
+
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;
             } else {
@@ -126,6 +134,22 @@ class Place extends Artifact {
 
             context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
 
+            if (this.__fillSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+
+            if (this.__renameSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.4;
+            }
+
+            context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
+
         }
 
         context.globalAlpha = 1.0;
@@ -139,7 +163,6 @@ class Place extends Artifact {
         context.lineWidth = 2;
         context.setLineDash([1, 0]);
         context.fillStyle = this.__color.replace(',1)', ',0.3)');
-        console.log(this.__color);
         context.arc(this.__center.x, this.__center.y, 16, 0, 2 * Math.PI);
         context.fill();
         context.stroke();
@@ -169,9 +192,7 @@ class Place extends Artifact {
     actionable(mousePos) {
 
         if (!this.environment.editors) {
-            this.__incrementSelectable = false;
-            this.__decrementSelectable = false;
-
+            this.reset();
             return;
 
         }
@@ -179,18 +200,23 @@ class Place extends Artifact {
         let x = mousePos.x;
         let y = mousePos.y;
 
-        this.__incrementSelectable = false;
-        this.__decrementSelectable = false;
+        this.reset();
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.__incrementSelectable = true;
             return true;
-        }
-
-        if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+        } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.__decrementSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__fillSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__renameSelectable = true;
             return true;
         }
 
@@ -201,8 +227,7 @@ class Place extends Artifact {
     action(editor, mousePos) {
 
         if (!this.environment.editors) {
-            this.__incrementSelectable = false;
-            this.__decrementSelectable = false;
+            this.reset();
 
             return;
 
@@ -215,10 +240,12 @@ class Place extends Artifact {
             y > this.__center.y - 20 && y < this.__center.y - 4) {
 
             this.incrementToken();
-        }
-        if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+        } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.decrementToken();
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.edit(editor);
         }
 
     }
@@ -257,8 +284,6 @@ class Place extends Artifact {
     }
 
     dblclick(editor, mousePos) {
-
-        this.edit(editor);
 
         return true;
 

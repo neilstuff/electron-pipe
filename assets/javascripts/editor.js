@@ -422,7 +422,7 @@ class Editor extends Engine {
             context.beginPath();
             context.lineWidth = 0.5;
             context.setLineDash([1, 7]);
-            context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+            context.strokeStyle = "rgba(0, 0, 0, 0.3)";
             context.moveTo(0, yPos);
             context.lineTo(rect.width, yPos);
             context.stroke();
@@ -432,7 +432,7 @@ class Editor extends Engine {
             context.beginPath();
             context.lineWidth = 0.5;
             context.setLineDash([1, 7]);
-            context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+            context.strokeStyle = "rgba(0, 0, 0, 0.3)";
             context.moveTo(xPos, 0);
             context.lineTo(xPos, rect.height);
             context.stroke();
@@ -444,7 +444,7 @@ class Editor extends Engine {
                 context.beginPath();
                 context.setLineDash([0, 0]);
                 context.lineWidth = 0.4;
-                context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+                context.strokeStyle = "rgba(0, 0, 0, 0.3)";
                 context.arc(xPos, yPos, 1, 0, 2 * Math.PI);
                 context.stroke();
             }
@@ -898,6 +898,8 @@ class Editor extends Engine {
 
         }
 
+        this.resetSelection();
+
     }
 
     mousemove(event) {
@@ -1040,7 +1042,7 @@ class Editor extends Engine {
 
         for (let iArtifact in this.artifacts) {
             this.artifacts[iArtifact].action(this, mousePos);
-            this.artifacts[iArtifact].arcAction(mousePos);
+            this.artifacts[iArtifact].arcAction(this, mousePos);
         }
 
         this.draw();
@@ -1058,15 +1060,6 @@ class Editor extends Engine {
                 return;
             }
 
-        }
-
-        for (let iArtifact in this.artifacts) {
-            var arc = this.artifacts[iArtifact].getArc(mousePos);
-
-            if (arc) {
-                arc.edit(this);
-                return;
-            }
         }
 
     }
