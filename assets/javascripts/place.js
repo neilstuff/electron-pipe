@@ -231,7 +231,6 @@ class Place extends Artifact {
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-
             this.incrementToken();
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
@@ -239,6 +238,9 @@ class Place extends Artifact {
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.edit(editor);
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.rename(editor);
         }
 
     }
@@ -273,6 +275,56 @@ class Place extends Artifact {
         this.__editing = true;
 
         picker.openHandler();
+
+    }
+
+    rename(editor) {
+        var node = document.createElement("input");
+        var place = this;
+
+        node.setAttribute("type", "text");
+        node.value = this.label;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 80}px; ` +
+            `top: ${this.__center.y + 16}px;` +
+            `width: 100px;` +
+            `z-index: 2; padding:4px;` +
+            `border:1px solid rgba(0,0,0,0.4);` +
+            `background-color:rgba(255,255,255,1.0);"`);
+
+        node.focus();
+
+        node.addEventListener("blur", function() {
+
+            place.label = node.value;
+
+            place.updateArcs();
+
+            editor.draw();
+
+            editor.__treeMap[place.id].text = node.value;
+            editor.__tree.drawTree();
+
+            node.parentNode.removeChild(node);
+
+        });
+
+        node.addEventListener("keypress", function(event) {
+
+            if (event.key === 'Enter') {
+
+                node.style.display = 'none';
+
+                event.stopPropagation();
+
+                return false;
+
+            }
+
+        });
 
     }
 

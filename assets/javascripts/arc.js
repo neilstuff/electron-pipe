@@ -51,6 +51,8 @@ class Arc {
         this.__color = 'rgba(0,0,0,1.0)';
         this.__frame = 'frame';
 
+        this.__label = '';
+
         this.__labelPos = {
             x: 0,
             y: 0
@@ -135,6 +137,21 @@ class Arc {
 
     get segments() {
         return this.__segments;
+    }
+
+    get label() {
+        return this.__label;
+    }
+
+    set label(label) {
+        this.__label = label;
+    }
+
+    set color(color) {
+        this.__color = color;
+    }
+    set color(color) {
+        this.__color = color;
     }
 
     get color() {
@@ -768,6 +785,11 @@ class Arc {
             y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
             y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
             this.__tokens = this.__tokens == 1 ? 1 : this.__tokens - 1;
+        } else if (x > xMid - 22 - textWidth &&
+            x < xMid - 22 - textWidth + 16 &&
+            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
+            this.rename(editor, xMid - 80, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32))
         } else if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
@@ -834,6 +856,49 @@ class Arc {
         });
 
         picker.openHandler();
+
+    }
+
+    rename(editor, x, y) {
+        var node = document.createElement("input");
+        var arc = this;
+
+        node.setAttribute("type", "text");
+        node.value = this.label;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${x}px; ` +
+            `top: ${y}px;` +
+            `width: 100px;` +
+            `z-index: 2; padding:4px;` +
+            `border:1px solid rgba(0,0,0,0.4);` +
+            `background-color:rgba(255,255,255,1.0);"`);
+
+        node.focus();
+
+        node.addEventListener("blur", function() {
+
+            arc.label = node.value;
+
+            node.parentNode.removeChild(node);
+
+        });
+
+        node.addEventListener("keypress", function(event) {
+
+            if (event.key === 'Enter') {
+
+                node.style.display = 'none';
+
+                event.stopPropagation();
+
+                return false;
+
+            }
+
+        });
 
     }
 

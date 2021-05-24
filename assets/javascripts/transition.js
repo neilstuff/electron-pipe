@@ -118,6 +118,46 @@ class Transition extends Artifact {
 
     }
 
+    actionable(mousePos) {
+        let x = mousePos.x;
+        let y = mousePos.y;
+
+        this.setStatus(false);
+
+        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__fillSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__renameSelectable = true;
+            return true;
+        }
+
+        return false;
+
+    }
+
+    action(editor, mousePos) {
+
+        if (!this.environment.editors || !this.selected) {
+            this.setStatus(false);
+            return;
+        }
+
+        let x = mousePos.x;
+        let y = mousePos.y;
+
+        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.edit(editor);
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.rename(editor);
+        }
+
+    }
+
     edit(editor) {
         var node = document.createElement("div");
         var transition = this;
@@ -151,41 +191,52 @@ class Transition extends Artifact {
 
     }
 
-    actionable(mousePos) {
-        let x = mousePos.x;
-        let y = mousePos.y;
+    rename(editor) {
+        var node = document.createElement("input");
+        var transition = this;
 
-        this.setStatus(false);
+        node.setAttribute("type", "text");
+        node.value = this.label;
 
-        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
-            y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__fillSelectable = true;
-            return true;
-        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
-            y > this.__center.y + 4 && y < this.__center.y + 24) {
-            this.__renameSelectable = true;
-            return true;
-        }
+        $(`#${this.__frame}`)[0].appendChild(node);
 
-        return false;
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 80}px; ` +
+            `top: ${this.__center.y + 16}px;` +
+            `width: 100px;` +
+            `z-index: 2; padding:4px;` +
+            `border:1px solid rgba(0,0,0,0.4);` +
+            `background-color:rgba(255,255,255,1.0);"`);
 
-    }
+        node.focus();
 
-    action(editor, mousePos) {
+        node.addEventListener("blur", function() {
 
-        if (!this.environment.editors || !this.selected) {
-            this.setStatus(false);
-            return;
+            transition.label = node.value;
+            transition.updateArcs();
 
-        }
+            editor.draw();
 
-        let x = mousePos.x;
-        let y = mousePos.y;
+            editor.__treeMap[transition.id].text = node.value;
+            editor.__tree.drawTree();
 
-        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
-            y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.edit(editor);
-        }
+            node.parentNode.removeChild(node);
+
+        });
+
+        node.addEventListener("keypress", function(event) {
+
+            if (event.key === 'Enter') {
+
+                node.style.display = 'none';
+
+                event.stopPropagation();
+
+                return false;
+
+            }
+
+        });
 
     }
 
