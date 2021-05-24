@@ -14,6 +14,9 @@ class Container extends Artifact {
 
         this.__incrementSelectable = false;
         this.__decrementSelectable = false;
+        this.__fillSelectable = false;
+
+        this.__color = 'rgba(0,0,0,0.8);';
 
     }
 
@@ -109,6 +112,15 @@ class Container extends Artifact {
 
                 context.drawImage(this.__images[1], left + 8, top + 12);
                 context.stroke();
+
+                if (this.__fillSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
+
+                context.drawImage(this.__images[2], left + 8, top + 30);
+
             }
 
             context.globalAlpha = 1.0;
@@ -179,9 +191,7 @@ class Container extends Artifact {
         if (!this.environment.editors) {
             this.__incrementSelectable = false;
             this.__decrementSelectable = false;
-
-            return;
-
+            this.__fillSelectable = false;
         }
 
         var top = $(`#container_${this.__id}`)[0].offsetTop;
@@ -192,6 +202,7 @@ class Container extends Artifact {
         this.__editSelectable = false;
         this.__incrementSelectable = false;
         this.__decrementSelectable = false;
+        this.__fillSelectable = false;
 
         if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
             mousePos.y >= top && mousePos.y <= top + 16) {
@@ -199,6 +210,9 @@ class Container extends Artifact {
         } else if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
             mousePos.y >= top + 12 && mousePos.y <= top + 12 + 16) {
             this.__decrementSelectable = true;
+        } else if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
+            mousePos.y >= top + 30 && mousePos.y <= top + 30 + 16) {
+            this.__fillSelectable = true;
         } else if (mousePos.x >= left && mousePos.x <= left + width + 48 &&
             mousePos.y >= top && mousePos.y <= top + height + 48) {
 
@@ -217,6 +231,7 @@ class Container extends Artifact {
         if (!this.environment.editors) {
             this.__incrementSelectable = false;
             this.__decrementSelectable = false;
+            this.__fillSelectable = false;
 
             return;
 
@@ -240,9 +255,12 @@ class Container extends Artifact {
             this.__decrementSelectable = true;
             this.edit();
             this.__editable = true;
+        } else if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
+            mousePos.y >= top + 30 && mousePos.y <= top + 30 + 16) {
+            this.__fillSelectable = true;
+            this.fill(editor);
         } else if (mousePos.x >= left && mousePos.x <= left + width + 48 &&
             mousePos.y >= top && mousePos.y <= top + height + 48) {
-
             this.edit();
             this.__editable = true;
 
@@ -284,7 +302,6 @@ class Container extends Artifact {
         $(`#container_${this.__id}`).css('left', `${json.rectangle.left}px`);
         $(`#container_${this.__id}`).css('top', `${json.rectangle.top}px`);
         $(`#html_${this.__id}`).css('font-size', `${json.fontSize}`);
-
         $(`#html_${this.__id}`).html(json.html);
 
     }
@@ -316,6 +333,40 @@ class Container extends Artifact {
 
 
         }
+
+    }
+
+    fill(editor) {
+        var node = document.createElement("div");
+        var container = this;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+        var top = $(`#container_${this.__id}`)[0].offsetTop;
+        var left = $(`#container_${this.__id}`)[0].offsetLeft;
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${left}px; ` +
+            `top: ${top}px;` +
+            `z-index: 2; padding:4px;"`);
+
+        var picker = new Picker({
+            parent: node,
+            color: container.__color,
+            onDone: function(color) {
+                container.__color = color.rgbaString;
+                $(`#html_${container.__id}`).css('color', `${color.rgbaString}`);
+                container.edit();
+
+            },
+            onClose: function(color) {
+                $('#frame')[0].removeChild(node);
+                container.__editing = false;
+                editor.draw();
+            }
+
+        });
+
+        picker.openHandler();
 
     }
 

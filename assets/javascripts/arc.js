@@ -551,9 +551,7 @@ class Arc {
         line(context, this.__selected, this.__selectable, sourceX, sourceY, targetX, targetY);
 
         this.drawArrow(context, sourceX, sourceY, targetX, targetY);
-
-
-        this.drawButtons(context, sourceX, sourceY, targetX, targetY);
+        this.drawDecorators(context, sourceX, sourceY, targetX, targetY);
 
     }
 
@@ -599,7 +597,28 @@ class Arc {
 
     }
 
-    drawButtons(context, xCenter, yCenter, x, y) {
+    drawLabel(context, x, y) {
+
+        function getTextWidth(text, font) {
+            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+            var context = canvas.getContext("2d");
+            context.font = font;
+            var metrics = context.measureText(text);
+            return metrics.width;
+        }
+
+        if (this.__label != "") {
+            let offset = getTextWidth(this.__label, "12px Arial");
+
+            context.fillStyle = "rgba(0, 0, 0, 0.5)";
+            context.font = "12px Arial";
+            context.fillText(this.__label, x - (offset / 2) - 8, y + 24);
+
+        }
+
+    }
+
+    drawDecorators(context, xCenter, yCenter, x, y) {
         var aDir = Math.atan2(xCenter - x, yCenter - y);
         var iY = aDir > 0 ? 14 : 28;
         var xMid = (xCenter + x) / 2;
@@ -608,6 +627,8 @@ class Arc {
 
         context.globalAlpha = 1.0;
         this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+        this.drawLabel(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+
         context.globalAlpha = 1.0;
 
         let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
@@ -800,7 +821,7 @@ class Arc {
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
             y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
 
-            this.edit(editor);
+            this.fill(editor);
 
         }
 
@@ -828,7 +849,7 @@ class Arc {
 
     }
 
-    edit(editor) {
+    fill(editor) {
         var node = document.createElement("div");
         var arc = this;
 

@@ -11,8 +11,6 @@ class Place extends Artifact {
         this.__editing = false;
         this.__color = 'rgba(255, 255, 255, 1.0)';
 
-        this.__frame = 'frame';
-
         this.setStatus();
 
     }
@@ -237,7 +235,7 @@ class Place extends Artifact {
             this.decrementToken();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.edit(editor);
+            this.fill(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
@@ -245,7 +243,7 @@ class Place extends Artifact {
 
     }
 
-    edit(editor) {
+    fill(editor) {
         var node = document.createElement("div");
         var place = this;
         $(`#${this.__frame}`)[0].appendChild(node);

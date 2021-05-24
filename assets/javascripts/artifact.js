@@ -21,6 +21,8 @@ class Artifact {
         this.__images = images;
         this.__environment = environment;
 
+        this.__frame = 'frame';
+
         this.__type = type;
         this.__label = "[no label]";
 

@@ -9,8 +9,6 @@ class Transition extends Artifact {
 
         this.__color = 'rgba(0,0,0,1.0)';
 
-        this.__frame = 'frame';
-
         this.setStatus();
 
     }
@@ -150,7 +148,7 @@ class Transition extends Artifact {
 
         if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.edit(editor);
+            this.fill(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
@@ -158,7 +156,7 @@ class Transition extends Artifact {
 
     }
 
-    edit(editor) {
+    fill(editor) {
         var node = document.createElement("div");
         var transition = this;
         $(`#${this.__frame}`)[0].appendChild(node);
