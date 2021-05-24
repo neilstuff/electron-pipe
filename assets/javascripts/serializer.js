@@ -51,9 +51,7 @@ class Serializer {
         zipFile
             .generateNodeStream({ streamFiles: true })
             .pipe(fs.createWriteStream(filepath))
-            .on('finish', function() {
-                console.log("Zip written.");
-            });
+            .on('finish', function() {});
 
     }
 

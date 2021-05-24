@@ -13,6 +13,8 @@ class Place extends Artifact {
 
         this.__frame = 'frame';
 
+        this.setStatus();
+
     }
 
     get tokens() {
@@ -23,7 +25,7 @@ class Place extends Artifact {
         this.__tokens = tokens;
     }
 
-    reset(status = false) {
+    setStatus(status = false) {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
         this.__fillSelectable = status;
@@ -192,7 +194,7 @@ class Place extends Artifact {
     actionable(mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-            this.reset();
+            this.setStatus(false);
             return;
 
         }
@@ -200,7 +202,7 @@ class Place extends Artifact {
         let x = mousePos.x;
         let y = mousePos.y;
 
-        this.reset();
+        this.setStatus(false);
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
@@ -227,10 +229,8 @@ class Place extends Artifact {
     action(editor, mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-            this.reset();
-
+            this.setStatus(false);
             return;
-
         }
 
         let x = mousePos.x;

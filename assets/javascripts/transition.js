@@ -11,7 +11,7 @@ class Transition extends Artifact {
 
         this.__frame = 'frame';
 
-        this.reset();
+        this.setStatus();
 
     }
 
@@ -23,7 +23,7 @@ class Transition extends Artifact {
         this.__frame = frame;
     }
 
-    reset(status = false) {
+    setStatus(status = false) {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
         this.__fillSelectable = status;
@@ -154,7 +154,7 @@ class Transition extends Artifact {
     actionable(mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-            this.reset();
+            this.setStatus(false);
             return;
 
         }
@@ -162,7 +162,7 @@ class Transition extends Artifact {
         let x = mousePos.x;
         let y = mousePos.y;
 
-        this.reset();
+        this.setStatus(false);
 
         if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
@@ -181,7 +181,7 @@ class Transition extends Artifact {
     action(editor, mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-            this.reset();
+            this.setStatus(false);
             return;
 
         }

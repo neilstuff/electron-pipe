@@ -901,13 +901,12 @@ class Editor extends Engine {
 
         }
 
-        this.resetSelection();
-
     }
 
     mousemove(event) {
 
         var mousePos = this.getMousePos($('#canvas')[0], event);
+
         if (this.__moveArtifacts) {
 
             if (!this.__origin) {

@@ -85,7 +85,7 @@ class Arc {
             return metrics.width;
         }
 
-        this.reset();
+        this.setStatus();
 
     }
 
@@ -161,8 +161,7 @@ class Arc {
         return this.__nodeMap;
     }
 
-
-    reset(status = false) {
+    setStatus(status = false) {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
         this.__fillSelectable = status;
@@ -254,8 +253,6 @@ class Arc {
         if (bottom) {
             return bottom;
         }
-
-        console.log(`${JSON.stringify(source)} : ${JSON.stringify(target)}: ${JSON.stringify(rect)}`);
 
         return null;
 
@@ -682,9 +679,7 @@ class Arc {
     actionable(mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-
-            this.reset();
-
+            this.setStatus(false);
             return;
 
         }
@@ -708,7 +703,7 @@ class Arc {
         var yMid = (source.y + this.__target.y) / 2;
         var iY = aDir > 0 ? 14 : 28;
 
-        this.reset();
+        this.setStatus(false);
 
         if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
@@ -746,9 +741,8 @@ class Arc {
     action(editor, mousePos) {
 
         if (!this.environment.editors || !this.selected) {
-            this.reset();
+            this.setStatus(false);
             return;
-
         }
 
         let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
