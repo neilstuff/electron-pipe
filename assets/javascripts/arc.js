@@ -161,6 +161,14 @@ class Arc {
         return this.__nodeMap;
     }
 
+    reset(mousePos) {
+
+        this.selected = this.actionable(mousePos);
+
+        return this.selected;
+
+    }
+
     setStatus(status = false) {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
@@ -739,12 +747,6 @@ class Arc {
     }
 
     action(editor, mousePos) {
-
-        if (!this.environment.editors || !this.selected) {
-            this.setStatus(false);
-            return;
-        }
-
         let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
         let x = mousePos.x;
         let y = mousePos.y;

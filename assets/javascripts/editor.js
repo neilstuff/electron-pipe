@@ -543,12 +543,24 @@ class Editor extends Engine {
     /**
      * Reset Selection
      */
-    resetSelection() {
+    resetSelection(mousePos) {
 
         for (var artifact in this.artifacts) {
 
-            this.artifacts[artifact].selected = false;
-            this.artifacts[artifact].reset();
+            this.artifacts[artifact].reset(mousePos);
+
+        }
+
+    }
+
+    /**
+     * Reset Selection
+     */
+    setSelection(mousePos) {
+
+        for (var artifact in this.artifacts) {
+
+            this.artifacts[artifact].setSelection(mousePos);
 
         }
 
@@ -840,7 +852,6 @@ class Editor extends Engine {
     }
 
     mouseup(event) {
-
         this.environment.joinEnabled(false);
 
         if (this.__point) {
@@ -864,6 +875,7 @@ class Editor extends Engine {
 
         if (this.__selection) {
             this.selectContainedArtifacts(this.__selection);
+            this.setSelection(mousePos);
 
             this.__selection = null;
 
@@ -874,7 +886,6 @@ class Editor extends Engine {
             }
 
             this.enableConnectionButtons();
-
             this.draw();
 
             return;
@@ -904,7 +915,6 @@ class Editor extends Engine {
     }
 
     mousemove(event) {
-
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
         if (this.__moveArtifacts) {
@@ -932,6 +942,7 @@ class Editor extends Engine {
             this.__selection['endX'] = mousePos.x;
             this.__selection['endY'] = mousePos.y;
             this.selectContainedArtifacts(this.__selection);
+
             this.draw();
         } else if (this.__source) {
             this.selectArtifacts(mousePos);
@@ -985,15 +996,12 @@ class Editor extends Engine {
             return;
         }
 
-        if (!this.getArtifact(mousePos.x, mousePos.y) && this.__drawConnector && this.addSegment(mousePos)) {
-            this.resetSelection();
 
+        if (!this.getArtifact(mousePos.x, mousePos.y) && this.__drawConnector && this.addSegment(mousePos)) {
             this.__point = true;
             this.draw();
             return;
         }
-
-        this.resetSelection();
 
         var artifact = this.getArtifact(mousePos.x, mousePos.y);
 
@@ -1008,7 +1016,6 @@ class Editor extends Engine {
 
             this.draw();
             return;
-
         }
 
         var segment = this.getSegment(mousePos.x, mousePos.y);
@@ -1037,6 +1044,8 @@ class Editor extends Engine {
         this.__selection['startY'] = mousePos.y;
         this.__selection['endX'] = mousePos.x;
         this.__selection['endY'] = mousePos.y;
+
+        this.resetSelection(mousePos);
 
     }
 
@@ -1081,6 +1090,8 @@ class Editor extends Engine {
             x: mousePos.x,
             y: mousePos.y
         }
+
+        this.resetSelection(mousePos);
 
         switch (data) {
 

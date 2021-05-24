@@ -192,13 +192,6 @@ class Place extends Artifact {
     }
 
     actionable(mousePos) {
-
-        if (!this.environment.editors || !this.selected) {
-            this.setStatus(false);
-            return;
-
-        }
-
         let x = mousePos.x;
         let y = mousePos.y;
 
@@ -228,7 +221,7 @@ class Place extends Artifact {
 
     action(editor, mousePos) {
 
-        if (!this.environment.editors || !this.selected) {
+        if (!this.environment.editors && !this.selected) {
             this.setStatus(false);
             return;
         }

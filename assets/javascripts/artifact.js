@@ -195,10 +195,11 @@ class Artifact {
 
         }
 
-        this.__selected = (rectangle.startX < this.__center.x - 16 &&
+        this.selected = (rectangle.startX < this.__center.x - 16 &&
             rectangle.endX > this.__center.x + 16 &&
             rectangle.startY < this.__center.y - 16 &&
             rectangle.endY > this.__center.y + 16);
+
 
     }
 
@@ -317,11 +318,13 @@ class Artifact {
 
     }
 
-    reset() {
+    reset(mousePos) {
+
+        this.selected = this.actionable(mousePos);
 
         for (var arc in this.__arcsSource) {
 
-            this.__arcsSource[arc].selected = false;
+            this.__arcsSource[arc].reset(mousePos);
 
             for (let segment in this.__arcsSource[arc].segments) {
 
@@ -330,6 +333,12 @@ class Artifact {
             }
 
         }
+
+    }
+
+    setSelection(mousePos) {
+
+        this.selected = this.selected ? this.selected : this.actionable(mousePos);
 
     }
 
