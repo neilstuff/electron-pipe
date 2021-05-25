@@ -13,14 +13,6 @@ class Transition extends Artifact {
 
     }
 
-    set color(color) {
-        this.__color = color;
-    }
-
-    set frame(frame) {
-        this.__frame = frame;
-    }
-
     setStatus(status = false) {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
@@ -153,88 +145,6 @@ class Transition extends Artifact {
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
-
-    }
-
-    fill(editor) {
-        var node = document.createElement("div");
-        var transition = this;
-        $(`#${this.__frame}`)[0].appendChild(node);
-
-        node.setAttribute('style', `display:inline-block; position:absolute; ` +
-            `left: ${this.__center.x - 12}px; ` +
-            `top: ${this.__center.y - 30}px;` +
-            `z-index: 2; padding:4px;"`);
-
-        var picker = new Picker({
-            parent: node,
-            color: transition.__color,
-            onDone: function(color) {
-                transition.__editing = false;
-                transition.__color = color.rgbaString;
-                editor.draw();
-
-            },
-            onClose: function(color) {
-                $('#frame')[0].removeChild(node);
-                transition.__editing = false;
-                editor.draw();
-            }
-
-        });
-
-        this.__editing = true;
-
-        picker.openHandler();
-
-    }
-
-    rename(editor) {
-        var node = document.createElement("input");
-        var transition = this;
-
-        node.setAttribute("type", "text");
-        node.value = this.label;
-
-        $(`#${this.__frame}`)[0].appendChild(node);
-
-        node.setAttribute('style', `display:inline-block; position:absolute; ` +
-            `left: ${this.__center.x - 80}px; ` +
-            `top: ${this.__center.y + 16}px;` +
-            `width: 100px;` +
-            `z-index: 2; padding:4px;` +
-            `border:1px solid rgba(0,0,0,0.4);` +
-            `background-color:rgba(255,255,255,1.0);"`);
-
-        node.focus();
-
-        node.addEventListener("blur", function() {
-
-            transition.label = node.value;
-            transition.updateArcs();
-
-            editor.draw();
-
-            editor.__treeMap[transition.id].text = node.value;
-            editor.__tree.drawTree();
-
-            node.parentNode.removeChild(node);
-
-        });
-
-        node.addEventListener("keypress", function(event) {
-
-            if (event.key === 'Enter') {
-
-                node.style.display = 'none';
-
-                event.stopPropagation();
-
-                return false;
-
-            }
-
-        });
 
     }
 

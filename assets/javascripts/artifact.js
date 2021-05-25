@@ -147,6 +147,22 @@ class Artifact {
         return this.__joinable;
     }
 
+    get color() {
+        return this.__color;
+    }
+
+    set color(color) {
+        this.__color = color;
+    }
+
+    get frame() {
+        return this.frame;
+    }
+
+    set frame(frame) {
+        this.__frame = frame;
+    }
+
     get serializeArcs() {
         var sources = [];
 
@@ -554,6 +570,88 @@ class Artifact {
             }
 
         }
+
+    }
+
+    fill(editor) {
+        var node = document.createElement("div");
+        var artifact = this;
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 12}px; ` +
+            `top: ${this.__center.y - 30}px;` +
+            `z-index: 2; padding:4px;"`);
+
+        var picker = new Picker({
+            parent: node,
+            color: artifact.__color,
+            onDone: function(color) {
+                artifact.__editing = false;
+                artifact.__color = color.rgbaString;
+                editor.draw();
+
+            },
+            onClose: function(color) {
+                $('#frame')[0].removeChild(node);
+                artifact.__editing = false;
+                editor.draw();
+            }
+
+        });
+
+        this.__editing = true;
+
+        picker.openHandler();
+
+    }
+
+    rename(editor) {
+        var node = document.createElement("input");
+        var artifact = this;
+
+        node.setAttribute("type", "text");
+        node.value = this.label;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 80}px; ` +
+            `top: ${this.__center.y + 16}px;` +
+            `width: 100px;` +
+            `z-index: 2; padding:4px;` +
+            `border:1px solid rgba(0,0,0,0.4);` +
+            `background-color:rgba(255,255,255,1.0);"`);
+
+        node.focus();
+
+        node.addEventListener("blur", function() {
+
+            artifact.label = node.value;
+            artifact.updateArcs();
+
+            editor.draw();
+
+            editor.__treeMap[artifact.id].text = node.value;
+            editor.__tree.drawTree();
+
+            node.parentNode.removeChild(node);
+
+        });
+
+        node.addEventListener("keypress", function(event) {
+
+            if (event.key === 'Enter') {
+
+                node.style.display = 'none';
+
+                event.stopPropagation();
+
+                return false;
+
+            }
+
+        });
 
     }
 
