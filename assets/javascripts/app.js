@@ -48,6 +48,12 @@ function leave(id) {
 
 }
 
+function redraw(id) {
+
+    modes[environment.mode].redraw(id);
+
+}
+
 /**
  * Get the Canvas Mouse Position
  * 

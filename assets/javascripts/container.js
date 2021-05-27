@@ -16,6 +16,8 @@ class Container extends Artifact {
         this.__decrementSelectable = false;
         this.__fillSelectable = false;
 
+
+
         this.__color = 'rgba(0,0,0,0.8);';
 
     }
@@ -142,12 +144,12 @@ class Container extends Artifact {
         this.__node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${this.__center.x - 30}px; ` +
             `top: ${this.__center.y - 6}px;` +
-            `border: solid 1px orange; z-index: 2; padding:4px;"`);
+            `border: solid 1px orange; z-index: 1; padding:4px;"`);
 
         this.__node.innerHTML = `<div><span id="html_${this.__id}" contenteditable="true" ` +
             `style="display:inline-block; margin-top:4px; font-size:16px; min-width:8px; min-height:16px; white-space:nowrap; ` +
-            `outline: 0;"` +
-            `onblur="leave('${this.__id}');"></span>` +
+            `outline: 0; background-color:rgba(255, 255, 255, 1.0);" ` +
+            `onblur="leave('${this.__id}');" onkeypress="redraw('${this.__id}');"></span>` +
             `</div>`;
 
         $('#frame')[0].appendChild(this.__node);
@@ -161,14 +163,12 @@ class Container extends Artifact {
     }
 
     destroy() {
-
         $('#frame')[0].removeChild(this.__node);
-
     }
 
     edit() {
         $(`#container_${this.__id}`).css('border', `solid 1px orange`);
-        $(`#container_${this.__id}`).css('z-index', `2`);
+        $(`#container_${this.__id}`).css('z-index', `1`);
         $(`#container_${this.__id}`).css('opacity', '1.0');
 
         document.getElementById(`html_${this.__id}`).focus();
@@ -178,13 +178,17 @@ class Container extends Artifact {
     }
 
     show() {
-        $(`#container_${this.__id}`).css('z-index', '0');
+        $(`#container_${this.__id}`).css('z-index', '1');
         $(`#container_${this.__id}`).css('border', 'dashed 1px rgba(0,0,0,0.6)');
         $(`#container_${this.__id}`).css('opacity', '0.8');
 
         this.__editable = false;
     }
 
+    redraw(context) {
+        this.__editable = true;
+        this.draw(context)
+    }
 
     actionable(mousePos) {
 

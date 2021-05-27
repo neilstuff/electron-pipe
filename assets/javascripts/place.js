@@ -162,6 +162,7 @@ class Place extends Artifact {
         context.strokeStyle = "rgba(0, 0, 0, 0.4)";
         context.lineWidth = 2;
         context.setLineDash([1, 0]);
+
         context.fillStyle = this.__color.replace(',1)', ',0.3)');
         context.arc(this.__center.x, this.__center.y, 16, 0, 2 * Math.PI);
         context.fill();

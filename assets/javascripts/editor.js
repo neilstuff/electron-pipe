@@ -374,6 +374,11 @@ class Editor extends Engine {
         this.artifactMap[id].show();
     }
 
+    redraw(id) {
+        this.__se
+        this.artifactMap[id].redraw(this.__canvas.getContext('2d'));
+    }
+
     focus() {
         var click = function(node) {
             var event = new MouseEvent("click");

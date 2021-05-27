@@ -45,6 +45,8 @@ class Artifact {
 
         this.__connector = {};
 
+        this.__color = 'rgba(0,0,0,0.8);';
+
         this.__connector[DIRECTOR] = (function(__this) {
 
             return function(source, target, environment, images) {

@@ -97,10 +97,9 @@ class Serializer {
                 }
 
                 if ('color' in object) {
-                    object.color = artifact['color']
-                }
-
-                object.selected = false;
+                    object.color = ('color' in artifact) ? artifact['color'] : 'rgba(255, 255, 255, 1.0)';
+                } else
+                    object.selected = false;
 
                 if (decorator) {
                     decorator(artifact, object);
