@@ -203,19 +203,29 @@ class Artifact {
 
     }
 
-    contains(rectangle) {
+    selectContained(rectangle) {
 
         for (var arc in this.__arcsSource) {
+            let containsArc = false;
 
             for (let segment in this.__arcsSource[arc].segments) {
 
-                this.__arcsSource[arc].segments[segment].contains(rectangle);
+                if (this.__arcsSource[arc].segments[segment].contains(rectangle)) {
+                    this.__arcsSource[arc].segments[segment].selected = true;
+                }
 
             }
 
         }
 
-        this.selected = (rectangle.startX < this.__center.x - 16 &&
+        this.selected = this.contains(rectangle);
+
+    }
+
+
+    contains(rectangle) {
+
+        return (rectangle.startX < this.__center.x - 16 &&
             rectangle.endX > this.__center.x + 16 &&
             rectangle.startY < this.__center.y - 16 &&
             rectangle.endY > this.__center.y + 16);
