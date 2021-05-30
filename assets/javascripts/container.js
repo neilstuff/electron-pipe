@@ -33,13 +33,19 @@ class Container extends Artifact {
 
     }
 
+    selectContained(rectangle) {
+
+        this.selected = this.contains(rectangle);
+
+    }
+
     contains(rectangle) {
         var top = $(`#container_${this.__id}`)[0].offsetTop;
         var left = $(`#container_${this.__id}`)[0].offsetLeft;
         var width = $(`#container_${this.__id}`).width();
         var height = $(`#container_${this.__id}`).height();
 
-        this.__selected = (rectangle.startX - 32 < left &&
+        return (rectangle.startX - 32 < left &&
             rectangle.endX + 32 > left + width &&
             rectangle.startY - 32 < top &&
             rectangle.endY + 32 > top + height);

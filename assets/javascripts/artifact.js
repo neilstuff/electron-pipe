@@ -206,15 +206,21 @@ class Artifact {
     selectContained(rectangle) {
 
         for (var arc in this.__arcsSource) {
-            let containsArc = false;
+            let containsArc = true;
 
             for (let segment in this.__arcsSource[arc].segments) {
 
                 if (this.__arcsSource[arc].segments[segment].contains(rectangle)) {
                     this.__arcsSource[arc].segments[segment].selected = true;
+                } else {
+                    containsArc = false;
                 }
 
             }
+
+            this.__arcsSource[arc].selected = containsArc ?
+                (this.__arcsSource[arc].source.contains(rectangle) && this.__arcsSource[arc].target.contains(rectangle)) : false;
+
 
         }
 

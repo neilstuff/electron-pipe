@@ -60,7 +60,7 @@ class Segment {
 
     contains(rectangle) {
 
-        this.selected = (rectangle.startX < this.__point.x - 16 &&
+        return (rectangle.startX < this.__point.x - 16 &&
             rectangle.endX > this.__point.x + 16 &&
             rectangle.startY < this.__point.y - 16 &&
             rectangle.endY > this.__point.y + 16);

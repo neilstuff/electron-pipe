@@ -98,9 +98,7 @@ class Serializer {
 
                 if ('color' in object) {
                     object.color = ('color' in artifact) ? artifact['color'] : 'rgba(255, 255, 255, 1.0)';
-                } else
-                    object.selected = false;
-
+                }
                 if (decorator) {
                     decorator(artifact, object);
                 }
@@ -108,6 +106,9 @@ class Serializer {
                 if ('release' in object) {
                     object.release();
                 }
+
+                object.selected = false;
+                object.selectable = false;
 
             }
 

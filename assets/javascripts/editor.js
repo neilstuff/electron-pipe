@@ -805,12 +805,12 @@ class Editor extends Engine {
     /**
      * Select the Objects
      * 
-     * @param {object} selection the Selectio Square
+     * @param {object} selection the Selection Square
      */
     selectContainedArtifacts(selection) {
 
         for (let iArtifact in this.artifacts) {
-            this.artifacts[iArtifact].contains(selection);
+            this.artifacts[iArtifact].selectContained(selection);
         }
 
     }
@@ -857,6 +857,7 @@ class Editor extends Engine {
     }
 
     mouseup(event) {
+
         this.environment.joinEnabled(false);
 
         if (this.__point) {
