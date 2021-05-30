@@ -427,6 +427,12 @@ $(async() => {
 
     });
 
+    $('#trash').on('click', (event) => {
+
+        modes[environment.mode].trash();
+
+    });
+
     $('#join-place-transition').on('click', (e) => {
 
         if ('join' in modes[environment.mode]) {

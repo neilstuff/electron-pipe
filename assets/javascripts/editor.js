@@ -1180,6 +1180,13 @@ class Editor extends Engine {
 
     }
 
+    trash(event) {
+
+        this.deleteSelection();
+        this.draw();
+
+    }
+
     join(sourceType, targetType) {
         class Param {
             constructor(type) {
