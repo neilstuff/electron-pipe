@@ -33,7 +33,10 @@ class Editor extends Engine {
 
         this.__CALLBACKS = {
 
-            onclick: function(node) {},
+            onclick: function(node) {
+                editor.__nodeMap[node.id].selected = true;
+                editor.draw();
+            },
 
             addchild: function(node) {},
 
