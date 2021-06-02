@@ -354,9 +354,9 @@ class Artifact {
 
     }
 
-    reset(mousePos) {
+    reset(mousePos = null) {
 
-        this.selected = this.actionable(mousePos);
+        this.selected = mousePos ? this.actionable(mousePos) : false;
 
         for (var arc in this.__arcsSource) {
 

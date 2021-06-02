@@ -178,9 +178,9 @@ class Arc {
         return this.__nodeMap;
     }
 
-    reset(mousePos) {
+    reset(mousePos = null) {
 
-        this.selected = this.actionable(mousePos);
+        this.selected = mousePos ? this.actionable(mousePos) : false;
 
         return this.selected;
 

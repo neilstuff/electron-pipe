@@ -34,6 +34,7 @@ class Editor extends Engine {
         this.__CALLBACKS = {
 
             onclick: function(node) {
+                editor.reset();
                 editor.__nodeMap[node.id].selected = true;
                 editor.draw();
             },
@@ -545,6 +546,15 @@ class Editor extends Engine {
         }
 
         return null;
+
+    }
+
+    reset() {
+        for (var artifact in this.artifacts) {
+
+            this.artifacts[artifact].reset();
+
+        }
 
     }
 
