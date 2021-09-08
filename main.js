@@ -5,11 +5,11 @@ const config = require('./config.json');
 
 const electron = require('electron');
 const { app, protocol, dialog, ipcMain } = require('electron');
-
-const BrowserWindow = electron.BrowserWindow;
-
+const os = require('os');
 const path = require('path')
 const url = require('url')
+
+const BrowserWindow = electron.BrowserWindow;
 
 var mainWindow = null;
 
@@ -107,19 +107,19 @@ ipcMain.on('showSaveDialog', async function(event, arg) {
 });
 
 ipcMain.on('showOpenDialog', async function(event, arg) {
-    var filename = arg;
-    var result = await dialog.showOpenDialog({
-            defaultPath: filename,
-            properties: [
-                { createDirectory: true }
-            ],
-            filters: [
-                { name: 'zip', extensions: ['zip'] },
-                { name: 'All Files', extensions: ['*'] }
-            ]
-        }
-
-    );
+    var result = await dialog.showOpenDialog(os.type() == 'Windows_NT' ? {
+        properties: ['createDirectory'],
+        filters: [
+            { name: 'zip', extensions: ['zip'] },
+            { name: 'All Files', extensions: ['*'] }
+        ]
+    } : {
+        properties: ['openFile', 'openDirectory', 'createDirectory'],
+        filters: [
+            { name: 'zip', extensions: ['zip'] },
+            { name: 'All Files', extensions: ['*'] }
+        ]
+    });
 
     event.returnValue = result;
 
