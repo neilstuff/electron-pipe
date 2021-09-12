@@ -1,5 +1,3 @@
-const { timers } = require("jquery");
-
 const PLACE = 0;
 const TRANSITION = 1;
 const CONTAINER = 2;
@@ -35,7 +33,10 @@ class Editor extends Engine {
 
             onclick: function(node) {
                 editor.reset();
-                editor.__nodeMap[node.id].selected = true;
+
+                if (editor.__nodeMap[node.id] != null) {
+                    editor.__nodeMap[node.id].selected = true;
+                }
                 editor.draw();
             },
 

@@ -70,6 +70,22 @@ function getMousePos(canvas, event) {
 
 }
 
+function newFile() {
+
+    $('#filename').text("pipe.zip");
+
+    modes[EDITOR].clear();
+
+    modes[EDITOR].moveArtifacts = false;
+
+    modes[EDITOR].draw();
+    modes[EDITOR].focus();
+
+    document.getElementById("dropdown").classList.remove('show');
+    document.getElementById("dropdown").classList.toggle("view");
+
+}
+
 function load() {
     let zipFile = new zip();
     let folder = zipFile.folder('');
@@ -148,6 +164,8 @@ $(async() => {
     images.push(await loadImage(`assets/images/minus.png`));
     images.push(await loadImage(`assets/images/paint-bucket-small.png`));
     images.push(await loadImage(`assets/images/edit-icon.png`));
+
+    $('#filename').text("pipe.zip");
 
     environment.mode = EDITOR;
 
@@ -311,6 +329,25 @@ $(async() => {
     $('#save').on('click', (e) => {
 
         save();
+
+    });
+
+    $('#menu-new').on('click', (e) => {
+
+        environment.mode = 0;
+
+        newFile();
+
+        return false;
+
+    });
+
+
+    $('#new').on('click', (e) => {
+
+        environment.mode = 0;
+
+        newFile();
 
     });
 
