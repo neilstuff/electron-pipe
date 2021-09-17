@@ -3,13 +3,10 @@
 //handle setupevents as quickly as possible
 const config = require('./config.json');
 
-const electron = require('electron');
-const { app, protocol, dialog, ipcMain } = require('electron');
+const { app, protocol, dialog, ipcMain, BrowserWindow } = require('electron');
 const os = require('os');
 const path = require('path')
 const url = require('url')
-
-const BrowserWindow = electron.BrowserWindow;
 
 var mainWindow = null;
 
@@ -25,10 +22,9 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: true,
             enableRemoteModule: false,
-            nativeWindowOpen: true,
             preload: path.join(__dirname, "preload.js")
         }
-        
+
     });
 
     if (config.mode == "debug") {
@@ -59,7 +55,6 @@ app.on('activate', () => {
         createWindow()
     }
 })
-
 
 ipcMain.on('quit', function(event, arg) {
 
