@@ -20,10 +20,15 @@ function createWindow() {
         height: 944,
         resizable: true,
         frame: false,
+        autoHideMenuBar: true,
         webPreferences: {
-            nodeIntegration: true
-        },
-        autoHideMenuBar: true
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            nativeWindowOpen: true,
+            preload: path.join(__dirname, "preload.js")
+        }
+        
     });
 
     if (config.mode == "debug") {

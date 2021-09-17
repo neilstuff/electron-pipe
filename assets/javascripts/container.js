@@ -1,7 +1,4 @@
 'use strict'
-
-const { TouchBarScrubber } = require("electron/main");
-
 class Container extends Artifact {
     constructor(environment, images, id) {
         super(2, environment, images, id);
@@ -15,8 +12,6 @@ class Container extends Artifact {
         this.__incrementSelectable = false;
         this.__decrementSelectable = false;
         this.__fillSelectable = false;
-
-
 
         this.__color = 'rgba(0,0,0,0.8);';
 

@@ -1,10 +1,4 @@
 'use strict'
-
-require('electron-disable-file-drop');
-
-const { ipcRenderer } = require('electron');
-const $ = require('jquery');
-
 var filename = "pipe.zip";
 
 var serializer = null;
@@ -87,10 +81,7 @@ function newFile() {
 }
 
 function load() {
-    let zipFile = new zip();
-    let folder = zipFile.folder('');
-
-    let result = ipcRenderer.sendSync('showOpenDialog');
+    let result = window.api.showOpenDialog();
 
     if (!result.canceled) {
         let filepath = result.filePaths[0];
@@ -107,7 +98,7 @@ function load() {
 }
 
 function save() {
-    let result = ipcRenderer.sendSync('showSaveDialog', (filename == null ? 'pipe.zip' : filename));
+    let result = window.api.showSaveDialog((filename == null ? 'pipe.zip' : filename));
 
     if (!result.canceled) {
         filename = result.filePath;
@@ -141,6 +132,10 @@ $(async() => {
         })
 
     }
+
+         
+    document.addEventListener('dragover', event => event.preventDefault());
+    document.addEventListener('drop', event => event.preventDefault());
 
     var canvas = document.getElementById('canvas');
 
@@ -239,28 +234,28 @@ $(async() => {
 
     $("#window-minimize").on('click', async(e) => {
 
-        ipcRenderer.send('minimize');
+        window.api.minimize();
 
     });
 
     $("#window-maximize").on('click', async(e) => {
-        var isMaximized = ipcRenderer.sendSync('isMaximized');
+        var isMaximized = window.api.isMaximized();
 
         if (!isMaximized) {
             $("#window-maximize").addClass("fa-window-restore");
             $("#window-maximize").removeClass("fa-square");
-            ipcRenderer.send('maximize');
+            window.api.maximize();
         } else {
             $("#window-maximize").removeClass("fa-window-restore");
             $("#window-maximize").addClass("fa-square");
-            ipcRenderer.send('unmaximize');
+            window.api.unmaximize();
         }
 
     });
 
     $("#quit").on('click', async(e) => {
 
-        ipcRenderer.send('quit');
+        window.api.quit();
 
     });
 

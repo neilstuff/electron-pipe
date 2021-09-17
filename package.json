@@ -32,7 +32,6 @@
     "author": "GitHub",
     "license": "CC0-1.0",
     "dependencies": {
-        "electron-disable-file-drop": "^1.0.2",
         "jquery": "^3.5.1",
         "popper.js": "^1.0.1",
         "underscore": "^1.9.1",
@@ -44,8 +43,9 @@
         "vanilla-picker": "^2.11.2"
     },
     "devDependencies": {
-        "electron": "^11.2.3",
-        "electron-builder": "^22.9.1"
+        "electron": "^14.0.1",
+        "electron-builder": "^22.11.7",
+        "node": "^16.9.1"
     },
     "bugs": {
         "url": "https://github.com/thesourorange/electron-pipe/issues"
