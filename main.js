@@ -23,10 +23,9 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: true,
             enableRemoteModule: false,
-            nativeWindowOpen: true,
             preload: path.join(__dirname, "preload.js")
         }
-        
+
     });
 
     if (config.mode == "debug") {
@@ -53,7 +52,6 @@ app.on('activate', () => {
         createWindow()
     }
 })
-
 
 ipcMain.on('quit', function(event, arg) {
 
