@@ -550,6 +550,9 @@ class Editor extends Engine {
 
     }
 
+    /**
+     * Reset
+     */
     reset() {
         for (var artifact in this.artifacts) {
 
