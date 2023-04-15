@@ -11,16 +11,6 @@
     /* Internet Explorer/Edge */
 }
 
-.colour input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
 ::-webkit-scrollbar-track:vertical {
     width: 10px;
     background: rgba(240, 240, 240, 0.04);

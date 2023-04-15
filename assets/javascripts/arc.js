@@ -850,33 +850,29 @@ class Arc {
     }
 
     fill(editor) {
-        var node = document.createElement("div");
+        var node = document.createElement("input");
+
+        node.setAttribute("type", "color");
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__labelPos.x - 12}px; ` +
+            `top: ${this.__labelPos.y - 30}px;` +
+            `width: 10px;` +
+            `opacity:0`);
+
+        node.value = this.__color;
+
         var arc = this;
 
         $(`#${this.__frame}`)[0].appendChild(node);
 
-        node.setAttribute('style', `display:inline-block; position:absolute; ` +
-            `left: ${this.__labelPos.x - 12}px; ` +
-            `top: ${this.__labelPos.y - 30}px;` +
-            `z-index: 2; padding:4px;"`);
+        window.setTimeout(function() {
+            node.click();
+        }, 100);
 
-        var picker = new Picker({
-            parent: node,
-            color: arc.__color,
-            onDone: function(color) {
-                arc.__color = color.rgbaString;
-                editor.draw();
-
-            },
-            onClose: function(color) {
-                $('#frame')[0].removeChild(node);
-                arc.__editing = false;
-                editor.draw();
-            }
-
+        node.addEventListener("change", function() {
+            arc.__color = node.value;
+            editor.draw();
         });
-
-        picker.openHandler();
 
     }
 

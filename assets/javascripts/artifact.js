@@ -592,35 +592,28 @@ class Artifact {
     }
 
     fill(editor) {
-        var node = document.createElement("div");
-        var artifact = this;
-        $(`#${this.__frame}`)[0].appendChild(node);
-
+        var node = document.createElement("input");
+        node.setAttribute("type", "color");
         node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${this.__center.x - 12}px; ` +
             `top: ${this.__center.y - 30}px;` +
-            `z-index: 2; padding:4px;"`);
+            `width: 10px;` +
+            `opacity:0`);
 
-        var picker = new Picker({
-            parent: node,
-            color: artifact.__color,
-            onDone: function(color) {
-                artifact.__editing = false;
-                artifact.__color = color.rgbaString;
-                editor.draw();
+        node.value = this.__color;
 
-            },
-            onClose: function(color) {
-                $('#frame')[0].removeChild(node);
-                artifact.__editing = false;
-                editor.draw();
-            }
+        var artifact = this;
 
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        window.setTimeout(function() {
+            node.click();
+        }, 100);
+
+        node.addEventListener("change", function() {
+            artifact.__color = node.value;
+            editor.draw();
         });
-
-        this.__editing = true;
-
-        picker.openHandler();
 
     }
 
