@@ -593,6 +593,7 @@ class Artifact {
 
     fill(editor) {
         var node = document.createElement("input");
+        
         node.setAttribute("type", "color");
         node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${this.__center.x - 12}px; ` +
