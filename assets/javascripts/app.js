@@ -274,7 +274,7 @@ $(async() => {
 
     }
 
-    $("#transition_mode")[0].ondragstart = function(event) {
+    $("#event_mode")[0].ondragstart = function(event) {
 
         event.dataTransfer.setData("Text", event.target.id);
 
@@ -283,7 +283,22 @@ $(async() => {
             "background-color": "rgba(255,255,255,1.0)"
         });
 
-        $('#transition').css({
+        $('#event').css({
+            "border-color": "rgba(0,0,0,0.1)",
+            "background-color": "rgba(0,0,0,0.1)"
+        });
+
+    }
+    $("#action_mode")[0].ondragstart = function(event) {
+
+        event.dataTransfer.setData("Text", event.target.id);
+
+        $(".actions").css({
+            "border-color": "rgba(255,255,255,1.0)",
+            "background-color": "rgba(255,255,255,1.0)"
+        });
+
+        $('#action').css({
             "border-color": "rgba(0,0,0,0.1)",
             "background-color": "rgba(0,0,0,0.1)"
         });

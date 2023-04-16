@@ -1,11 +1,12 @@
 'use strict'
 
 class Transition extends Artifact {
-    constructor(environment, images, id) {
+    constructor(subtype, environment, images, id) {
         super(1, environment, images, id);
 
         this.__editSelectable = false;
         this.__editing = false;
+        this.__subtype = subtype;
 
         this.__color = 'rgba(0,0,0,1.0)';
 

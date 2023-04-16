@@ -2,6 +2,9 @@ const PLACE = 0;
 const TRANSITION = 1;
 const CONTAINER = 2;
 
+const ACTION = 3;
+const EVENT = 4;
+
 class Editor extends Engine {
 
     constructor(frame, canvas, placeholder, images, environment) {
@@ -259,10 +262,10 @@ class Editor extends Engine {
 
         })(this);
 
-        this.__creator[TRANSITION] = (function(__this) {
+        this.__creator[EVENT] = (function(__this) {
 
             return function(mousePos, id = null, label = null) {
-                var transition = new Transition(__this.__environment, __this.__images, id);
+                var transition = new Event(__this.__environment, __this.__images, id);
 
                 transition.setup(mousePos);
                 transition.selected = true;
@@ -291,6 +294,37 @@ class Editor extends Engine {
 
         })(this);
 
+        this.__creator[ACTION] = (function(__this) {
+
+            return function(mousePos, id = null, label = null) {
+                var transition = new Action(__this.__environment, __this.__images, id);
+
+                transition.setup(mousePos);
+                transition.selected = true;
+
+                transition.label = (label == null) ?
+                    __this.getLabel("T", __this.__transition_counter, function(counter) {
+                        __this.__transition_counter = __this.__transition_counter + 1;
+                        return __this.__transition_counter;
+                    }) : label;
+
+                __this.environment.artifacts.push(transition);
+                __this.environment.artifactMap[transition.id] = transition;
+
+                var node = __this.__transitionFolder.createChildNode(transition.label, false, 'assets/images/square.png', null, "context2");
+
+                transition.node = node;
+
+                __this.__nodeMap[node.id] = transition;
+                __this.__treeMap[transition.id] = node;
+
+                __this.__moveArtifacts = true;
+
+                return transition;
+
+            };
+
+        })(this);
         this.__creator[CONTAINER] = (function(__this) {
 
             return function(mousePos, id = null, label = null) {
@@ -1125,8 +1159,15 @@ class Editor extends Engine {
 
                 break;
 
-            case "transition_mode":
-                this.__creator[TRANSITION](mousePos);
+            case "event_mode":
+                this.__creator[EVENT](mousePos);
+
+                this.draw();
+
+                break;
+
+            case "action_mode":
+                this.__creator[ACTION](mousePos);
 
                 this.draw();
 

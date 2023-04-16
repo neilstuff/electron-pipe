@@ -342,6 +342,7 @@ class Container extends Artifact {
     }
 
     fill(editor) {
+        /*
         var node = document.createElement("div");
         var container = this;
 
@@ -372,6 +373,34 @@ class Container extends Artifact {
         });
 
         picker.openHandler();
+        */
+        var node = document.createElement("input");
+
+        var top = $(`#container_${this.__id}`)[0].offsetTop;
+        var left = $(`#container_${this.__id}`)[0].offsetLeft;
+
+        node.setAttribute("type", "color");
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${left}px; ` +
+            `top: ${top}px;` +
+            `width: 10px;` +
+            `opacity:0`);
+
+        node.value = this.__color;
+
+        var container = this;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        window.setTimeout(function() {
+            node.click();
+        }, 100);
+
+        node.addEventListener("change", function() {
+            container.__color = node.value;
+            container.edit();
+            editor.draw();
+        });
 
     }
 
