@@ -2,7 +2,7 @@ const PLACE = 0;
 const TRANSITION = 1;
 const CONTAINER = 2;
 
-const ACTION = 3;
+const PROCESS = 3;
 const EVENT = 4;
 
 class Editor extends Engine {
@@ -294,10 +294,10 @@ class Editor extends Engine {
 
         })(this);
 
-        this.__creator[ACTION] = (function(__this) {
+        this.__creator[PROCESS] = (function(__this) {
 
             return function(mousePos, id = null, label = null) {
-                var transition = new Action(__this.__environment, __this.__images, id);
+                var transition = new Process(__this.__environment, __this.__images, id);
 
                 transition.setup(mousePos);
                 transition.selected = true;
@@ -1166,8 +1166,8 @@ class Editor extends Engine {
 
                 break;
 
-            case "action_mode":
-                this.__creator[ACTION](mousePos);
+            case "process_mode":
+                this.__creator[PROCESS](mousePos);
 
                 this.draw();
 

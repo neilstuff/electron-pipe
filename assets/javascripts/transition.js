@@ -8,7 +8,7 @@ class Transition extends Artifact {
         this.__editing = false;
         this.__subtype = subtype;
 
-        this.__color = 'rgba(0,0,0,1.0)';
+        this.__color = 'rgba(255, 255, 255, 1.0)';
 
         this.setStatus();
 
@@ -65,33 +65,6 @@ class Transition extends Artifact {
         }
 
         context.stroke();
-
-    }
-
-    draw(context) {
-        context.save();
-
-        context.beginPath();
-        context.lineWidth = 2;
-        context.lineJoin = "mitre";
-        context.setLineDash([0, 0]);
-        context.strokeStyle = "rgba(0, 0, 0, 0.5)";
-
-        context.fillStyle = this.__color;
-        context.rect(this.__center.x - 16, this.__center.y - 16, 32, 32);
-        context.fill();
-        context.stroke();
-
-        if (this.environment.decorate) {
-            this.decorate(context);
-        }
-
-        context.globalAlpha = 1.0;
-
-        this.drawLabel(context);
-
-        context.restore();
-
 
     }
 

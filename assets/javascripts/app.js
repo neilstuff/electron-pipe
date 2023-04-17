@@ -289,7 +289,7 @@ $(async() => {
         });
 
     }
-    $("#action_mode")[0].ondragstart = function(event) {
+    $("#process_mode")[0].ondragstart = function(event) {
 
         event.dataTransfer.setData("Text", event.target.id);
 

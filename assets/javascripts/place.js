@@ -70,8 +70,6 @@ class Place extends Artifact {
         } else
         if (this.tokens > 1) {
             context.beginPath();
-
-
             context.arc(this.__center.x, this.__center.y - 5, 3, 0, 2 * Math.PI);
             context.fill();
             context.stroke();
@@ -159,7 +157,7 @@ class Place extends Artifact {
     draw(context) {
 
         context.beginPath();
-        context.strokeStyle = "rgba(0, 0, 0, 0.4)";
+        context.strokeStyle = "rgba(0, 0, 0, 0.9)";
         context.lineWidth = 2;
         context.setLineDash([1, 0]);
 
