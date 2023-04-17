@@ -294,6 +294,45 @@ class Artifact {
 
     }
 
+    drawMenu(context) {
+        if (this.environment.editors && this.selected) {
+
+            if (this.__incrementSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.6;
+            }
+
+            context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
+
+            if (this.__decrementSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.6;
+            }
+
+            context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
+
+            if (this.__fillSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.6;
+            }
+
+            context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+
+            if (this.__renameSelectable) {
+                context.globalAlpha = 1.0;
+            } else {
+                context.globalAlpha = 0.6;
+            }
+
+            context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
+
+        }
+
+    }
+
     addTarget(type, target, arc) {
         this.__arcsTarget.push(arc);
 
@@ -593,7 +632,7 @@ class Artifact {
 
     fill(editor) {
         var node = document.createElement("input");
-        
+
         node.setAttribute("type", "color");
         node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${this.__center.x - 12}px; ` +

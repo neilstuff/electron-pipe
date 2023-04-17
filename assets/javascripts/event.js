@@ -29,7 +29,6 @@ class Event extends Transition {
         this.drawLabel(context);
 
         context.restore();
-
     }
 
 }

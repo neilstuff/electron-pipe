@@ -45,24 +45,7 @@ class Transition extends Artifact {
 
         }
 
-        if (this.environment.editors && this.selected) {
-
-            if (this.__fillSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
-            }
-
-            context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
-
-            if (this.__renameSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
-            }
-
-            context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
-        }
+        this.drawMenu(context);
 
         context.stroke();
 

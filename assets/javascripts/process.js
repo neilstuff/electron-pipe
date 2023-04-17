@@ -8,10 +8,9 @@ class Process extends Transition {
 
 
     draw(context) {
+
         context.save();
-
         context.beginPath();
-
 
         var cx = this.__center.x;
         var cy = this.__center.y;
@@ -30,10 +29,6 @@ class Process extends Transition {
         var toggle = false; // notch radius level (i/o)
 
         context.lineWidth = 2;
-        context.lineJoin = "mitre";
-        context.lineCap = "round";
-
-        context.setLineDash([0, 0]);
         context.strokeStyle = "rgba(0, 0, 0, 0.8)";
         context.fillStyle = this.__color;
 

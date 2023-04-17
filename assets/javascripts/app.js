@@ -443,33 +443,27 @@ $(async() => {
     });
 
     $('#fill').on('click', (e) => {
-        var node = document.createElement("div");
-        $(`#toolbar`)[0].appendChild(node);
+        var node = document.createElement("input");
 
+        node.setAttribute("type", "color");
         node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${$('#fill').offset().left + 30}px; ` +
             `top: ${$('#fill').offset().top}px;` +
-            `z-index: 2; padding:4px;"`);
+            `width: 10px;` +
+            `opacity:0`);
 
-        var picker = new Picker({
-            parent: node,
-            color: transition.__color,
-            onDone: function(color) {
+        $(`#toolbar`)[0].appendChild(node);
 
-                if ('fill' in modes[environment.mode]) {
-                    modes[environment.mode].fill(color.rgbaString)
-                }
-                modes[environment.mode].draw();
+        window.setTimeout(function() {
+            node.click();
+        }, 100);
 
-            },
-            onClose: function(color) {
-                $('#toolbar')[0].removeChild(node);
-                modes[environment.mode].draw();
+        node.addEventListener("change", function() {
+            if ('fill' in modes[environment.mode]) {
+                modes[environment.mode].fill(color.rgbaString)
             }
-
+            modes[environment.mode].draw();
         });
-
-        picker.openHandler();
 
     });
 
