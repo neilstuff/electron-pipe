@@ -651,9 +651,13 @@ class Artifact {
         }, 100);
 
         node.addEventListener("change", function() {
-            artifact.__color = node.value;
-            editor.draw();
-        });
+            window.setTimeout(function() {
+                artifact.__color = node.value;
+                artifact.__selected = true;
+                editor.draw();          
+            }, 100);
+    
+       });
 
     }
 
