@@ -19,9 +19,9 @@ class Editor extends Engine {
         this.__transition_counter = 1;
         this.__container_counter = 1;
 
-        this.__drawConnector = false;
+        this.__drawConnector = false;event
         this.__moveArtifacts = false;
-        this.__selection = null;
+        this.__inhibitorSelected = false;
         this.__source = null;
         this.__point = false;
         this.__dimension = {};
@@ -1187,6 +1187,7 @@ class Editor extends Engine {
     keydown(event) {
 
         this.__moveArtifacts = (event.shiftKey && event.key == "Shift");
+        this.__inhibitorSelected = (event.shiftKey && event.key == "Shift");
         this.__drawConnector = (event.ctrlKey && event.key == "Control");
 
         if (event.key == "Delete") {
