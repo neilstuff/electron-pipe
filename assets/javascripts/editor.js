@@ -357,6 +357,10 @@ class Editor extends Engine {
 
     }
 
+    get selection() {
+        return this.__selection;
+    }
+
     get creators() {
         return this.__creator;
     }
@@ -610,7 +614,7 @@ class Editor extends Engine {
     }
 
     /**
-     * Reset Selection
+     * Set Selection
      */
     setSelection(mousePos) {
 
@@ -861,7 +865,9 @@ class Editor extends Engine {
     selectContainedArtifacts(selection) {
 
         for (let iArtifact in this.artifacts) {
-            this.artifacts[iArtifact].selectContained(selection);
+            if (this.artifacts[iArtifact].selectContained(selection)) {
+              //  this.artifacts[iArtifact].showMenu = false;
+            }
         }
 
     }
@@ -1055,7 +1061,6 @@ class Editor extends Engine {
             return;
         }
 
-
         if (!this.getArtifact(mousePos.x, mousePos.y) && this.__drawConnector && this.addSegment(mousePos)) {
             this.__point = true;
             this.draw();
@@ -1075,6 +1080,7 @@ class Editor extends Engine {
 
             this.draw();
             return;
+
         }
 
         var segment = this.getSegment(mousePos.x, mousePos.y);

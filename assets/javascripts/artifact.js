@@ -133,6 +133,10 @@ class Artifact {
         this.__selectable = selectable;
     }
 
+    set showMenu(showMenu) {
+        this.__showMenu = showMenu;
+    }
+
     get targetArcs() {
         return this.__arcsTarget;
     }
@@ -228,7 +232,6 @@ class Artifact {
 
     }
 
-
     contains(rectangle) {
 
         return (rectangle.startX < this.__center.x - 16 &&
@@ -295,7 +298,7 @@ class Artifact {
     }
 
     drawMenu(context) {
-        if (this.environment.editors && this.selected) {
+        if (this.showMenu && this.environment.editors && this.selected) {
 
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;

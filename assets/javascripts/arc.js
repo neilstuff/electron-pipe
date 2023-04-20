@@ -35,6 +35,9 @@ class Arc {
 
         this.__selected = false;
         this.__selectable = false;
+
+        this.__showMenu = true;
+
         this.__segments = [];
 
         this.__incrementSelectable = false;
@@ -133,6 +136,10 @@ class Arc {
 
     set selectable(selectable) {
         this.__selectable = selectable;
+    }
+
+    set showMenu(show) {
+        this.__showMenu = show;
     }
 
     get segments() {
