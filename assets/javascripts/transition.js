@@ -71,6 +71,10 @@ class Transition extends Artifact {
 
         this.setStatus(false);
 
+        if (this.showMenu) {
+            return false;
+        }
+
         if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.__fillSelectable = true;
@@ -86,6 +90,10 @@ class Transition extends Artifact {
     }
 
     action(editor, mousePos) {
+
+        if (this.within(mousePos)) {
+            this.showMenu = true;
+        }
 
         if (!this.environment.editors || !this.selected) {
             this.setStatus(false);

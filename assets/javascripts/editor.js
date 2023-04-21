@@ -865,8 +865,9 @@ class Editor extends Engine {
     selectContainedArtifacts(selection) {
 
         for (let iArtifact in this.artifacts) {
+ 
             if (this.artifacts[iArtifact].selectContained(selection)) {
-              //  this.artifacts[iArtifact].showMenu = false;
+                 this.artifacts[iArtifact].showMenu = false;
             }
         }
 
@@ -1118,6 +1119,7 @@ class Editor extends Engine {
         var mousePos = this.getMousePos(canvas, event);
 
         for (let iArtifact in this.artifacts) {
+            console.log("click: " +  iArtifact) ;
             this.artifacts[iArtifact].action(this, mousePos);
             this.artifacts[iArtifact].arcAction(this, mousePos);
         }

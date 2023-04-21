@@ -1,20 +1,8 @@
 'use strict'
 
-class Arc {
+class Arc extends Component {
     constructor(type, source, target, environment, images, id) {
-
-        let guid = () => {
-            let s4 = () => {
-                return Math.floor((1 + Math.random()) * 0x10000)
-                    .toString(16)
-                    .substring(1);
-            }
-
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-
-        }
-
-        this.__id = id == null ? guid() : id;
+        super(id);
 
         this.__type = type;
 
@@ -94,10 +82,6 @@ class Arc {
 
     }
 
-    get id() {
-        return this.__id;
-    }
-
     get type() {
         return this.__type;
     }
@@ -138,8 +122,8 @@ class Arc {
         this.__selectable = selectable;
     }
 
-    set showMenu(show) {
-        this.__showMenu = show;
+    set showMenu(showMenu) {
+        this.__showMenu = showMenu;
     }
 
     get segments() {
@@ -640,7 +624,7 @@ class Arc {
 
         let textWidth = this.getTextWidth(`${this.__tokens}`, "16px Arial");
 
-        if (this.environment.decorate && this.environment.editors && this.selected) {
+        if (this.__showMenu && this.environment.decorate && this.environment.editors && this.selected) {
 
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;

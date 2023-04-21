@@ -5,7 +5,6 @@ class Place extends Artifact {
     constructor(environment, images, id) {
         super(0, environment, images, id);
 
-
         this.__tokens = 0;
 
         this.__editing = false;
@@ -159,7 +158,7 @@ class Place extends Artifact {
         let y = mousePos.y;
 
         this.setStatus(false);
-
+  
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.__incrementSelectable = true;
@@ -184,7 +183,11 @@ class Place extends Artifact {
 
     action(editor, mousePos) {
 
-        if (!this.environment.editors && !this.selected) {
+        if (this.within(mousePos)) {
+            this.showMenu = true;
+        }
+
+        if (!this.environment.editors && !this.selected && !this.showMenu) {
             this.setStatus(false);
             return;
         }

@@ -3,20 +3,10 @@
 const DIRECTOR = 0;
 const INHIBITOR = 1;
 
-class Artifact {
+class Artifact extends Component {
 
     constructor(type, environment, images, id) {
-
-        let guid = () => {
-            let s4 = () => {
-                return Math.floor((1 + Math.random()) * 0x10000)
-                    .toString(16)
-                    .substring(1);
-            }
-
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-
-        }
+        super(id)
 
         this.__images = images;
         this.__environment = environment;
@@ -26,13 +16,13 @@ class Artifact {
         this.__type = type;
         this.__label = "[no label]";
 
-        this.__id = id == null ? guid() : id;
-
         this.__arcsSource = [];
         this.__arcsTarget = [];
 
         this.__selected = false;
         this.__selectable = false;
+
+        this.__showMenu = true;
 
         this.__node = null;
 
@@ -79,10 +69,6 @@ class Artifact {
 
     get images() {
         return this.__images;
-    }
-
-    get id() {
-        return this.__id;
     }
 
     get label() {
@@ -230,6 +216,8 @@ class Artifact {
 
         this.selected = this.contains(rectangle);
 
+        return this.selected;
+
     }
 
     contains(rectangle) {
@@ -298,7 +286,7 @@ class Artifact {
     }
 
     drawMenu(context) {
-        if (this.showMenu && this.environment.editors && this.selected) {
+        if (this.__showMenu && this.environment.editors && this.selected) {
 
             if (this.__incrementSelectable) {
                 context.globalAlpha = 1.0;
@@ -617,6 +605,9 @@ class Artifact {
     }
 
     action(editor, mousePos) {
+
+       console.log("action");
+
         return false;
     }
 
