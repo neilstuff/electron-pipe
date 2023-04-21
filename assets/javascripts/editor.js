@@ -1119,7 +1119,6 @@ class Editor extends Engine {
         var mousePos = this.getMousePos(canvas, event);
 
         for (let iArtifact in this.artifacts) {
-            console.log("click: " +  iArtifact) ;
             this.artifacts[iArtifact].action(this, mousePos);
             this.artifacts[iArtifact].arcAction(this, mousePos);
         }
