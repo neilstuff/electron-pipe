@@ -21,9 +21,6 @@ class Arc extends Component {
         this.__environment = environment;
         this.__images = images;
 
-        this.__selected = false;
-        this.__selectable = false;
-
         this.__showMenu = true;
 
         this.__segments = [];
@@ -104,22 +101,6 @@ class Arc extends Component {
 
     set target(target) {
         this.__target = target;
-    }
-
-    get selected() {
-        return this.__selected;
-    }
-
-    set selected(selected) {
-        this.__selected = selected;
-    }
-
-    get selectable() {
-        return this.__selectable;
-    }
-
-    set selectable(selectable) {
-        this.__selectable = selectable;
     }
 
     set showMenu(showMenu) {
@@ -797,6 +778,7 @@ class Arc extends Component {
             y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
             y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
             this.__tokens = this.__tokens == 1 ? 1 : this.__tokens - 1;
+            this.selected = true;
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
             y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
@@ -807,11 +789,11 @@ class Arc extends Component {
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
             y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
             this.__tokens = this.__tokens + 1;
+            this.selected = true;
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
             y > yMid + this.yCor(18, aDir + 0.5) - iY &&
             y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
-
             this.fill(editor);
 
         }
@@ -862,6 +844,7 @@ class Arc extends Component {
 
         node.addEventListener("change", function() {
             arc.__color = node.value;
+            arc.selected = true;
             editor.draw();
         });
 
@@ -889,6 +872,7 @@ class Arc extends Component {
         node.addEventListener("blur", function() {
 
             arc.label = node.value;
+            arc.selected = true;
 
             node.parentNode.removeChild(node);
 

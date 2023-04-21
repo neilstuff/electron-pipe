@@ -107,6 +107,7 @@ class Place extends Artifact {
             context.restore();
 
         }
+
         context.save();
 
         this.drawTokens(context, this.tokens);
@@ -158,7 +159,7 @@ class Place extends Artifact {
         let y = mousePos.y;
 
         this.setStatus(false);
-  
+
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.__incrementSelectable = true;

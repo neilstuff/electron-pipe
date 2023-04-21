@@ -14,10 +14,29 @@ class Component {
 
         this.__id = id == null ? guid() : id;
 
+        this.__selected = false;
+        this.__selectable = false;
+
     }
 
     get id() {
         return this.__id;
+    }
+
+    get selected() {
+        return this.__selected;
+    }
+
+    set selected(selected) {
+        this.__selected = selected;
+    }
+
+    get selectable() {
+        return this.__selectable;
+    }
+
+    set selectable(selectable) {
+        this.__selectable = selectable;
     }
 
 }

@@ -9,6 +9,7 @@ class Transition extends Artifact {
         this.__subtype = subtype;
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
+        this.__timer = 0;
 
         this.setStatus();
 
@@ -51,6 +52,23 @@ class Transition extends Artifact {
 
     }
 
+    drawTimer(context) {
+        function getTextWidth(text, font) {
+            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+            var context = canvas.getContext("2d");
+            context.font = font;
+            var metrics = context.measureText(text);
+            return metrics.width;
+        }
+
+        let offset = getTextWidth(this.__timer.toString(), "12px Arial");
+
+        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.font = "12px Arial";
+        context.fillText(this.__timer.toString(), this.__center.x - (offset / 2), this.__center.y + 4);
+
+    }
+
     activate(context) {
         context.beginPath();
         context.lineWidth = 2;
@@ -75,9 +93,17 @@ class Transition extends Artifact {
             return false;
         }
 
-        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+        if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__fillSelectable = true;
+            this.__incrementSelectable = true;
+            return true;
+        } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__incrementSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__decrementSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
@@ -102,14 +128,31 @@ class Transition extends Artifact {
 
         let x = mousePos.x;
         let y = mousePos.y;
-
-        if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+        if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.incrementTimer();
+        } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.decrementTimer();
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.fill(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
+
+    }
+
+    incrementTimer() {
+
+        this.__timer = this.__timer + 1;
+
+    }
+
+    decrementTimer() {
+
+        this.__timer = (this.__timer == 0) ? 0 : this.__timer - 1;
 
     }
 
@@ -125,6 +168,7 @@ class Transition extends Artifact {
             id: this.__id,
             type: this.__type,
             label: this.__label,
+            timer: this.__timer,
             color: this.__color,
             center: {
                 x: this.x,

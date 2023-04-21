@@ -63,6 +63,7 @@ class Process extends Transition {
         context.globalAlpha = 1.0;
 
         this.drawLabel(context);
+        this.drawTimer(context);
 
         context.restore();
 

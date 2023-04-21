@@ -865,10 +865,12 @@ class Editor extends Engine {
     selectContainedArtifacts(selection) {
 
         for (let iArtifact in this.artifacts) {
- 
+
             if (this.artifacts[iArtifact].selectContained(selection)) {
-                 this.artifacts[iArtifact].showMenu = false;
+                this.artifacts[iArtifact].showMenu = false;
+                this.artifacts[iArtifact].showArcMenu(false);
             }
+
         }
 
     }
@@ -1101,6 +1103,7 @@ class Editor extends Engine {
 
         if (arc) {
             arc.selected = true;
+            arc.showMenu = true;
             this.draw();
             return;
         }

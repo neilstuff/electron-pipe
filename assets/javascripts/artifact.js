@@ -19,9 +19,6 @@ class Artifact extends Component {
         this.__arcsSource = [];
         this.__arcsTarget = [];
 
-        this.__selected = false;
-        this.__selectable = false;
-
         this.__showMenu = true;
 
         this.__node = null;
@@ -101,22 +98,6 @@ class Artifact extends Component {
 
     get y() {
         return this.__center.y;
-    }
-
-    get selected() {
-        return this.__selected;
-    }
-
-    set selected(selected) {
-        this.__selected = selected;
-    }
-
-    get selectable() {
-        return this.__selectable;
-    }
-
-    set selectable(selectable) {
-        this.__selectable = selectable;
     }
 
     set showMenu(showMenu) {
@@ -217,6 +198,18 @@ class Artifact extends Component {
         this.selected = this.contains(rectangle);
 
         return this.selected;
+
+    }
+
+    showArcMenu(showMenu) {
+
+        for (var arc in this.__arcsSource) {
+
+            if (this.__arcsSource[arc].selected) {
+                this.__arcsSource[arc].showMenu = false;
+            }
+
+        }
 
     }
 
@@ -429,7 +422,6 @@ class Artifact extends Component {
     }
 
     position() {
-
         var posX = Math.trunc(this.__center.x / 32) * 32;
         var posY = Math.trunc(this.__center.y / 32) * 32;
 
@@ -606,8 +598,6 @@ class Artifact extends Component {
 
     action(editor, mousePos) {
 
-       console.log("action");
-
         return false;
     }
 
@@ -648,10 +638,10 @@ class Artifact extends Component {
             window.setTimeout(function() {
                 artifact.__color = node.value;
                 artifact.__selected = true;
-                editor.draw();          
+                editor.draw();
             }, 100);
-    
-       });
+
+        });
 
     }
 
