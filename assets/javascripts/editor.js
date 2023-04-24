@@ -21,6 +21,7 @@ class Editor extends Engine {
 
         this.__drawConnector = false;
         this.__moveArtifacts = false;
+        this.__shiftDown = false;
         this.__selection = null;
         this.__source = null;
         this.__point = false;
@@ -928,6 +929,8 @@ class Editor extends Engine {
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
         if (this.__moveArtifacts) {
+            console.log("mouseup")
+
             this.__moveArtifacts = false;
 
             this.position();
@@ -983,7 +986,11 @@ class Editor extends Engine {
     mousemove(event) {
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
+        console.log("this.__moveArtifacts: " + this.__moveArtifacts + ":" + this.__shiftDown);
+
         if (this.__moveArtifacts) {
+
+            console.log(this.__moveArtifacts);
 
             if (!this.__origin) {
 
@@ -1028,9 +1035,9 @@ class Editor extends Engine {
         var arc = this.getArc(mousePos.x, mousePos.y);
         var segment = this.getSegment(mousePos.x, mousePos.y);
 
-        this.reset();
+        console.log("mouse move [1]: " + this.__moveArtifacts + ":" +  this.__shiftDown);
 
-        if (this.__moveArtifacts) {
+        if (this.__shiftDown) {
             var artifact = this.getArtifact(mousePos.x, mousePos.y);
 
             if (artifact || segment) {
@@ -1039,13 +1046,20 @@ class Editor extends Engine {
                     x: mousePos.x,
                     y: mousePos.y
                 }
-            } else {
+
+          } else {
                 this.__moveArtifacts = false;
                 this.__origin = null;
             }
 
+            this.__moveArtifacts = true;
+
+            console.log("mouse move [2]: " + this.__moveArtifacts);
+
             return;
 
+        } else {
+            this.reset();
         }
 
         if (this.__drawConnector && !this.__source) {
@@ -1198,7 +1212,7 @@ class Editor extends Engine {
 
     keydown(event) {
 
-        this.__moveArtifacts = (event.shiftKey && event.key == "Shift");
+        this.__shiftDown = (event.shiftKey && event.key == "Shift");
         this.__drawConnector = (event.ctrlKey && event.key == "Control");
 
         if (event.key == "Delete") {
@@ -1213,7 +1227,7 @@ class Editor extends Engine {
     keyup(event) {
 
         this.__drawConnector = false;
-        this.__moveArtifacts = false;
+        this.__shiftDown = false;
 
         this.position();
 
