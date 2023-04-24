@@ -201,6 +201,31 @@ class Artifact extends Component {
 
     }
 
+    isActionable(mousePos) {
+        let x = mousePos.x;
+        let y = mousePos.y;
+        
+        if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+             return true;
+        } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__decrementSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__fillSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+            y > this.__center.y + 4 && y < this.__center.y + 24) {
+            this.__renameSelectable = true;
+            return true;
+        }
+
+        return false;
+
+    }
+    
     showArcMenu(showMenu) {
 
         for (var arc in this.__arcsSource) {
@@ -219,7 +244,6 @@ class Artifact extends Component {
             rectangle.endX > this.__center.x + 16 &&
             rectangle.startY < this.__center.y - 16 &&
             rectangle.endY > this.__center.y + 16);
-
 
     }
 

@@ -918,19 +918,19 @@ class Editor extends Engine {
     }
 
     mouseup(event) {
-
-        this.environment.joinEnabled(false);
-
+        
         if (this.__point) {
             this.__point = false;
             return;
         }
 
+        console.log("mouseup" + " : " + (this.__moveArtifacts));
+
+        this.environment.joinEnabled(false);
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
         if (this.__moveArtifacts) {
-            console.log("mouseup")
-
+      
             this.__moveArtifacts = false;
 
             this.position();
@@ -942,6 +942,8 @@ class Editor extends Engine {
 
         }
 
+        this.__moveArtifacts = false;
+
         if (this.__selection) {
             this.selectContainedArtifacts(this.__selection);
             this.setSelection(mousePos);
@@ -949,6 +951,8 @@ class Editor extends Engine {
             this.__selection = null;
 
             var target = this.getArtifact(mousePos.x, mousePos.y);
+
+            console.log()
 
             if (target != null) {
                 target.selected = true;
@@ -985,8 +989,6 @@ class Editor extends Engine {
 
     mousemove(event) {
         var mousePos = this.getMousePos($('#canvas')[0], event);
-
-        console.log("this.__moveArtifacts: " + this.__moveArtifacts + ":" + this.__shiftDown);
 
         if (this.__moveArtifacts) {
 
@@ -1035,8 +1037,6 @@ class Editor extends Engine {
         var arc = this.getArc(mousePos.x, mousePos.y);
         var segment = this.getSegment(mousePos.x, mousePos.y);
 
-        console.log("mouse move [1]: " + this.__moveArtifacts + ":" +  this.__shiftDown);
-
         if (this.__shiftDown) {
             var artifact = this.getArtifact(mousePos.x, mousePos.y);
 
@@ -1047,20 +1047,19 @@ class Editor extends Engine {
                     y: mousePos.y
                 }
 
-          } else {
-                this.__moveArtifacts = false;
-                this.__origin = null;
+            } else {
+               this.__origin = null;
             }
 
             this.__moveArtifacts = true;
-
-            console.log("mouse move [2]: " + this.__moveArtifacts);
 
             return;
 
         } else {
             this.reset();
         }
+
+        this.__moveArtifacts = false;
 
         if (this.__drawConnector && !this.__source) {
             this.__source = this.getArtifact(mousePos.x, mousePos.y);
@@ -1080,6 +1079,14 @@ class Editor extends Engine {
 
         if (!this.getArtifact(mousePos.x, mousePos.y) && this.__drawConnector && this.addSegment(mousePos)) {
             this.__point = true;
+            this.draw();
+            return;
+        }
+
+        var artifact = this.getActionable(mousePos);
+
+        if (artifact) {
+            artifact.showMenu = true;
             this.draw();
             return;
         }
@@ -1159,6 +1166,24 @@ class Editor extends Engine {
 
     }
 
+    getActionable(mousePos) {
+
+        console.log("isActionable");
+
+        for (let iArtifact in this.artifacts) {
+            if (this.artifacts[iArtifact].isActionable(mousePos)) {
+                console.log("isActionable: found");
+                return this.artifacts[iArtifact];
+            }
+          
+        }
+        
+        console.log("isActionable: null");
+  
+        return null;
+
+    }
+
     ondrop(event) {
 
         $(".actions").css({
@@ -1207,6 +1232,8 @@ class Editor extends Engine {
                 break;
 
         }
+
+        this.__moveArtifacts = false;
 
     }
 
