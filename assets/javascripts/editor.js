@@ -1084,9 +1084,11 @@ class Editor extends Engine {
         }
 
         var artifact = this.getActionable(mousePos);
-
+       
         if (artifact) {
+            console.log("Displaying Actionable Menu");
             artifact.showMenu = true;
+            artifact.selected = true;
             this.draw();
             return;
         }
