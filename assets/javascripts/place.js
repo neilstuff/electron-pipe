@@ -12,6 +12,12 @@ class Place extends Artifact {
 
         this.setStatus();
 
+        this.__menu = [0, 1, 2, 3];
+
+    }
+
+    get menu() {
+        return this.__menu;
     }
 
     get tokens() {

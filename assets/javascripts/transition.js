@@ -11,8 +11,14 @@ class Transition extends Artifact {
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__timer = 0;
 
+        this.__menu = [0, 1, 2, 3];
+
         this.setStatus();
 
+    }
+
+    get menu() {
+        return this.__menu;
     }
 
     setStatus(status = false) {
