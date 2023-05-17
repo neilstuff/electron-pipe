@@ -158,6 +158,8 @@ $(async() => {
     images.push(await loadImage(`assets/images/minus.png`));
     images.push(await loadImage(`assets/images/paint-bucket-small.png`));
     images.push(await loadImage(`assets/images/edit-icon.png`));
+    images.push(await loadImage(`assets/images/up-arrow.png`));
+    images.push(await loadImage(`assets/images/down-arrow.png`));
 
     $('#filename').text("pipe.zip");
 
@@ -288,7 +290,7 @@ $(async() => {
             "background-color": "rgba(0,0,0,0.1)"
         });
 
-    
+
     }
     $("#process_mode")[0].ondragstart = function(event) {
 
