@@ -11,8 +11,8 @@ class Place extends Artifact {
         this.__color = 'rgba(255, 255, 255, 1.0)';
 
         this.setStatus();
-
-        this.__menu = [0, 1, 2, 3];
+        
+        this.setMenu([1,1,1,1,0,0]);
 
     }
 

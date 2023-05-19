@@ -54,8 +54,18 @@ class Artifact extends Component {
 
         })(this);
 
+        this.__menu = [-1,-1,-1,-1];
+
     }
 
+    getMenu() {
+        return this.__menu;
+    }
+
+    setMenu(menu) {
+        this.__menu = menu;
+    }
+    
     get connector() {
         return this.__connector;
     }
@@ -303,6 +313,9 @@ class Artifact extends Component {
     }
 
     drawMenu(context) {
+
+        console.log(this.getMenu());
+
         if (this.__showMenu && this.environment.editors && this.selected) {
 
             if (this.__incrementSelectable) {
