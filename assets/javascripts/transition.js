@@ -14,15 +14,8 @@ class Transition extends Artifact {
 
         this.setStatus();
 
-        this.setMenu([1,1,1,1,0,0]);
+        this.setMenu([0,0,1,1,0,0]);
     
-    }
-
-    setStatus(status = false) {
-        this.__incrementSelectable = status;
-        this.__decrementSelectable = status;
-        this.__fillSelectable = status;
-        this.__renameSelectable = status;
     }
 
     decorate(context) {

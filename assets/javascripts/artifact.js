@@ -54,7 +54,7 @@ class Artifact extends Component {
 
         })(this);
 
-        this.__menu = [-1,-1,-1,-1];
+        this.__menu = [-1,-1,-1,-1,-1,-1,-1];
 
     }
 
@@ -170,6 +170,7 @@ class Artifact extends Component {
         return this.__node;
     }
 
+    
     equals(x, y) {
 
         return x > this.__center.x - 2 && x < this.__center.x + 2 &&
@@ -208,6 +209,17 @@ class Artifact extends Component {
         this.selected = this.contains(rectangle);
 
         return this.selected;
+
+    }
+
+    setStatus(status = false) {
+        this.__incrementSelectable = status;
+        this.__decrementSelectable = status;
+        this.__fillSelectable = status;
+        this.__renameSelectable = status;
+        this.__increaseSelectable = status;
+        this.__decreaseSelectable = status;        
+        this.__timerSelectable = status;
 
     }
 
@@ -314,41 +326,50 @@ class Artifact extends Component {
 
     drawMenu(context) {
 
-        console.log(this.getMenu());
-
         if (this.__showMenu && this.environment.editors && this.selected) {
 
-            if (this.__incrementSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
+
+            if (this.getMenu()[0] == 1) {
+                if (this.__incrementSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
+
+                context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
             }
 
-            context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
+            
+            if (this.getMenu()[1] == 1) {
+                if (this.__decrementSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
 
-            if (this.__decrementSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
+                context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
             }
 
-            context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
+            if (this.getMenu()[2] == 1) {
+                if (this.__fillSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
 
-            if (this.__fillSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
+                context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+
             }
 
-            context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+            if (this.getMenu()[3] == 1) {
+                if (this.__renameSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
 
-            if (this.__renameSelectable) {
-                context.globalAlpha = 1.0;
-            } else {
-                context.globalAlpha = 0.6;
+                context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
             }
-
-            context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
 
         }
 
