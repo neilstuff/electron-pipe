@@ -12,7 +12,7 @@ class Place extends Artifact {
 
         this.setStatus();
         
-        this.setMenu([1,1,1,1,0,0]);
+        this.setMenu([1,1,1,1,0,0,0]);
 
     }
 
@@ -26,13 +26,6 @@ class Place extends Artifact {
 
     set tokens(tokens) {
         this.__tokens = tokens;
-    }
-
-    setStatus(status = false) {
-        this.__incrementSelectable = status;
-        this.__decrementSelectable = status;
-        this.__fillSelectable = status;
-        this.__renameSelectable = status;
     }
 
     drawTokenCount(context, tokens) {
@@ -72,8 +65,7 @@ class Place extends Artifact {
             context.arc(this.__center.x, this.__center.y, 5, 0, 2 * Math.PI);
             context.fill();
             context.stroke();
-        } else
-        if (this.tokens > 1) {
+        } else if (this.tokens > 1) {
             context.beginPath();
             context.arc(this.__center.x, this.__center.y - 5, 3, 0, 2 * Math.PI);
             context.fill();

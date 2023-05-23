@@ -14,7 +14,7 @@ class Transition extends Artifact {
 
         this.setStatus();
 
-        this.setMenu([0,0,1,1,0,0]);
+        this.setMenu([0,0,1,1,1,1,0]);
     
     }
 
