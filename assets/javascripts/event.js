@@ -26,7 +26,7 @@ class Event extends Transition {
 
         context.globalAlpha = 1.0;
 
-        this.drawTimer(context);
+        this.drawConfidence(context);
         this.drawLabel(context);
 
         context.restore();

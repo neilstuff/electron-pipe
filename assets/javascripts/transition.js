@@ -10,7 +10,7 @@ class Transition extends Artifact {
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__timer = 0;
-        this.__timer = 0;
+        this.__confidence = 100;
 
         this.setStatus();
 
@@ -48,7 +48,7 @@ class Transition extends Artifact {
 
     }
 
-    drawTimer(context) {
+    drawConfidence(context) {
         function getTextWidth(text, font) {
             var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
             var context = canvas.getContext("2d");
@@ -57,11 +57,11 @@ class Transition extends Artifact {
             return metrics.width;
         }
 
-        let offset = getTextWidth(this.__timer.toString(), "12px Arial");
+        let offset = getTextWidth(this.__confidence.toString(), "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";
-        context.fillText(this.__timer.toString(), this.__center.x - (offset / 2), this.__center.y + 4);
+        context.fillText(this.__confidence.toString(), this.__center.x - (offset / 2), this.__center.y + 4);
 
     }
 
