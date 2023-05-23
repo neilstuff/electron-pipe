@@ -379,7 +379,7 @@ class Artifact extends Component {
                 context.drawImage(this.__images[4], this.__center.x + 18, this.__center.y - 20);
             }
 
-            if (this.getMenu()[4] == 1) {
+            if (this.getMenu()[5] == 1) {
                 if (this.__increaseSelectable) {
                     context.globalAlpha = 1.0;
                 } else {
@@ -390,14 +390,14 @@ class Artifact extends Component {
             }
 
             
-            if (this.getMenu()[5] == 1) {
+            if (this.getMenu()[6] == 1) {
                 if (this.__timerSelectable) {
                     context.globalAlpha = 1.0;
                 } else {
                     context.globalAlpha = 0.6;
                 }
 
-                context.drawImage(this.__images[2], this.__center.x - 36, this.__center.y - 22);
+                context.drawImage(this.__images[6], this.__center.x - 36, this.__center.y - 22);
            
             }
 
