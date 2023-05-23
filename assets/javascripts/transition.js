@@ -126,10 +126,10 @@ class Transition extends Artifact {
         let y = mousePos.y;
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.incrementTimer();
+            this.incrementConfidence();
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
-            this.decrementTimer();
+            this.decrementConfidence();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.fill(editor);
@@ -142,7 +142,7 @@ class Transition extends Artifact {
 
     incrementTimer() {
 
-        this.__timer = this.__timer + 1;
+        this.__timer = (this.__timer == 100) ? 100 : this.__timer + 1;
 
     }
 
@@ -152,6 +152,17 @@ class Transition extends Artifact {
 
     }
 
+    incrementConfidence() {
+
+        this.__timer = this.__timer + 1;
+
+    }
+
+    decrementConfidence() {
+
+        this.__timer = (this.__timer == 0) ? 0 : this.__timer - 1;
+
+    }
     dblclick(editor, mousePos) {
 
         return true;
