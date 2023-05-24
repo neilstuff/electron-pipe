@@ -49,15 +49,7 @@ class Transition extends Artifact {
     }
 
     drawConfidence(context) {
-        function getTextWidth(text, font) {
-            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-            var context = canvas.getContext("2d");
-            context.font = font;
-            var metrics = context.measureText(text);
-            return metrics.width;
-        }
-
-        let offset = getTextWidth(this.__confidence.toString(), "12px Arial");
+        let offset = this.getTextWidth(this.__confidence.toString(), "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";

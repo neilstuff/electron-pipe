@@ -1,6 +1,8 @@
 'use strict'
-class Component {
+class Component extends Graphics {
     constructor(id) {
+        super();
+        
         let guid = () => {
             let s4 = () => {
                 return Math.floor((1 + Math.random()) * 0x10000)

@@ -29,16 +29,8 @@ class Place extends Artifact {
     }
 
     drawTokenCount(context, tokens) {
-        function getTextWidth(text, font) {
-            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-            var context = canvas.getContext("2d");
-            context.font = font;
-            var metrics = context.measureText(text);
-            return metrics.width;
-        }
-
         let count = `${this.__tokens}`;
-        let offset = getTextWidth(count, "12px Arial");
+        let offset = this.getTextWidth(count, "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";
