@@ -146,13 +146,13 @@ class Transition extends Artifact {
 
     incrementConfidence() {
 
-        this.__timer = this.__timer + 1;
+        this.__confidence = (this.__confidence == 100) ? 100 : this.__confidence + 1;
 
     }
 
     decrementConfidence() {
 
-        this.__timer = (this.__timer == 0) ? 0 : this.__timer - 1;
+        this.__confidence = (this.__confidence  == 0) ? 0 : this.__confidence - 1;
 
     }
     dblclick(editor, mousePos) {
