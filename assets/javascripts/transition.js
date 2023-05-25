@@ -49,11 +49,15 @@ class Transition extends Artifact {
     }
 
     drawConfidence(context) {
+        /*
         let offset = this.getTextWidth(this.__confidence.toString(), "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";
         context.fillText(this.__confidence.toString(), this.__center.x - (offset / 2), this.__center.y + 4);
+        */
+
+        this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI*2, 5, "#fff", this.__confidence);
 
     }
 

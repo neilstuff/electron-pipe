@@ -20,13 +20,14 @@ class Event extends Transition {
         context.fill();
         context.stroke();
 
+        this.drawConfidence(context);
+        
         if (this.environment.decorate) {
             this.decorate(context);
         }
 
         context.globalAlpha = 1.0;
 
-        this.drawConfidence(context);
         this.drawLabel(context);
 
         context.restore();

@@ -55,6 +55,8 @@ class Process extends Transition {
         context.fill();
         context.stroke();
 
+        this.drawConfidence(context);
+        
         if (this.environment.decorate) {
             this.decorate(context);
         }
@@ -62,7 +64,6 @@ class Process extends Transition {
         context.globalAlpha = 1.0;
 
         this.drawLabel(context);
-        this.drawConfidence(context);
 
         context.restore();
 
