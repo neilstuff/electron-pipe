@@ -54,7 +54,7 @@ class Artifact extends Component {
 
         })(this);
 
-        this.__menu = [-1,-1,-1,-1,-1,-1,-1];
+        this.__menu = [-1, -1, -1, -1, -1, -1, -1];
 
     }
 
@@ -65,7 +65,7 @@ class Artifact extends Component {
     setMenu(menu) {
         this.__menu = menu;
     }
-    
+
     get connector() {
         return this.__connector;
     }
@@ -170,7 +170,7 @@ class Artifact extends Component {
         return this.__node;
     }
 
-    
+
     equals(x, y) {
 
         return x > this.__center.x - 2 && x < this.__center.x + 2 &&
@@ -218,7 +218,7 @@ class Artifact extends Component {
         this.__fillSelectable = status;
         this.__renameSelectable = status;
         this.__increaseSelectable = status;
-        this.__decreaseSelectable = status;        
+        this.__decreaseSelectable = status;
         this.__timerSelectable = status;
 
     }
@@ -226,10 +226,10 @@ class Artifact extends Component {
     isActionable(mousePos) {
         let x = mousePos.x;
         let y = mousePos.y;
-        
+
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-             return true;
+            return true;
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.__decrementSelectable = true;
@@ -247,7 +247,7 @@ class Artifact extends Component {
         return false;
 
     }
-    
+
     showArcMenu(showMenu) {
 
         for (var arc in this.__arcsSource) {
@@ -368,7 +368,7 @@ class Artifact extends Component {
 
                 context.drawImage(this.__images[3], this.__center.x - 36, this.__center.y + 4);
             }
-            
+
             if (this.getMenu()[4] == 1) {
                 if (this.__increaseSelectable) {
                     context.globalAlpha = 1.0;
@@ -389,7 +389,7 @@ class Artifact extends Component {
                 context.drawImage(this.__images[5], this.__center.x + 18, this.__center.y + 4);
             }
 
-            
+
             if (this.getMenu()[6] == 1) {
                 if (this.__timerSelectable) {
                     context.globalAlpha = 1.0;
@@ -398,7 +398,7 @@ class Artifact extends Component {
                 }
 
                 context.drawImage(this.__images[6], this.__center.x - 36, this.__center.y - 22);
-           
+
             }
 
         }

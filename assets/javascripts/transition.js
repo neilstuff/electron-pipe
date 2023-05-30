@@ -14,8 +14,8 @@ class Transition extends Artifact {
 
         this.setStatus();
 
-        this.setMenu([0,0,0,1,1,1,1]);
-    
+        this.setMenu([0, 0, 0, 1, 1, 1, 1]);
+
     }
 
     decorate(context) {
@@ -42,6 +42,16 @@ class Transition extends Artifact {
 
         }
 
+        let offset = this.getTextWidth(this.__confidence.toString(), "12px Arial");
+
+        if (this.selected) {
+
+            context.fillStyle = "rgba(0, 0, 0, 0.5)";
+            context.font = "12px Arial";
+            context.fillText(this.__confidence.toString(), this.__center.x + 20, this.__center.y + 4);
+
+        }
+
         this.drawMenu(context);
 
         context.stroke();
@@ -49,15 +59,8 @@ class Transition extends Artifact {
     }
 
     drawConfidence(context) {
-        /*
-        let offset = this.getTextWidth(this.__confidence.toString(), "12px Arial");
 
-        context.fillStyle = "rgba(0, 0, 0, 0.5)";
-        context.font = "12px Arial";
-        context.fillText(this.__confidence.toString(), this.__center.x - (offset / 2), this.__center.y + 4);
-        */
-
-        this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI*2, 5, "#fff", this.__confidence);
+        this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
 
     }
 
@@ -156,7 +159,7 @@ class Transition extends Artifact {
 
     decrementConfidence() {
 
-        this.__confidence = (this.__confidence  == 0) ? 0 : this.__confidence - 1;
+        this.__confidence = (this.__confidence == 0) ? 0 : this.__confidence - 1;
 
     }
     dblclick(editor, mousePos) {
