@@ -42,15 +42,13 @@ class Transition extends Artifact {
 
         }
 
-        let offset = this.getTextWidth(this.__confidence.toString(), "12px Arial");
-
         if (this.selected) {
 
             context.fillStyle = "rgba(0, 0, 0, 0.5)";
             context.font = "12px Arial";
             context.fillText(this.__confidence.toString(), this.__center.x + 20, this.__center.y + 4);
 
-        }
+          }
 
         this.drawMenu(context);
 
@@ -58,9 +56,16 @@ class Transition extends Artifact {
 
     }
 
-    drawConfidence(context) {
+    drawMeasures(context) {
 
         this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
+        
+        let offset = this.getTextWidth(this.__timer + " ms", "12px Arial");
+
+        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.font = "12px Arial";
+
+        context.fillText(this.__timer + " ms", this.__center.x - (offset / 2), this.__center.y - 24);
 
     }
 
