@@ -9,7 +9,7 @@ class Transition extends Artifact {
         this.__subtype = subtype;
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
-        this.__timer = 0;
+        this.__measure = 0;
         this.__confidence = 100;
 
         this.setStatus();
@@ -30,6 +30,7 @@ class Transition extends Artifact {
             context.rect(this.__center.x - 18, this.__center.y - 18, 36, 36);
 
             context.stroke();
+
         } else if (this.__selectable) {
             context.beginPath();
             context.strokeStyle = "rgba(0, 0, 0, 0.1)";
@@ -60,12 +61,12 @@ class Transition extends Artifact {
 
         this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
         
-        let offset = this.getTextWidth(this.__timer + " ms", "12px Arial");
+        let offset = this.getTextWidth(this.__measure + " ms", "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";
 
-        context.fillText(this.__timer + " ms", this.__center.x - (offset / 2), this.__center.y - 24);
+        context.fillText(this.__measure + " ms", this.__center.x - (offset / 2), this.__center.y - 24);
 
     }
 
@@ -136,23 +137,11 @@ class Transition extends Artifact {
             this.decrementConfidence();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.fill(editor);
+            this.measure(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
-
-    }
-
-    incrementTimer() {
-
-        this.__timer = (this.__timer == 100) ? 100 : this.__timer + 1;
-
-    }
-
-    decrementTimer() {
-
-        this.__timer = (this.__timer == 0) ? 0 : this.__timer - 1;
 
     }
 
@@ -167,6 +156,42 @@ class Transition extends Artifact {
         this.__confidence = (this.__confidence == 0) ? 0 : this.__confidence - 1;
 
     }
+
+    measure(editor) {
+        var node = document.createElement("input");
+        var artifact = this;
+
+        node.setAttribute("type", "number");
+        node.value = this.label;
+
+        $(`#${this.__frame}`)[0].appendChild(node);
+
+        node.setAttribute('style', `display:inline-block; position:absolute; ` +
+            `left: ${this.__center.x - 80}px; ` +
+            `top: ${this.__center.y + 16}px;` +
+            `width: 100px;` +
+            `z-index: 2; padding:4px;` +
+            `border:1px solid rgba(0,0,0,0.4);` +
+            `background-color:rgba(255,255,255,1.0);"`);
+
+        node.focus();
+
+        node.addEventListener("blur", function() {
+
+            artifact.label = node.value;
+            artifact.updateArcs();
+
+            editor.draw();
+
+            editor.__treeMap[artifact.id].text = node.value;
+            editor.__tree.drawTree();
+
+            node.parentNode.removeChild(node);
+
+        });
+        
+    }
+
     dblclick(editor, mousePos) {
 
         return true;
