@@ -49,7 +49,7 @@ class Transition extends Artifact {
             context.font = "12px Arial";
             context.fillText(this.__confidence.toString(), this.__center.x + 20, this.__center.y + 4);
 
-          }
+        }
 
         this.drawMenu(context);
 
@@ -60,7 +60,7 @@ class Transition extends Artifact {
     drawMeasures(context) {
 
         this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
-        
+
         let offset = this.getTextWidth(this.__measure + " ms", "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -162,13 +162,13 @@ class Transition extends Artifact {
         var artifact = this;
 
         node.setAttribute("type", "number");
-        node.value = this.label;
+        node.value = this.__measure;
 
         $(`#${this.__frame}`)[0].appendChild(node);
 
         node.setAttribute('style', `display:inline-block; position:absolute; ` +
             `left: ${this.__center.x - 80}px; ` +
-            `top: ${this.__center.y + 16}px;` +
+            `top: ${this.__center.y - 52}px;` +
             `width: 100px;` +
             `z-index: 2; padding:4px;` +
             `border:1px solid rgba(0,0,0,0.4);` +
@@ -178,7 +178,7 @@ class Transition extends Artifact {
 
         node.addEventListener("blur", function() {
 
-            artifact.label = node.value;
+            artifact.__measure = node.value;
             artifact.updateArcs();
 
             editor.draw();
@@ -189,7 +189,7 @@ class Transition extends Artifact {
             node.parentNode.removeChild(node);
 
         });
-        
+
     }
 
     dblclick(editor, mousePos) {
