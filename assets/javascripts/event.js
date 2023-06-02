@@ -20,7 +20,7 @@ class Event extends Transition {
         context.fill();
         context.stroke();
 
-        this.drawMeasures(context);
+        this.drawMeasure(context);
         
         if (this.environment.decorate) {
             this.decorate(context);

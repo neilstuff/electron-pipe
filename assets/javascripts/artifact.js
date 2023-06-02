@@ -219,7 +219,8 @@ class Artifact extends Component {
         this.__renameSelectable = status;
         this.__increaseSelectable = status;
         this.__decreaseSelectable = status;
-        this.__timerSelectable = status;
+        this.__measureSelectable = status;
+        this.__iconSelectable = status;
 
     }
 
@@ -368,28 +369,39 @@ class Artifact extends Component {
                     context.globalAlpha = 0.6;
                 }
 
-                context.drawImage(this.__images[4], this.__center.x + 18, this.__center.y - 20);
+                context.drawImage(this.__images[4], this.__center.x + 22, this.__center.y - 20);
             }
 
             if (this.getMenu()[5] == 1) {
-                if (this.__increaseSelectable) {
+                if (this.__decreaseSelectable) {
                     context.globalAlpha = 1.0;
                 } else {
                     context.globalAlpha = 0.6;
                 }
 
-                context.drawImage(this.__images[5], this.__center.x + 18, this.__center.y + 4);
+                context.drawImage(this.__images[5], this.__center.x + 22, this.__center.y + 4);
             }
 
 
             if (this.getMenu()[6] == 1) {
-                if (this.__timerSelectable) {
+                if (this.__measureSelectable) {
                     context.globalAlpha = 1.0;
                 } else {
                     context.globalAlpha = 0.6;
                 }
 
                 context.drawImage(this.__images[6], this.__center.x - 36, this.__center.y - 22);
+
+            }
+
+            if (this.getMenu()[7] == 1) {
+                if (this.__iconSelectable) {
+                    context.globalAlpha = 1.0;
+                } else {
+                    context.globalAlpha = 0.6;
+                }
+
+                context.drawImage(this.__images[7], this.__center.x - 36, this.__center.y - 22);
 
             }
 

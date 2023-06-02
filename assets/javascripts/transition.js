@@ -14,7 +14,7 @@ class Transition extends Artifact {
 
         this.setStatus();
 
-        this.setMenu([0, 0, 0, 1, 1, 1, 1]);
+        this.setMenu([0, 0, 0, 1, 1, 1, 1,0]);
 
     }
 
@@ -47,7 +47,13 @@ class Transition extends Artifact {
 
             context.fillStyle = "rgba(0, 0, 0, 0.5)";
             context.font = "12px Arial";
-            context.fillText(this.__confidence.toString(), this.__center.x + 20, this.__center.y + 4);
+
+            if (this.__confidence < 100) {  
+                context.fillText(this.__confidence.toString(), this.__center.x + 23, this.__center.y + 4);
+            }else {
+                context.fillText(this.__confidence.toString(), this.__center.x + 19, this.__center.y + 4);
+          
+            }
 
         }
 
@@ -57,7 +63,7 @@ class Transition extends Artifact {
 
     }
 
-    drawMeasures(context) {
+    drawMeasure(context) {
 
         this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
 
@@ -96,19 +102,19 @@ class Transition extends Artifact {
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__incrementSelectable = true;
+            this.__increaseSelectable = true;
             return true;
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
-            this.__incrementSelectable = true;
-            return true;
-        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
-            y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__decrementSelectable = true;
+             this.__decreaseSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.__renameSelectable = true;
+            return true;
+        } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
+                y > this.__center.y - 20 && y < this.__center.y - 4) {
+                this.__measureSelectable = true;
             return true;
         }
 

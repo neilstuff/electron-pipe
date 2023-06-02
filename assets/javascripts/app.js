@@ -161,6 +161,7 @@ $(async() => {
     images.push(await loadImage(`assets/images/up-arrow.png`));
     images.push(await loadImage(`assets/images/down-arrow.png`));
     images.push(await loadImage(`assets/images/stopwatch.png`));
+    images.push(await loadImage(`assets/images/upload.png`));
 
     $('#filename').text("pipe.zip");
 

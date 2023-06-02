@@ -123,6 +123,7 @@ class Container extends Artifact {
                 }
 
                 context.drawImage(this.__images[2], left + 8, top + 30);
+                context.stroke();
 
             }
 
@@ -342,38 +343,6 @@ class Container extends Artifact {
     }
 
     fill(editor) {
-        /*
-        var node = document.createElement("div");
-        var container = this;
-
-        $(`#${this.__frame}`)[0].appendChild(node);
-        var top = $(`#container_${this.__id}`)[0].offsetTop;
-        var left = $(`#container_${this.__id}`)[0].offsetLeft;
-
-        node.setAttribute('style', `display:inline-block; position:absolute; ` +
-            `left: ${left}px; ` +
-            `top: ${top}px;` +
-            `z-index: 2; padding:4px;"`);
-
-        var picker = new Picker({
-            parent: node,
-            color: container.__color,
-            onDone: function(color) {
-                container.__color = color.rgbaString;
-                $(`#html_${container.__id}`).css('color', `${color.rgbaString}`);
-                container.edit();
-
-            },
-            onClose: function(color) {
-                $('#frame')[0].removeChild(node);
-                container.__editing = false;
-                editor.draw();
-            }
-
-        });
-
-        picker.openHandler();
-        */
         var node = document.createElement("input");
 
         var top = $(`#container_${this.__id}`)[0].offsetTop;
