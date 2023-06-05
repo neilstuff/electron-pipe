@@ -64,8 +64,7 @@ class Graphics {
 
     }
 
-    bas64Upload(file) {
-
+    base64Upload(file) {
 
         return new Promise((resolve, reject) => {
             const reader = new window.FileReader();

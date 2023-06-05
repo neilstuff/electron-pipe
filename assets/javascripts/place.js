@@ -144,6 +144,14 @@ class Place extends Artifact {
 
     }
 
+    loadIcon() {
+        this.loadFile(".png", async function(files) {
+            let icon = await this.base64Upload(files[0])
+
+        });
+
+    }
+
     actionable(mousePos) {
         let x = mousePos.x;
         let y = mousePos.y;
@@ -194,7 +202,7 @@ class Place extends Artifact {
             this.decrementToken();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.fill(editor);
+            this.loadIcon(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
