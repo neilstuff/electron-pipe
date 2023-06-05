@@ -11,8 +11,8 @@ class Place extends Artifact {
         this.__color = 'rgba(255, 255, 255, 1.0)';
 
         this.setStatus();
-        
-        this.setMenu([1,1,0,1,0,0,0,1]);
+
+        this.setMenu([1, 1, 0, 1, 0, 0, 0, 1]);
 
     }
 
@@ -145,8 +145,12 @@ class Place extends Artifact {
     }
 
     loadIcon() {
+        var __this = this;
+
         this.loadFile(".png", async function(files) {
-            let icon = await this.base64Upload(files[0])
+            let icon = await __this.base64Upload(files[0]);
+
+            alert(JSON.stringify(icon));
 
         });
 
