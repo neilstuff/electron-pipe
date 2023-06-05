@@ -1,6 +1,6 @@
 'use strict'
 class Graphics {
-    
+
     constructor() {
     }
 
@@ -18,9 +18,9 @@ class Graphics {
             canvas.beginPath();
             canvas.lineWidth = lineWidth;
             canvas.strokeStyle = strokeStyle;
-            canvas.arc(x , y , radius, from, to);
+            canvas.arc(x, y, radius, from, to);
             canvas.stroke();
- 
+
             var parts = data.parts.pt;
             var colors = data.colors.cs;
 
@@ -36,14 +36,55 @@ class Graphics {
 
         }
 
-        var data = 
+        var data =
         {
             numberOfParts: 2,
-            parts:{"pt": [confidence, 100 - confidence]},//percentage of each parts 
-            colors:{"cs": ["rgba(0,100,0,0.8)", "rgba(255,0,0,0.5)"]}//color of each part
+            parts: { "pt": [confidence, 100 - confidence] },//percentage of each parts 
+            colors: { "cs": ["rgba(0,100,0,0.8)", "rgba(255,0,0,0.5)"] }//color of each part
         };
-    
+
         draw(data);
+
+    }
+
+    loadFile(filter, callback) {
+        var loadButton = document.createElementNS("http://www.w3.org/1999/xhtml", "input");
+
+        loadButton.setAttribute("type", "file");
+        loadButton.accept = filter;
+
+        loadButton.addEventListener('change', function (event) {
+            callback(event.target.files);
+
+            return false;
+
+        }, false);
+
+        loadButton.click();
+
+    }
+
+    bas64Upload(file) {
+
+
+        return new Promise((resolve, reject) => {
+            const reader = new window.FileReader();
+
+            reader.addEventListener('load', () => {
+                resolve({ default: reader.result });
+            });
+
+            reader.addEventListener('error', err => {
+                reject(err);
+            });
+
+            reader.addEventListener('abort', () => {
+                reject();
+            });
+
+            reader.readAsDataURL(file);
+
+        });
 
     }
 
