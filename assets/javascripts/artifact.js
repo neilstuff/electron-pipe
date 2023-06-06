@@ -329,6 +329,7 @@ class Artifact extends Component {
                 }
 
                 context.drawImage(this.__images[0], this.__center.x + 18, this.__center.y - 20);
+
             }
 
             if (this.getMenu()[1] == 1) {
@@ -339,6 +340,7 @@ class Artifact extends Component {
                 }
 
                 context.drawImage(this.__images[1], this.__center.x + 18, this.__center.y + 4);
+
             }
 
             if (this.getMenu()[2] == 1) {

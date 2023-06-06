@@ -9,6 +9,8 @@ class Place extends Artifact {
 
         this.__editing = false;
         this.__color = 'rgba(255, 255, 255, 1.0)';
+        this.__icon = null;
+
 
         this.setStatus();
 
@@ -128,6 +130,19 @@ class Place extends Artifact {
             this.drawFill(context);
         }
 
+        if (this.__icon) {
+            context.save();
+            context.globalAlpha = (this.__selected) ? 1.0 : 0.2;
+
+            var image = new Image();
+            image.src = this.__icon;
+
+            context.fillStyle = '#FFF';
+            context.fillRect(this.__center.x - 16, this.__center.y - 54, 32, 32);
+            context.drawImage(image, this.__center.x - 16, this.__center.y - 54, 32, 32);
+            context.restore();
+        }
+
         this.drawLabel(context);
 
     }
@@ -150,7 +165,7 @@ class Place extends Artifact {
         this.loadFile(".png", async function(files) {
             let icon = await __this.base64Upload(files[0]);
 
-            alert(JSON.stringify(icon));
+            __this.__icon = icon['default'];
 
         });
 
