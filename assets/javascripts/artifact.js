@@ -308,7 +308,7 @@ class Artifact extends Component {
     drawConnector(context, x, y) {
 
         context.beginPath();
-        context.strokeStyle = "rgba(255, 0, 0, 0.5)";
+        context.strokeStyle = (this.__environment.connector == 0) ? "rgba(0, 0, 255, 0.5)" : "rgba(255, 0, 0, 0.5)";
         context.lineWidth = 1;
         context.moveTo(this.__center.x, this.__center.y);
 

@@ -429,23 +429,6 @@ $(async() => {
 
     });
 
-
-    $('#direct').on('click', (e) => {
-        $('#direct').css("color", "rgba(0, 0, 0, 1.0)");
-        $('#inhibit').css("color", "rgba(0, 0, 0, 0.4)");
-
-        environment.connector = 0;
-
-    });
-
-    $('#inhibit').on('click', (e) => {
-        $('#direct').css("color", "rgba(0, 0, 0, 0.4)");
-        $('#inhibit').css("color", "rgba(0, 0, 0, 1.0)");
-
-        environment.connector = 1;
-
-    });
-
     $('#fill').on('click', (e) => {
         var node = document.createElement("input");
 
