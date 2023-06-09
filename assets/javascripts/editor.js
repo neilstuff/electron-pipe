@@ -11,6 +11,7 @@ class Editor extends Engine {
         super(frame, canvas, images, environment);
 
         this.__placeholder = placeholder;
+        this.__environment = environment;
 
         this.__position = null;
         this.__segments = [];
@@ -1242,7 +1243,8 @@ class Editor extends Engine {
     keydown(event) {
 
         this.__shiftDown = (event.shiftKey && event.key == "Shift");
-        this.__drawConnector = (event.ctrlKey && event.key == "Control");
+        this.__drawConnector = (event.ctrlKey && event.key == "Control" || event.altKey && event.key == "Alt");
+        this.__environment.connector =  event.key == "Control" ? 0 : event.key == "Alt" ? 1 : -1;
 
         if (event.key == "Delete") {
 
