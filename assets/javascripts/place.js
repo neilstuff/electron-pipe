@@ -242,6 +242,7 @@ class Place extends Artifact {
             type: this.__type,
             label: this.__label,
             tokens: this.__tokens,
+            icon: this.__icon == this.__icon ? "" : icon,
             center: {
                 x: this.x,
                 y: this.y

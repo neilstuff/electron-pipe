@@ -14,7 +14,7 @@ class Transition extends Artifact {
 
         this.setStatus();
 
-        this.setMenu([0, 0, 0, 1, 1, 1, 1,0]);
+        this.setMenu([0, 0, 0, 1, 1, 1, 1, 0]);
 
     }
 
@@ -48,11 +48,11 @@ class Transition extends Artifact {
             context.fillStyle = "rgba(0, 0, 0, 0.5)";
             context.font = "12px Arial";
 
-            if (this.__confidence < 100) {  
+            if (this.__confidence < 100) {
                 context.fillText(this.__confidence.toString(), this.__center.x + 23, this.__center.y + 4);
-            }else {
+            } else {
                 context.fillText(this.__confidence.toString(), this.__center.x + 19, this.__center.y + 4);
-          
+
             }
 
         }
@@ -106,15 +106,15 @@ class Transition extends Artifact {
             return true;
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
-             this.__decreaseSelectable = true;
+            this.__decreaseSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.__renameSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
-                y > this.__center.y - 20 && y < this.__center.y - 4) {
-                this.__measureSelectable = true;
+            y > this.__center.y - 20 && y < this.__center.y - 4) {
+            this.__measureSelectable = true;
             return true;
         }
 
@@ -209,9 +209,10 @@ class Transition extends Artifact {
         return {
             id: this.__id,
             type: this.__type,
+            subtype: this.__subtype,
             label: this.__label,
-            timer: this.__timer,
-            color: this.__color,
+            measure: this.__measure,
+            confidence: this.__confidence,
             center: {
                 x: this.x,
                 y: this.y
