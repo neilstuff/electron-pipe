@@ -88,7 +88,7 @@ class Player extends Engine {
         }
 
         var filteredPlaces = this.environment.artifacts.filter(function(value, index, arr) {
-            return value.type == 0;
+            return value.type == PLACE;
         });
 
         for (var artifact in filteredPlaces) {
@@ -98,6 +98,8 @@ class Player extends Engine {
             }
 
         }
+
+        console.log(filteredPlaces.length)
 
         var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
 
@@ -117,7 +119,7 @@ class Player extends Engine {
 
             }
 
-            return (value.type == 1 && checkSources(this, value));
+            return (value.type == EVENT || value.type == PROCESS && checkSources(this, value));
 
         }, this.environment.placeStateMap);
 
@@ -173,7 +175,7 @@ class Player extends Engine {
 
             }
 
-            return (value.type == 1 && checkSources(this, value));
+            return (value.type == EVENT && checkSources(this, value));
 
         }, this.environment.placeStateMap);
 
