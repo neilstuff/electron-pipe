@@ -95,7 +95,6 @@ class Serializer {
             for (var iArtifact in artifacts) {
                 var artifact = artifacts[iArtifact];
                 var creator = __this.__editor.creators[artifact['type']];
-
                 var object = creator(artifact['center'], artifact['id'], artifact['label']);
 
                 if ('tokens' in object) {
@@ -110,9 +109,12 @@ class Serializer {
                     object.measure = ('measure' in artifact) ? artifact['measure'] : 0;
                 }
 
+                if ('confidence' in object) {
+                    object.confidence = ('confidence' in artifact) ? artifact['confidence'] : 100;
+                }
 
-                if ('measure' in object) {
-                    object.measure = ('measure' in artifact) ? artifact['measure'] : 0;
+                if ('icon' in object) {
+                    object.icon = ('icon' in artifact) ? artifact['icon'] : "";
                 }
 
                 if (decorator) {
