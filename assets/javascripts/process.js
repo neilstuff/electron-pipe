@@ -2,7 +2,7 @@
 
 class Process extends Transition {
     constructor(environment, images, id) {
-        super(1, environment, images, id);
+        super(PROCESS, environment, images, id);
 
     }
 
@@ -56,7 +56,7 @@ class Process extends Transition {
         context.stroke();
 
         this.drawMeasure(context);
-        
+
         if (this.environment.decorate) {
             this.decorate(context);
         }

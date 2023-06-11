@@ -162,6 +162,7 @@ class Arc extends Component {
         this.__incrementSelectable = status;
         this.__decrementSelectable = status;
         this.__fillSelectable = status;
+        this.__iconSelectable = status;
         this.__renameSelectable = status;
     }
 
@@ -377,7 +378,7 @@ class Arc extends Component {
             context.stroke();
         }
 
-        var adjust = (this.__source_type == 1);
+        var adjust = (this.__source_type != PLACE);
 
         var source = {
             x: this.__source.x,
@@ -397,7 +398,7 @@ class Arc extends Component {
 
         var aDir = Math.atan2(this.__source.x - point.x, this.__source.y - point.y);
 
-        if (this.__source.type == 1) {
+        if (this.__source.type >= 1) {
             source.x = this.__source.x - ((this.__source.x - (this.__source.x - this.xCor(18, aDir))) * 0.2);
             source.y = this.__source.y - ((this.__source.y - (this.__source.y - this.yCor(18, aDir))) * 0.2);
         }
@@ -482,7 +483,7 @@ class Arc extends Component {
         let targetX = target.x;
         let targetY = target.y;
 
-        if (this.__target_type == 1) {
+        if (this.__target_type != PLACE) {
 
             var point = this.lineOnRect({
                     x: sourceX,
@@ -498,7 +499,7 @@ class Arc extends Component {
                 targetY = point.y;
             }
 
-        } else if (this.__target_type == 0) {
+        } else if (this.__target_type == PLACE) {
             targetX = target.x + this.xCor(xPos, aDir);
             targetY = target.y + this.yCor(yPos, aDir)
         }

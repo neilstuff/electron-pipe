@@ -42,7 +42,6 @@ contextBridge.exposeInMainWorld(
         },
         on: (message, callback) => {
             ipcRenderer.on(message, (event, path) => {
-                console.log("received message");
                 callback()
             });
         },

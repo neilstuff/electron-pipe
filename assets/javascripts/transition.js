@@ -1,12 +1,11 @@
 'use strict'
 
 class Transition extends Artifact {
-    constructor(subtype, environment, images, id) {
-        super(1, environment, images, id);
+    constructor(type, environment, images, id) {
+        super(type, environment, images, id);
 
         this.__editSelectable = false;
         this.__editing = false;
-        this.__subtype = subtype;
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__measure = 0;
@@ -16,6 +15,22 @@ class Transition extends Artifact {
 
         this.setMenu([0, 0, 0, 1, 1, 1, 1, 0]);
 
+    }
+
+    get measure() {
+        return this.__measure;
+    }
+
+    set measure(measure) {
+        this.__measure = measure;
+    }
+
+    get confidence() {
+        return this.__confidence;
+    }
+
+    set confidence(confidence) {
+        this.__confidence = confidence;
     }
 
     decorate(context) {
@@ -209,7 +224,6 @@ class Transition extends Artifact {
         return {
             id: this.__id,
             type: this.__type,
-            subtype: this.__subtype,
             label: this.__label,
             measure: this.__measure,
             confidence: this.__confidence,

@@ -30,6 +30,14 @@ class Place extends Artifact {
         this.__tokens = tokens;
     }
 
+    get icon() {
+        return this.__icon;
+    }
+
+    set icon(icon) {
+        this.__icon = icon;
+    }
+
     drawTokenCount(context, tokens) {
         let count = `${this.__tokens}`;
         let offset = this.getTextWidth(count, "12px Arial");
@@ -187,7 +195,7 @@ class Place extends Artifact {
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__fillSelectable = true;
+            this.__iconSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {

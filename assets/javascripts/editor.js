@@ -919,19 +919,17 @@ class Editor extends Engine {
     }
 
     mouseup(event) {
-        
+
         if (this.__point) {
             this.__point = false;
             return;
         }
 
-        console.log("mouseup" + " : " + (this.__moveArtifacts));
-
         this.environment.joinEnabled(false);
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
         if (this.__moveArtifacts) {
-      
+
             this.__moveArtifacts = false;
 
             this.position();
@@ -952,8 +950,6 @@ class Editor extends Engine {
             this.__selection = null;
 
             var target = this.getArtifact(mousePos.x, mousePos.y);
-
-            console.log()
 
             if (target != null) {
                 target.selected = true;
@@ -992,8 +988,6 @@ class Editor extends Engine {
         var mousePos = this.getMousePos($('#canvas')[0], event);
 
         if (this.__moveArtifacts) {
-
-            console.log(this.__moveArtifacts);
 
             if (!this.__origin) {
 
@@ -1049,7 +1043,7 @@ class Editor extends Engine {
                 }
 
             } else {
-               this.__origin = null;
+                this.__origin = null;
             }
 
             this.__moveArtifacts = true;
@@ -1085,9 +1079,8 @@ class Editor extends Engine {
         }
 
         var artifact = this.getActionable(mousePos);
-       
+
         if (artifact) {
-            console.log("Displaying Actionable Menu");
             artifact.showMenu = true;
             artifact.selected = true;
             this.draw();
@@ -1171,18 +1164,13 @@ class Editor extends Engine {
 
     getActionable(mousePos) {
 
-        console.log("isActionable");
-
         for (let iArtifact in this.artifacts) {
             if (this.artifacts[iArtifact].isActionable(mousePos)) {
-                console.log("isActionable: found");
                 return this.artifacts[iArtifact];
             }
-          
+
         }
-        
-        console.log("isActionable: null");
-  
+
         return null;
 
     }
@@ -1244,7 +1232,7 @@ class Editor extends Engine {
 
         this.__shiftDown = (event.shiftKey && event.key == "Shift");
         this.__drawConnector = (event.ctrlKey && event.key == "Control" || event.altKey && event.key == "Alt");
-        this.__environment.connector =  event.key == "Control" ? 0 : event.key == "Alt" ? 1 : -1;
+        this.__environment.connector = event.key == "Control" ? 0 : event.key == "Alt" ? 1 : -1;
 
         if (event.key == "Delete") {
 

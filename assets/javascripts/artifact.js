@@ -238,6 +238,7 @@ class Artifact extends Component {
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.__fillSelectable = true;
+            this.__iconSelectable = true;
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {

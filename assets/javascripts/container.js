@@ -209,6 +209,7 @@ class Container extends Artifact {
         this.__incrementSelectable = false;
         this.__decrementSelectable = false;
         this.__fillSelectable = false;
+        this.__iconSelectable = false;
 
         if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
             mousePos.y >= top && mousePos.y <= top + 16) {
@@ -219,6 +220,7 @@ class Container extends Artifact {
         } else if (mousePos.x >= left + 8 && mousePos.x <= left + 8 + 16 &&
             mousePos.y >= top + 30 && mousePos.y <= top + 30 + 16) {
             this.__fillSelectable = true;
+            this.__iconSelectable = true;
         } else if (mousePos.x >= left && mousePos.x <= left + width + 48 &&
             mousePos.y >= top && mousePos.y <= top + height + 48) {
 

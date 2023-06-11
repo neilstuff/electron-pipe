@@ -2,7 +2,7 @@
 
 class Event extends Transition {
     constructor(environment, images, id) {
-        super(0, environment, images, id);
+        super(EVENT, environment, images, id);
 
     }
 
@@ -21,7 +21,7 @@ class Event extends Transition {
         context.stroke();
 
         this.drawMeasure(context);
-        
+
         if (this.environment.decorate) {
             this.decorate(context);
         }
