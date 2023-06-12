@@ -99,8 +99,6 @@ class Player extends Engine {
 
         }
 
-        console.log(filteredPlaces.length)
-
         var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
 
             function checkSources(placeStateMap, transition) {
