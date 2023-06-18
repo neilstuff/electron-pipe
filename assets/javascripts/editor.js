@@ -967,7 +967,7 @@ class Editor extends Engine {
 
             var target = this.getArtifact(mousePos.x, mousePos.y);
 
-            if (target != null && target != this.__source && target.type != this.__source.type && target.joinable) {
+            if (target != null && target != this.__source && target.category != this.__source.category && target.joinable) {
                 var sourceArc = target.addSource(this.environment.connector, this.__source);
                 this.__source.addTarget(this.environment.connector, target, sourceArc);
 

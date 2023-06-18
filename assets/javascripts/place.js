@@ -11,10 +11,17 @@ class Place extends Artifact {
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__icon = null;
 
+        this.__category = PLACE;
 
         this.setStatus();
 
         this.setMenu([1, 1, 0, 1, 0, 0, 0, 1]);
+
+    }
+
+    get category() {
+
+        return this.__category;
 
     }
 

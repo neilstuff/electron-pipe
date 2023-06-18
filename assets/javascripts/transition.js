@@ -7,6 +7,8 @@ class Transition extends Artifact {
         this.__editSelectable = false;
         this.__editing = false;
 
+        this.__category = TRANSITION;
+
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__measure = 0;
         this.__confidence = 100;

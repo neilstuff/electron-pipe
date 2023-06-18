@@ -16,7 +16,7 @@ class Director extends Arc {
         if (this.selected) {
             context.strokeStyle = "rgba(0, 0, 255, 0.4)";
             context.fillStyle = "rgba(0, 0, 255, 0.4)";
-        } else if (this.sselectable) {
+        } else if (this.selectable) {
             context.strokeStyle = "rgba(0, 0, 255, 0.4)";
             context.fillStyle = "rgba(0, 0, 255, 0.4)";
             context.setLineDash([1, 0]);

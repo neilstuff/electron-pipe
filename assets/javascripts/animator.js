@@ -1,11 +1,11 @@
 class Animator {
     constructor(window, canvas) {
         this.window = window;
-        this.canvas= canvas;
+        this.canvas = canvas;
 
     }
 
-    animate(paths) {
+    animate(artiacts) {
         var completed = false;
 
         function animate(timeStamp) {
