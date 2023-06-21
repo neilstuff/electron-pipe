@@ -1,8 +1,18 @@
 class Animator {
-    constructor(window, canvas) {
+    constructor(window, context) {
         this.window = window;
-        this.canvas = canvas;
+        this.context = context;
 
+
+
+    }
+
+    drawBall() {
+        this.context.beginPath();
+        this.context.arc(x, y, 10, 0, Math.PI*2);
+        this.context.fillStyle = "#0095DD";
+        this.context.fill();
+        this.context.closePath();
     }
 
     animate(artiacts) {
