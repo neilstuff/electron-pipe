@@ -213,6 +213,8 @@ class Player extends Engine {
             this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
         }
 
+        this.__animator.processStates(states);
+
         this.draw();
 
     }

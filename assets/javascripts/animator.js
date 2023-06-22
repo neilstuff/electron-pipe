@@ -65,6 +65,13 @@ class Animator {
 
     processStates(states) {
 
+        for (var state in states) {
+            var transition = states[state].transition;
+
+            console.log(transition);
+
+        }
+
     };
 
     animate() {
