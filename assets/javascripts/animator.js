@@ -3,16 +3,16 @@ class Animator {
         this.window = window;
         this.context = context;
 
-
+        this.paths = [];
 
     }
 
-    slope(a, b) {
-        if (a[0] == b[0]) {
+    slope(source, target) {
+        if (source == target) {
             return null;
         }
 
-        return (b[1] - a[1]) / (b[0] - a[0]);
+        return (target - source) / (target - source);
     }
 
     intercept(point, slope) {
@@ -25,16 +25,18 @@ class Animator {
     }
 
     getCordinates(source, target) {
-        var m = slope(A, B);
-        var b = intercept(A, m);
+        var m = slope(source, target);
+        var b = intercept(source, m);
 
         var coordinates = [];
-        for (var x = A[0]; x <= B[0]; x++) {
+        for (var x = source; x <= target; x++) {
             var y = m * x + b;
             coordinates.push([x, y]);
         }
 
         console.log(coordinates);
+
+        return coordinates;
 
     }
     
@@ -46,7 +48,17 @@ class Animator {
         this.context.closePath();
     }
 
-    animate(artiacts) {
+    addPath(arc) {
+        var source = arc.getSource();
+        var segments = arc.getSegments();
+
+        for(var segment in segments) {
+
+        }
+
+    }
+
+    animate() {
         var completed = false;
 
         function animate(timeStamp) {
