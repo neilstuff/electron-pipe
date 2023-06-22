@@ -1,7 +1,7 @@
 class Animator {
-    constructor(window, context) {
-        this.window = window;
-        this.context = context;
+    constructor(window, canvas) {
+        this.__window = window;
+        this.__context = canvas.context;
 
         this.paths = [];
 
@@ -62,6 +62,10 @@ class Animator {
         getCordinates(from, to);
 
     }
+
+    processStates(states) {
+
+    };
 
     animate() {
         var completed = false;

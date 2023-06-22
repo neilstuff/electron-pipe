@@ -1,6 +1,8 @@
 class Player extends Engine {
     constructor(frame, canvas, images, environment) {
         super(frame, canvas, images, environment);
+
+        this.__animator = new Animator(window, canvas);
     }
 
 
