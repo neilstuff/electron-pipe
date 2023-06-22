@@ -30,13 +30,28 @@ class Player extends Engine {
 
     }
 
+    /**\
+     * Process the transition
+     * 
+     * @param(*) transition the process transition
+     * 
+     * @return the new state
+     * 
+     */
     processTransition(transition) {
+        var state = {
+            "transition": transition,
+            "inputs": [],
+            "outputs": []
+        }
 
         for (var targetArc in transition.sourceArcs) {
             var sourceId = transition.sourceArcs[targetArc].sourceId;
 
             this.environment.placeStateMap[sourceId].tokens = this.environment.placeStateMap[sourceId].tokens -
                 transition.sourceArcs[targetArc].tokens;
+
+            state.inputs.push(this.environment.placeStateMap[sourceId]);
 
         }
 
@@ -46,7 +61,11 @@ class Player extends Engine {
             this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
                 transition.targetArcs[sourceArc].tokens;
 
+            state.outputs.push(this.environment.placeStateMap[this.environment.placeStateMap[targetId]]);
+
         }
+
+        return state;
 
     }
 
@@ -144,6 +163,7 @@ class Player extends Engine {
     }
 
     click(event) {
+        var states = [];
 
         var filteredArtifacts = this.environment.artifacts.filter(function(value, index, arr) {
             return value.within(this);
@@ -151,9 +171,11 @@ class Player extends Engine {
 
         if (filteredArtifacts.length > 0) {
             if (filteredArtifacts[0].id in this.environment.activeTransitionMap) {
-                this.processTransition(filteredArtifacts[0]);
+                states.push(this.processTransition(filteredArtifacts[0]));
             }
         }
+
+        console.log("States: " + states.length);
 
         var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
 
@@ -162,6 +184,8 @@ class Player extends Engine {
                 for (var targetArc in transition.sourceArcs) {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
+
+                    console.log("Required Tokens: " + requiredTokens);
 
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;

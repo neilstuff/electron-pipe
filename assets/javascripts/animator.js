@@ -39,7 +39,7 @@ class Animator {
         return coordinates;
 
     }
-    
+
     drawBall() {
         this.context.beginPath();
         this.context.arc(x, y, 10, 0, Math.PI * 2);
@@ -52,9 +52,14 @@ class Animator {
         var source = arc.getSource();
         var segments = arc.getSegments();
 
-        for(var segment in segments) {
+        var from = [source.x, source.y];
+        var to = null;
 
+        for (var segment in segments) {
+            var to = [segment.x, segment.y];
         }
+
+        getCordinates(from, to);
 
     }
 
