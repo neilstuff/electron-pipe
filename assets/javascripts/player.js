@@ -32,7 +32,7 @@ class Player extends Engine {
 
     }
 
-    /**\
+    /**
      * Process the transition
      * 
      * @param(*) transition the process transition
@@ -53,7 +53,7 @@ class Player extends Engine {
             this.environment.placeStateMap[sourceId].tokens = this.environment.placeStateMap[sourceId].tokens -
                 transition.sourceArcs[targetArc].tokens;
 
-            state.inputs.push(this.environment.placeStateMap[sourceId]);
+            state.inputs.push(this.environment.artifactMap[sourceId]);
 
         }
 
@@ -63,7 +63,7 @@ class Player extends Engine {
             this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
                 transition.targetArcs[sourceArc].tokens;
 
-            state.outputs.push(this.environment.placeStateMap[this.environment.placeStateMap[targetId]]);
+            state.outputs.push(this.environment.artifactMap[targetId]);
 
         }
 

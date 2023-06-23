@@ -68,7 +68,14 @@ class Animator {
         for (var state in states) {
             var transition = states[state].transition;
 
-            console.log(transition);
+           console.log("Transition: " + transition.label );
+
+           for (var input in states[state].inputs) {
+                var place =  states[state].inputs[input];
+
+                console.log("Place: " + place);
+
+           }
 
         }
 
