@@ -1,96 +1,169 @@
 class Animator {
-    constructor(window, canvas) {
-        this.__window = window;
-        this.__context = canvas.context;
+    constructor(canvas) {
 
-        this.paths = [];
-
-    }
-
-    slope(source, target) {
-        if (source == target) {
-            return null;
-        }
-
-        return (target - source) / (target - source);
-    }
-
-    intercept(point, slope) {
-        if (slope === null) {
-            // vertical line
-            return point[0];
-        }
-
-        return point[1] - slope * point[0];
+        this.__context = canvas.getContext('2d');
     }
 
     getCordinates(source, target) {
-        var m = slope(source, target);
-        var b = intercept(source, m);
+        const dx = target[0] - source[0];
+        const dy = target[1] - source[1];
 
+        console.log("DX - DY", dx, dy);
         var coordinates = [];
-        for (var x = source; x <= target; x++) {
-            var y = m * x + b;
-            coordinates.push([x, y]);
-        }
+        var x = source[0];
+        var y = source[1];
 
-        console.log(coordinates);
+        for (var i = 16; x < target[0] || y < target[1]; i += 8) {
+
+            coordinates.push([x, y]);
+
+            x = (x < target[0]) ? source[0] + i : source[0];
+            y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
+
+        }
 
         return coordinates;
 
     }
 
-    drawBall() {
-        this.context.beginPath();
-        this.context.arc(x, y, 10, 0, Math.PI * 2);
-        this.context.fillStyle = "#0095DD";
-        this.context.fill();
-        this.context.closePath();
+    drawBalls(context, points) {
+
+        for (var point in points) {
+            context.beginPath();
+            context.arc(points[point][0], points[point][1], 4, 0, Math.PI * 2);
+            context.fillStyle = "#000000";
+            context.fill();
+            context.closePath();
+
+        }
+
     }
 
     addPath(arc) {
-        var source = arc.getSource();
-        var segments = arc.getSegments();
+        var segments = arc.segments;
 
-        var from = [source.x, source.y];
+        var from = [arc.source.x, arc.source.y];
         var to = null;
 
         for (var segment in segments) {
-            var to = [segment.x, segment.y];
+            to = [segment.x, segment.y];
+            this.getCordinates(from, to);
+            from = to;
+
         }
 
-        getCordinates(from, to);
+        to = [arc.target.x, arc.target.y]
+
+        return this.getCordinates(from, to);
 
     }
 
-    processStates(states) {
+    processStates(states, draw) {
+        var animations = {}
 
         for (var state in states) {
             var transition = states[state].transition;
 
-           console.log("Transition: " + transition.label );
+            var sourcePaths = [];
+            var targetPaths = [];
 
-           for (var input in states[state].inputs) {
-                var place =  states[state].inputs[input];
+            for (var sourceArc in states[state].sourceArcs) {
+                var arc = states[state].sourceArcs[sourceArc];
 
-                console.log("Place: " + place);
+                console.log("Source Arc: " + arc.id);
 
-           }
+                sourcePaths.push(this.addPath(arc));
 
-        }
+            }
 
-    };
+            for (var targetArc in states[state].targetArcs) {
+                var arc = states[state].targetArcs[targetArc];
 
-    animate() {
-        var completed = false;
+                console.log("Target Arc: " + arc.id);
 
-        function animate(timeStamp) {
+                targetPaths.push(this.addPath(arc));
 
-            if (!completed) {
-                this.window.requestAnimationFrame(animate);
+            }
+
+            animations[transition.id] = {
+                "sourcePaths": sourcePaths,
+                "targetPaths": targetPaths
             }
 
         }
+
+        this.activate(animations, draw);
+
+    };
+
+    activate(animations, draw) {
+        var self = this;
+        var transitions = Object.keys(animations);
+
+        console.log(JSON.stringify(animations));
+        console.log(JSON.stringify(transitions));
+
+        function animate(timeStamp) {
+            var points = [];
+
+            function advance(paths) {
+                var positions = []
+
+                for (var path in paths) {
+
+                    console.log("Path: " + JSON.stringify(paths[path]));
+
+                    if (paths[path].length > 0) {
+                        positions.push(paths[path].shift());
+                    }
+                }
+
+                console.log("Position: " + JSON.stringify(positions));
+
+                return positions;
+
+            }
+
+            for (var transition in transitions) {
+                console.log("Transition (source): " + transition);
+
+                points.push.apply(points, advance(animations[transitions[transition]].sourcePaths));
+
+            }
+
+            console.log("Input: " + points);
+
+            if (points.length > 0) {
+
+                draw(false);
+
+                self.drawBalls(self.__context, points);
+
+                window.requestAnimationFrame(animate);
+
+            } else {
+                for (var transition in transitions) {
+                    console.log("Transition (targets): " + transition);
+
+                    points.push.apply(points, advance(animations[transitions[transition]].targetPaths));
+
+                }
+
+                if (points.length > 0) {
+                    draw(false);
+                    self.drawBalls(self.__context, points);
+                    window.requestAnimationFrame(animate);
+
+                } else {
+
+                    draw(true);
+
+                }
+            }
+
+        }
+
+        window.requestAnimationFrame(animate);
 
     }
 

@@ -292,7 +292,7 @@ $(async() => {
             "background-color": "rgba(0,0,0,0.1)"
         });
 
-    
+
     }
     $("#process_mode")[0].ondragstart = function(event) {
 

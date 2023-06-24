@@ -2,9 +2,9 @@ class Player extends Engine {
     constructor(frame, canvas, images, environment) {
         super(frame, canvas, images, environment);
 
-        this.__animator = new Animator(window, canvas);
-    }
+        this.__animator = new Animator(canvas);
 
+    }
 
     leave(id) {}
 
@@ -44,7 +44,9 @@ class Player extends Engine {
         var state = {
             "transition": transition,
             "inputs": [],
-            "outputs": []
+            "sourceArcs": [],
+            "outputs": [],
+            "targetArcs": []
         }
 
         for (var targetArc in transition.sourceArcs) {
@@ -54,6 +56,7 @@ class Player extends Engine {
                 transition.sourceArcs[targetArc].tokens;
 
             state.inputs.push(this.environment.artifactMap[sourceId]);
+            state.sourceArcs.push(transition.sourceArcs[targetArc]);
 
         }
 
@@ -64,6 +67,7 @@ class Player extends Engine {
                 transition.targetArcs[sourceArc].tokens;
 
             state.outputs.push(this.environment.artifactMap[targetId]);
+            state.targetArcs.push(transition.targetArcs[sourceArc]);
 
         }
 
@@ -76,7 +80,7 @@ class Player extends Engine {
      * 
      */
     draw() {
-        var context = this.__canvas.getContext('2d');
+        var context = this.canvas.getContext('2d');
 
         this.clearGrid(this.__canvas, context);
 
@@ -88,6 +92,33 @@ class Player extends Engine {
             if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
                 var context = this.canvas.getContext('2d');
                 this.artifacts[iArtifact].activate(context);
+            }
+
+        }
+
+    }
+
+    /**
+     * Update the Objects
+     * 
+     */
+    redraw(activate = false) {
+        var context = this.canvas.getContext('2d');
+
+        this.clearGrid(this.__canvas, context);
+
+        for (var iArtifact in this.artifacts) {
+
+            this.artifacts[iArtifact].draw(context);
+            this.artifacts[iArtifact].drawSourceArcs(context);
+
+            if (activate) {
+
+                if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
+                    var context = this.canvas.getContext('2d');
+                    this.artifacts[iArtifact].activate(context);
+                }
+
             }
 
         }
@@ -154,6 +185,8 @@ class Player extends Engine {
 
     mouseup(event) {}
 
+    keyup(event) {}
+
     keydown(event) {}
 
     mousedown(event) {}
@@ -187,8 +220,6 @@ class Player extends Engine {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
-                    console.log("Required Tokens: " + requiredTokens);
-
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
                     }
@@ -213,9 +244,7 @@ class Player extends Engine {
             this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
         }
 
-        this.__animator.processStates(states);
-
-        this.draw();
+        this.__animator.processStates(states, redraw);
 
     }
 
