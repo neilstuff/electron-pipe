@@ -58,8 +58,11 @@ class Place extends Artifact {
     drawFill(context) {
 
         if (this.id in this.environment.placeStateMap) {
-            this.drawTokens(context, this.environment.placeStateMap[this.id].tokens,
-                this.environment.placeStateMap[this.id].color);
+            if (this.environment.placeStateMap[this.id].display) {
+                this.drawTokens(context, this.environment.placeStateMap[this.id].tokens,
+                    this.environment.placeStateMap[this.id].color);
+            }
+
         }
 
     }

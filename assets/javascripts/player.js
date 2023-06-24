@@ -66,6 +66,8 @@ class Player extends Engine {
             this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
                 transition.targetArcs[sourceArc].tokens;
 
+            this.environment.placeStateMap[targetId].display = false;
+
             state.outputs.push(this.environment.artifactMap[targetId]);
             state.targetArcs.push(transition.targetArcs[sourceArc]);
 
@@ -107,12 +109,21 @@ class Player extends Engine {
 
         this.clearGrid(this.__canvas, context);
 
+        console.log("Redraw");
+
         for (var iArtifact in this.artifacts) {
 
-            this.artifacts[iArtifact].draw(context);
-            this.artifacts[iArtifact].drawSourceArcs(context);
-
             if (activate) {
+
+                var filteredPlaces = this.artifacts.filter(function(value, index, arr) {
+                    return value.type == PLACE;
+                });
+
+                for (var artifact in filteredPlaces) {
+                    console.log("Set");
+
+                    this.environment.placeStateMap[filteredPlaces[artifact].id].display = true;
+                }
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
                     var context = this.canvas.getContext('2d');
@@ -120,6 +131,9 @@ class Player extends Engine {
                 }
 
             }
+
+            this.artifacts[iArtifact].draw(context);
+            this.artifacts[iArtifact].drawSourceArcs(context);
 
         }
 
@@ -146,7 +160,8 @@ class Player extends Engine {
         for (var artifact in filteredPlaces) {
             this.environment.placeStateMap[filteredPlaces[artifact].id] = {
                 tokens: filteredPlaces[artifact].tokens,
-                color: "rgba(0,0,0,0.6)"
+                color: "rgba(0,0,0,0.6)",
+                display: true
             }
 
         }
