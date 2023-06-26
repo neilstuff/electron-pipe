@@ -6,8 +6,11 @@ class Arc extends Component {
 
         this.__type = type;
 
-        this.__source = new Segment(source);
-        this.__target = new Segment(target);
+        this.__sourceSegment = new Segment(source);
+        this.__targetSegment = new Segment(target);
+
+        this.__source = source;
+        this.__target = target;
 
         this.__source_type = source.type;
         this.__target_type = target.type;
@@ -95,12 +98,28 @@ class Arc extends Component {
         return this.__target;
     }
 
+    get sourceSegment() {
+        return this.__sourceSegment;
+    }
+
+    get targetSegment() {
+        return this.__targetSegment;
+    }
+
     set source(source) {
         this.__source = source;
     }
 
     set target(target) {
         this.__target = target;
+    }
+
+    set sourceSegment(sourceSegment) {
+        this.__sourceSegment = sourceSegment;
+    }
+
+    set targetSegment(targetSegment) {
+        this.__targetSegment = targetSegment;
     }
 
     set showMenu(showMenu) {
@@ -180,22 +199,22 @@ class Arc extends Component {
 
     intersects(point, tolerate) {
 
-        let source = this.__source;
+        let sourceSegment = this.__sourceSegment;
 
         for (let segment in this.__segments) {
-            let target = this.__segments[segment];
+            let targetSegment = this.__segments[segment];
 
-            if (this.intersect(source, target, point, tolerate)) {
+            if (this.intersect(sourceSegment, targetSegment, point, tolerate)) {
                 return true;
             }
 
-            source = target;
+            sourceSegment = targetSegment;
 
         }
 
-        let target = this.__target;
+        let targetSegment = this.__targetSegment;
 
-        return (this.intersect(source, target, point, tolerate));
+        return (this.intersect(sourceSegment, targetSegment, point, tolerate));
 
     }
 
@@ -298,11 +317,11 @@ class Arc extends Component {
 
         }
 
-        let source = this.__source;
+        let sourceSegment = this.__sourceSegment;
         var segments = [];
 
         for (let segment in this.__segments) {
-            let target = this.__segments[segment];
+            let targetSegment = this.__segments[segment];
 
             if (!segmentAdded && this.intersect(source, target, point, 2)) {
                 let coordinate = this.adjustSegment(nearest(point, source, point));
@@ -311,21 +330,21 @@ class Arc extends Component {
                 segment.selected = true;
 
                 segments.push(segment);
-                segments.push(target)
+                segments.push(targetSegment)
                 segmentAdded = true;
 
             } else {
-                segments.push(target)
+                segments.push(targetSegment)
             }
 
-            source = target;
+            sourceSegment = targetSegment;
 
         }
 
-        let target = this.__target;
+        let targetSegment = this.__targetSegment;
 
-        if (!segmentAdded && this.intersect(source, target, point, 2)) {
-            let coordinate = this.adjustSegment(nearest(point, source, point));
+        if (!segmentAdded && this.intersect(sourceSegment, targetSegment, point, 2)) {
+            let coordinate = this.adjustSegment(nearest(point, sourceSegment, point));
             let segment = new Segment(coordinate)
 
             segment.selected = true;
@@ -381,13 +400,13 @@ class Arc extends Component {
         var adjust = (this.__source_type != PLACE);
 
         var source = {
-            x: this.__source.x,
-            y: this.__source.y
+            x: this.__sourceSegment.x,
+            y: this.__sourceSegment.y
         }
 
         var target = {
-            x: this.__target.x,
-            y: this.__target.y
+            x: this.__targetSegment.x,
+            y: this.__targetSegment.y
         }
 
         var point = target;
@@ -399,8 +418,8 @@ class Arc extends Component {
         var aDir = Math.atan2(this.__source.x - point.x, this.__source.y - point.y);
 
         if (this.__source.type >= 1) {
-            source.x = this.__source.x - ((this.__source.x - (this.__source.x - this.xCor(18, aDir))) * 0.2);
-            source.y = this.__source.y - ((this.__source.y - (this.__source.y - this.yCor(18, aDir))) * 0.2);
+            source.x = this.__sourceSegment.x - ((this.__sourceSegment.x - (this.__sourceSegment.x - this.xCor(18, aDir))) * 0.2);
+            source.y = this.__sourceSegment.y - ((this.__sourceSegment.y - (this.__sourceSegment.y - this.yCor(18, aDir))) * 0.2);
         }
 
         var sourceX = source.x - this.xCor(16, aDir);
@@ -668,8 +687,16 @@ class Arc extends Component {
 
     }
 
-    deleteSegments() {
+    deleteReferences() {
 
+        console.log("deleteReferences");
+
+        this.__source.removeArc(this);
+        this.__target.removeArc(this);
+
+    }
+
+    deleteSegments() {
         var filtered = this.__segments.filter(function(value, index, arr) {
 
             return value.selected == false;

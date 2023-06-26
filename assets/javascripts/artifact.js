@@ -547,33 +547,46 @@ class Artifact extends Component {
     }
 
     deleteArcs() {
-        var filteredSource = this.__arcsSource.filter(function(value, index, arr) {
 
-            return value.source.selected == false && value.target.selected == false;
-
-        });
-
-        this.__arcsSource = filteredSource;
-
-        var filteredTarget = this.__arcsTarget.filter(function(value, index, arr) {
-
-            return value.source.selected == false && value.target.selected == false;
-
-        });
-
-        this.__arcsTarget = filteredTarget;
+        console.log("this.__arcsTarget.length: " + this.__arcsTarget.length);
 
         this.__arcsSource.forEach(function(value, index, arr) {
+            console.log("this.__arcsSource.forEach");
 
-            value.deleteSegments();
+            value.deleteReferences();
 
         });
 
         this.__arcsTarget.forEach(function(value, index, arr) {
+            console.log("this.__arcsTarget.forEach");
 
-            value.deleteSegments();
+            value.deleteReferences();
 
         });
+
+    }
+
+    removeArc(arc) {
+
+        var filteredTarget = this.__arcsTarget.filter(function(value, index, arr) {
+
+            console.log("Target: " + (value.id == this.id));
+
+            return value.id != this.id;
+
+        }, arc);
+
+        this.__arcsTarget = filteredTarget;
+
+        var filteredSource = this.__arcsSource.filter(function(value, index, arr) {
+
+            console.log("Source: " + (value.id == this.id));
+
+            return value.id != this.id;
+
+        }, arc);
+
+        this.__arcsSource = filteredSource;
 
     }
 

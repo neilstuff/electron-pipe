@@ -629,7 +629,7 @@ class Editor extends Engine {
     }
 
     /**
-     * Delete Selection
+     * Delete Selection 
      */
     deleteSelection() {
 
