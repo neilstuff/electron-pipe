@@ -550,19 +550,29 @@ class Artifact extends Component {
 
         console.log("this.__arcsTarget.length: " + this.__arcsTarget.length);
 
+        var nodes = [];
+
         this.__arcsSource.forEach(function(value, index, arr) {
             console.log("this.__arcsSource.forEach");
 
             value.deleteReferences();
 
-        });
+            nodes.push(value.nodeMap);
+
+        }, nodes);
 
         this.__arcsTarget.forEach(function(value, index, arr) {
             console.log("this.__arcsTarget.forEach");
 
             value.deleteReferences();
 
-        });
+            nodes.push(value.nodeMap);
+
+        }, nodes);
+
+       
+
+        return nodes;
 
     }
 

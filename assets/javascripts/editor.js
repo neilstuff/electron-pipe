@@ -636,8 +636,16 @@ class Editor extends Engine {
         for (var artifact in this.artifacts) {
 
             if (this.artifacts[artifact].selected) {
+                var arcNodes = this.artifacts[artifact].deleteArcs();
 
-                this.artifacts[artifact].deleteArcs();
+                console.log("Node Map List Length: " + arcNodes.length);
+
+                for (var arcNode in arcNodes) {
+
+                    console.log(JSON.stringify(arcNodes[arcNode]));
+
+                }
+
                 this.__treeMap[this.artifacts[artifact].id].removeNode();
 
             }
