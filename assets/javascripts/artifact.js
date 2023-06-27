@@ -435,9 +435,9 @@ class Artifact extends Component {
         var icon = source.type == PLACE ? 'small-circle-square.png' : 'small-square-circle.png';
 
         var node = this.node.createChildNode(source.label, false, `assets/images/${icon}`, null, "context3");
-        
+
         arc.updateNodeMap(node);
-     
+
         this.environment.arcMap[arc.id].source = node;
         this.environment.arcNodeMap[node.id] = arc;
 
@@ -553,20 +553,22 @@ class Artifact extends Component {
 
             value.deleteReferences();
 
-            nodes.push(value.nodeMap);
+            this.nodes = this.nodes.concat(value.nodes);
 
-        }, nodes);
+        }, {
+            nodes: nodes
+        });
 
         this.__arcsTarget.forEach(function(value, index, arr) {
             console.log("this.__arcsTarget.forEach");
 
             value.deleteReferences();
 
-            nodes.push(value.nodeMap);
+            this.nodes = this.nodes.concat(value.nodes);
 
-        }, nodes);
-
-       
+        }, {
+            nodes: nodes
+        });
 
         return nodes;
 

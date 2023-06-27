@@ -49,7 +49,7 @@ class Arc extends Component {
             y: 0
         }
 
-        this.__nodeMap = {};
+        this.__nodes = [];
 
         this.intersect = function(source, target, point, tolerate) {
 
@@ -165,11 +165,11 @@ class Arc extends Component {
         return this.__tokens;
     }
 
-    get nodeMap() {
-        return this.__nodeMap;
+    get nodes() {
+        return this.__nodes;
     }
 
-    set nodeMap(nodeMap) {
+    set nodes(node) {
         this.__nodeMap = nodeMap;
     }
 
@@ -382,14 +382,12 @@ class Arc extends Component {
 
     updateNodeMap(node) {
 
-        if (!(this.id in this.environment.arcMap)) {
-            
-            this.nodeMap = {
-                "node" : node
-            }
+        this.nodes.push(node);
 
-            this.environment.arcMap[this.id] = this.nodeMap;
-            
+        if (!(this.id in this.environment.arcMap)) {
+
+            this.environment.arcMap[this.id] = this.nodes;
+
         }
 
     }
