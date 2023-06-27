@@ -640,12 +640,6 @@ class Editor extends Engine {
 
                 console.log("Node Map List Length: " + arcNodes.length);
 
-                for (var arcNode in arcNodes) {
-
-                    console.log(JSON.stringify(arcNodes[arcNode]));
-
-                }
-
                 this.__treeMap[this.artifacts[artifact].id].removeNode();
 
             }

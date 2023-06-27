@@ -169,6 +169,10 @@ class Arc extends Component {
         return this.__nodeMap;
     }
 
+    set nodeMap(nodeMap) {
+        this.__nodeMap = nodeMap;
+    }
+
     reset(mousePos = null) {
 
         this.selected = mousePos ? this.actionable(mousePos) : false;
@@ -372,6 +376,20 @@ class Arc extends Component {
 
             }
 
+        }
+
+    }
+
+    updateNodeMap(node) {
+
+        if (!(this.id in this.environment.arcMap)) {
+            
+            this.nodeMap = {
+                "node" : node
+            }
+
+            this.environment.arcMap[this.id] = this.nodeMap;
+            
         }
 
     }
@@ -688,8 +706,6 @@ class Arc extends Component {
     }
 
     deleteReferences() {
-
-        console.log("deleteReferences");
 
         this.__source.removeArc(this);
         this.__target.removeArc(this);

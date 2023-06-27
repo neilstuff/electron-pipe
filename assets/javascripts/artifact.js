@@ -415,12 +415,11 @@ class Artifact extends Component {
     addTarget(type, target, arc) {
         this.__arcsTarget.push(arc);
 
-        var icon = target.type == PLACE ? 'small-circle-square.png' : 'small-square-circle.png';
+        var icon = target.type != PLACE ? 'small-circle-square.png' : 'small-square-circle.png';
         var node = this.node.createChildNode(target.label, false, `assets/images/${icon}`, null, "context4");
 
-        if (!(arc.id in this.environment.arcMap)) {
-            this.environment.arcMap[arc.id] = {}
-        }
+        arc.updateNodeMap(node);
+
         this.environment.arcMap[arc.id].target = node;
         this.environment.arcNodeMap[node.id] = arc;
 
@@ -436,13 +435,10 @@ class Artifact extends Component {
         var icon = source.type == PLACE ? 'small-circle-square.png' : 'small-square-circle.png';
 
         var node = this.node.createChildNode(source.label, false, `assets/images/${icon}`, null, "context3");
-
-        if (!(arc.id in this.environment.arcMap)) {
-            this.environment.arcMap[arc.id] = {}
-        }
-
+        
+        arc.updateNodeMap(node);
+     
         this.environment.arcMap[arc.id].source = node;
-
         this.environment.arcNodeMap[node.id] = arc;
 
         return arc;
