@@ -708,6 +708,8 @@ class Arc extends Component {
         this.__source.removeArc(this);
         this.__target.removeArc(this);
 
+        return this.nodes;
+
     }
 
     deleteSegments() {
