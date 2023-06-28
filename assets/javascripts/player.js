@@ -109,8 +109,6 @@ class Player extends Engine {
 
         this.clearGrid(this.__canvas, context);
 
-        console.log("Redraw");
-
         for (var iArtifact in this.artifacts) {
 
             if (activate) {
@@ -120,8 +118,6 @@ class Player extends Engine {
                 });
 
                 for (var artifact in filteredPlaces) {
-                    console.log("Set");
-
                     this.environment.placeStateMap[filteredPlaces[artifact].id].display = true;
                 }
 

@@ -8,17 +8,24 @@ class Animator {
         const dx = target[0] - source[0];
         const dy = target[1] - source[1];
 
-        console.log("DX - DY", dx, dy);
+        console.log("DX - DY", dx, dy, source[0], source[1], target[0], target[1]);
         var coordinates = [];
         var x = source[0];
         var y = source[1];
 
-        for (var i = 16; x < target[0] || y < target[1]; i += 8) {
+        for (var i = 16; x < target[0] || (y < target[1] && dy >= 0) || (y < source[1] && dy < 0); i += 8) {
 
             coordinates.push([x, y]);
 
             x = (x < target[0]) ? source[0] + i : source[0];
-            y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
+
+            if (dy >= 0) {
+                y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
+            } else {
+                console.log(y);
+                y = (y < source[1]) ? (dx == 0 ? i : Math.round(source[1] - (i * dy) / dx)) : target[1];
+
+            }
 
         }
 
@@ -49,7 +56,6 @@ class Animator {
             to = [segment.x, segment.y];
             this.getCordinates(from, to);
             from = to;
-
         }
 
         to = [arc.target.x, arc.target.y]
@@ -111,27 +117,20 @@ class Animator {
 
                 for (var path in paths) {
 
-                    console.log("Path: " + JSON.stringify(paths[path]));
-
                     if (paths[path].length > 0) {
                         positions.push(paths[path].shift());
                     }
                 }
-
-                console.log("Position: " + JSON.stringify(positions));
 
                 return positions;
 
             }
 
             for (var transition in transitions) {
-                console.log("Transition (source): " + transition);
 
                 points.push.apply(points, advance(animations[transitions[transition]].sourcePaths));
 
             }
-
-            console.log("Input: " + points);
 
             if (points.length > 0) {
 
@@ -143,7 +142,6 @@ class Animator {
 
             } else {
                 for (var transition in transitions) {
-                    console.log("Transition (targets): " + transition);
 
                     points.push.apply(points, advance(animations[transitions[transition]].targetPaths));
 

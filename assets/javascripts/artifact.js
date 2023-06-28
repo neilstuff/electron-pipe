@@ -566,8 +566,6 @@ class Artifact extends Component {
 
         var filteredTarget = this.__arcsTarget.filter(function(value, index, arr) {
 
-            console.log("Target: " + (value.id == this.id));
-
             return value.id != this.id;
 
         }, arc);
@@ -575,8 +573,6 @@ class Artifact extends Component {
         this.__arcsTarget = filteredTarget;
 
         var filteredSource = this.__arcsSource.filter(function(value, index, arr) {
-
-            console.log("Source: " + (value.id == this.id));
 
             return value.id != this.id;
 
