@@ -327,8 +327,8 @@ class Arc extends Component {
         for (let segment in this.__segments) {
             let targetSegment = this.__segments[segment];
 
-            if (!segmentAdded && this.intersect(source, target, point, 2)) {
-                let coordinate = this.adjustSegment(nearest(point, source, point));
+            if (!segmentAdded && this.intersect(sourceSegment, targetSegment, point, 2)) {
+                let coordinate = this.adjustSegment(nearest(point, sourceSegment, point));
                 let segment = new Segment(coordinate)
 
                 segment.selected = true;
