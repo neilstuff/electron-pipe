@@ -20,9 +20,10 @@ class Animator {
             x = (x < target[0]) ? source[0] + i : source[0];
 
             if (dy >= 0) {
+                console.log("Y1", y);
                 y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
             } else {
-                console.log(y);
+                console.log("Y2", y);
                 y = (y < source[1]) ? (dx == 0 ? i : Math.round(source[1] - (i * dy) / dx)) : source[1];
 
             }
