@@ -24,7 +24,7 @@ class Animator {
                 y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
             } else {
                 console.log("Y2", y, dy, dx, source[1]);
-                y = (y < source[0]) ? (dx == 0 ? i : Math.round(source[0] - (i * dy) / dx)) : source[1];
+                y = (y > target[1]) ? (dx == 0 ? i : Math.round(source[0] + (i * dy) / dx)) : source[1];
             }
 
         }
