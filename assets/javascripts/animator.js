@@ -10,7 +10,8 @@ class Animator {
 
         console.log("DX - DY", dx, dy, source[0], source[1], target[0], target[1]);
         var coordinates = [];
-        var x = (dx < 0 ) ? source[1] : source[0];
+
+        var x = (dx < 0) ? source[1] : source[0];
         var y = (dy < 0) ? source[0] : source[1];
 
         for (var i = 16; x < target[0] || (y < target[1] && dy >= 0); i += 8) {
@@ -24,7 +25,7 @@ class Animator {
                 y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
             } else {
                 console.log("Y2", y, dy, dx, source[1]);
-                y = (y > target[1]) ? (dx == 0 ? i : Math.round(source[0] + (i * dy) / dx)) : source[1];
+                y = (y > target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : source[1];
             }
 
         }
