@@ -54,7 +54,7 @@ class Animator {
         var to = null;
 
         for (var segment in segments) {
-            to = [segment.x, segment.y];
+            to = [segments[segment].x, segments[segment].y];
             this.getCordinates(from, to);
             from = to;
         }
