@@ -4,7 +4,7 @@ class Animator {
         this.__context = canvas.getContext('2d');
     }
 
-    getCordinates(source, target) {
+    getCoordinates(source, target) {
         const dx = target[0] - source[0];
         const dy = target[1] - source[1];
 
@@ -53,15 +53,17 @@ class Animator {
         var from = [arc.source.x, arc.source.y];
         var to = null;
 
+        var coordinates = [];
+
         for (var segment in segments) {
             to = [segments[segment].x, segments[segment].y];
-            this.getCordinates(from, to);
+            coordinates = coordinates.concat(this.getCoordinates(from, to));
             from = to;
         }
 
         to = [arc.target.x, arc.target.y]
 
-        return this.getCordinates(from, to);
+        return coordinates.concat(this.getCoordinates(from, to));
 
     }
 
