@@ -303,7 +303,7 @@ $(async() => {
             "background-color": "rgba(255,255,255,1.0)"
         });
 
-        $('#action').css({
+        $('#process').css({
             "border-color": "rgba(0,0,0,0.1)",
             "background-color": "rgba(0,0,0,0.1)"
         });
