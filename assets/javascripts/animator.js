@@ -14,7 +14,7 @@ class Animator {
         var x = (dx < 0) ? source[1] : source[0];
         var y = (dy < 0) ? source[0] : source[1];
 
-        for (var i = 16; x < target[0] || (y < target[1] && dy >= 0); i += 8) {
+        for (var i = 16; (x < target[0] || (y < target[1] && dy >= 0)) && y >= 0; i += 8) {
 
             coordinates.push([x, y]);
 
