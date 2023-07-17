@@ -36,7 +36,7 @@ class Animator {
         var x = (course.dx < 0) ? course.source.y : course.source.x;
         var y = (course.dy < 0) ? course.source.x : course.source.y;
 
-        for (var i = 16; x < course.target.x || (y < course.target.y && course.dy >= 0); i += 8) {
+        for (var i = 16; x < target[0] || (y < target[1] && dy >= 0); i += 8) {
 
             coordinates.push([x, y]);
 
