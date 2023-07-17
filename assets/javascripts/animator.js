@@ -5,27 +5,49 @@ class Animator {
     }
 
     getCoordinates(source, target) {
-        const dx = target[0] - source[0];
-        const dy = target[1] - source[1];
+        function calculateCourse(source, target) {
 
-        console.log("DX - DY", dx, dy, source[0], source[1], target[0], target[1]);
+            var dx = target[0] - source[0];
+            var dy = target[1] - source[1];
+
+            return {
+
+                dx :dx,
+                dy: dy,
+                source : {
+                    x : source[0],
+                    y : source[1]
+                },
+                target : {
+                    x : target[0],
+                    y : target[1],
+                    
+                }
+
+            }
+
+        }
+
+        var course = calculateCourse(source, target);
+
+        console.log("DX - DY", course.dx, course.dy, course.source.x, course.source.y, course.target.x, course.target.y);
         var coordinates = [];
 
-        var x = (dx < 0) ? source[1] : source[0];
-        var y = (dy < 0) ? source[0] : source[1];
+        var x = (course.dx < 0) ? course.source.y : course.source.x;
+        var y = (course.dy < 0) ? course.source.x : course.source.y;
 
-        for (var i = 16; x < target[0] || (y < target[1] && dy >= 0); i += 8) {
+        for (var i = 16; x < course.target.x || (y < course.target.y && course.dy >= 0); i += 8) {
 
             coordinates.push([x, y]);
 
-            x = (x < target[0]) ? source[0] + i : source[0];
+            x = (x <  course.target.x) ? course.source.x + i : course.source.x;
 
-            if (dy >= 0) {
+            if (course.dy >= 0) {
                 console.log("Y1", y);
-                y = (y < target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : target[1];
+                y = (y < course.target.y) ? (course.dx == 0 ? i : Math.round(course.source.y + (i *  course.dy) /  course.dx)) : course.target.y;
             } else {
-                console.log("Y2", y, dy, dx, source[1]);
-                y = (y > target[1]) ? (dx == 0 ? i : Math.round(source[1] + (i * dy) / dx)) : source[1];
+                console.log("Y2", y, course.dy, course.dx, course.source.y);
+                y = (y > course.target.y) ? (course.dx == 0 ? i : Math.round(course.source.y + (i *  course.dy) /  course.dx)) : course.source.y;
             }
 
         }
