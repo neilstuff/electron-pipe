@@ -8,12 +8,14 @@ class Animator {
         function calculateCourse(source, target) {
 
             var dx = (source[0] > target[0]) ? source[0] - target[0] : target[0] - source[0];
-            var dy = target[1] - source[1];
+            var dy = (source[0] > target[0]) ? source[1] - target[1] : target[1] - source[1];
 
             var updater = (source[0] < target[0]) ? function(coordinates, coordinate) {
+                console.log("PUSH", coordinate);
                 coordinates.push(coordinate);
             } : 
             function(coordinates, coordinate) {
+                console.log("UNSHIFT", coordinate);
                 coordinates.unshift(coordinate);
             };
 
@@ -26,8 +28,7 @@ class Animator {
                 },
                 target : {
                     x : (source[0] > target[0]) ? source[0] : target[0],
-                    y :(source[0] > target[0]) ? source[1] : target[1],
-                    
+                    y : (source[0] > target[0]) ? source[1] : target[1] 
                 },
                 updater : updater
             }
@@ -39,8 +40,8 @@ class Animator {
         console.log("DX - DY", course.dx, course.dy, course.source.x, course.source.y, course.target.x, course.target.y);
         var coordinates = [];
 
-        var x = (course.dx < 0) ? course.source.y : course.source.x;
-        var y = (course.dy < 0) ? course.source.x : course.source.y;
+        var x = course.source.x;
+        var y = course.source.y;
 
         for (var i = 16; x < course.target.x || (y < course.target.y); i += 8) {
 
