@@ -431,15 +431,15 @@ class Arc extends Component {
             point = this.__segments[0];
         }
 
-        var aDir = Math.atan2(this.__source.x - point.x, this.__source.y - point.y);
+        var direction = Math.atan2(this.__source.x - point.x, this.__source.y - point.y);
 
-        if (this.__source.type >= 1) {
-            source.x = this.__sourceSegment.x - ((this.__sourceSegment.x - (this.__sourceSegment.x - this.xCor(18, aDir))) * 0.2);
-            source.y = this.__sourceSegment.y - ((this.__sourceSegment.y - (this.__sourceSegment.y - this.yCor(18, aDir))) * 0.2);
+        if (this.__source.type > PLACE) {
+            source.x = this.__sourceSegment.x - ((this.__sourceSegment.x - (this.__sourceSegment.x - this.xCor(18, direction))) * 0.2);
+            source.y = this.__sourceSegment.y - ((this.__sourceSegment.y - (this.__sourceSegment.y - this.yCor(18, direction))) * 0.2);
         }
 
-        var sourceX = source.x - this.xCor(16, aDir);
-        var sourceY = source.y - this.yCor(16, aDir);
+        var sourceX = source.x - this.xCor(16, direction);
+        var sourceY = source.y - this.yCor(16, direction);
 
         for (let segment in this.__segments) {
             let targetX = this.__segments[segment].point.x;
@@ -497,7 +497,9 @@ class Arc extends Component {
 
         }
 
-        aDir = Math.atan2(sourceX - this.__target.x, this.__target.y - sourceY);
+        direction = Math.atan2(sourceX - this.__target.x, this.__target.y - sourceY);
+
+        console.log("direction: " + direction);
 
         let xPos = 16;
         let yPos = 16;
@@ -506,7 +508,7 @@ class Arc extends Component {
         let deltaY = target.y - sourceY;
 
         let radians = parseFloat(Math.atan2(deltaY, deltaX).toFixed(2));
-
+ 
         if (radians >= 0.50 && radians <= 2.50) {
             yPos = -16;
         }
@@ -514,7 +516,7 @@ class Arc extends Component {
         if (radians >= -2.5 && radians <= -0.5) {
             yPos = -16;
         }
-
+ 
         let targetX = target.x;
         let targetY = target.y;
 
@@ -535,9 +537,11 @@ class Arc extends Component {
             }
 
         } else if (this.__target_type == PLACE) {
-            targetX = target.x + this.xCor(xPos, aDir);
-            targetY = target.y + this.yCor(yPos, aDir)
-        }
+     //       targetX = target.x + this.xCor(xPos, direction);
+      //      targetY = target.y + this.yCor(yPos, direction)
+            targetX = target.x;
+            targetY = target.y;
+    }
 
         if (adjust) {
             var point = this.lineOnRect({
@@ -627,15 +631,15 @@ class Arc extends Component {
     }
 
     drawDecorators(context, xCenter, yCenter, x, y) {
-        var aDir = Math.atan2(xCenter - x, yCenter - y);
-        var iY = aDir > 0 ? 14 : 28;
+        var direction = Math.atan2(xCenter - x, yCenter - y);
+        var iY = direction > 0 ? 14 : 28;
         var xMid = (xCenter + x) / 2;
         var yMid = (yCenter + y) / 2;
 
 
         context.globalAlpha = 1.0;
-        this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
-        this.drawLabel(context, xMid + 10, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32));
+        this.drawTokenConsumption(context, xMid + 10, yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32));
+        this.drawLabel(context, xMid + 10, yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32));
 
         context.globalAlpha = 1.0;
 
@@ -649,7 +653,7 @@ class Arc extends Component {
                 context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[1], xMid + 12, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32), 16, 16);
+            context.drawImage(this.__images[1], xMid + 12, yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32), 16, 16);
             context.stroke();
 
             if (this.__decrementSelectable) {
@@ -658,7 +662,7 @@ class Arc extends Component {
                 context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[0], xMid + 12, yMid + this.yCor(18, aDir + 0.5) - iY, 16, 16);
+            context.drawImage(this.__images[0], xMid + 12, yMid + this.yCor(18, direction + 0.5) - iY, 16, 16);
             context.stroke();
 
             if (this.__renameSelectable) {
@@ -667,7 +671,7 @@ class Arc extends Component {
                 context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[3], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32), 16, 16);
+            context.drawImage(this.__images[3], xMid - 22 - textWidth, yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32), 16, 16);
             context.stroke();
 
             if (this.__fillSelectable) {
@@ -676,7 +680,7 @@ class Arc extends Component {
                 context.globalAlpha = 0.6;
             }
 
-            context.drawImage(this.__images[2], xMid - 22 - textWidth, yMid + this.yCor(18, aDir + 0.5) - iY, 16, 16);
+            context.drawImage(this.__images[2], xMid - 22 - textWidth, yMid + this.yCor(18, direction + 0.5) - iY, 16, 16);
             context.stroke();
 
         }
@@ -759,38 +763,38 @@ class Arc extends Component {
 
         }
 
-        var aDir = Math.atan2(source.x - this.__target.x, source.y - this.__target.y);
+        var direction = Math.atan2(source.x - this.__target.x, source.y - this.__target.y);
 
         var xMid = (source.x + this.__target.x) / 2;
         var yMid = (source.y + this.__target.y) / 2;
-        var iY = aDir > 0 ? 14 : 28;
+        var iY = direction > 0 ? 14 : 28;
 
         this.setStatus(false);
 
         if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
-            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) + 16) {
             this.__incrementSelectable = true;
             return true;
         } else if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
-            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) - iY &&
+            y < yMid + this.yCor(18, direction + 0.5) - iY + 16) {
             this.__decrementSelectable = true;
             return true;
 
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
-            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) + 16) {
             this.__renameSelectable = true;
             return true;
 
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
-            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) - iY &&
+            y < yMid + this.yCor(18, direction + 0.5) - iY + 16) {
             this.__fillSelectable = true;
             return true;
 
@@ -812,32 +816,32 @@ class Arc extends Component {
 
         }
 
-        var aDir = Math.atan2(source.x - this.__target.x, source.y - this.__target.y);
+        var direction = Math.atan2(source.x - this.__target.x, source.y - this.__target.y);
         var xMid = (source.x + this.__target.x) / 2;
         var yMid = (source.y + this.__target.y) / 2;
-        var iY = aDir > 0 ? 14 : 28;
+        var iY = direction > 0 ? 14 : 28;
 
         if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
-            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) + 16) {
             this.__tokens = this.__tokens == 1 ? 1 : this.__tokens - 1;
             this.selected = true;
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) &&
-            y < yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32) + 16) {
-            this.rename(editor, xMid - 80, yMid + this.yCor(18, aDir + 0.5) + iY - (aDir > 0 ? 0 : 32))
+            y > yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) &&
+            y < yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32) + 16) {
+            this.rename(editor, xMid - 80, yMid + this.yCor(18, direction + 0.5) + iY - (direction > 0 ? 0 : 32))
         } else if (x > xMid + 10 &&
             x < xMid + 10 + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
-            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) - iY &&
+            y < yMid + this.yCor(18, direction + 0.5) - iY + 16) {
             this.__tokens = this.__tokens + 1;
             this.selected = true;
         } else if (x > xMid - 22 - textWidth &&
             x < xMid - 22 - textWidth + 16 &&
-            y > yMid + this.yCor(18, aDir + 0.5) - iY &&
-            y < yMid + this.yCor(18, aDir + 0.5) - iY + 16) {
+            y > yMid + this.yCor(18, direction + 0.5) - iY &&
+            y < yMid + this.yCor(18, direction + 0.5) - iY + 16) {
             this.fill(editor);
 
         }
