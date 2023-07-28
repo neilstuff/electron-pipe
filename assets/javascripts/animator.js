@@ -6,7 +6,6 @@ class Animator {
 
     getCoordinates(source, target) {
         function calculateCourse(source, target) {
-
             var dx = (source[0] > target[0]) ? source[0] - target[0] : target[0] - source[0];
             var dy = (source[0] > target[0]) ? source[1] - target[1] : target[1] - source[1];
 
