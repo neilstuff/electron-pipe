@@ -45,6 +45,21 @@ class Graphics {
 
     }
 
+    getPointFromEnd(startX, startY, endX, endY, length) {
+        var dx = startX - endX;
+        var dy = startY - endY;
+        var distance = Math.sqrt(dx*dx + dy*dy);
+
+        dx /= distance;
+        dy /= distance;
+
+        return {
+            x: endX - (length) * dx,
+            y: endY - (length) * dy
+        }
+
+    }
+
     loadFile(filter, callback) {
         var loadButton = document.createElementNS("http://www.w3.org/1999/xhtml", "input");
 

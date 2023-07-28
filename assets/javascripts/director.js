@@ -5,7 +5,7 @@ class Director extends Arc {
     }
 
     drawArrow(context, xCenter, yCenter, x, y) {
-        var aDir = Math.atan2(xCenter - x, yCenter - y);
+        var direction = Math.atan2(xCenter - x, yCenter - y);
 
         var i1 = 10;
         var i2 = 8;
@@ -28,9 +28,9 @@ class Director extends Arc {
         }
 
         context.moveTo(x, y); // arrow tip
-        context.lineTo(x + this.xCor(i1, aDir + 0.5), y + this.yCor(i1, aDir + 0.5));
-        context.lineTo(x + this.xCor(i2, aDir), y + this.yCor(i2, aDir));
-        context.lineTo(x + this.xCor(i1, aDir - 0.5), y + this.yCor(i1, aDir - 0.5));
+        context.lineTo(x + this.xCor(i1, direction + 0.5), y + this.yCor(i1, direction + 0.5));
+        context.lineTo(x + this.xCor(i2, direction), y + this.yCor(i2, direction));
+        context.lineTo(x + this.xCor(i1, direction - 0.5), y + this.yCor(i1, direction - 0.5));
         context.lineTo(x, y); // arrow tip
         context.stroke();
         context.fill();

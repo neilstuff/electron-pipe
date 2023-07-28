@@ -497,26 +497,6 @@ class Arc extends Component {
 
         }
 
-        direction = Math.atan2(sourceX - target.x, target.y - sourceY);
-
-        console.log("direction: " + direction);
-
-        let xPos = 16;
-        let yPos = 16;
-
-        let deltaX = target.x - sourceX;
-        let deltaY = target.y - sourceY;
-
-        let radians = parseFloat(Math.atan2(deltaY, deltaX).toFixed(2));
-
-        if (radians >= 0.50 && radians <= 2.50) {
-            yPos = -16;
-        }
-
-        if (radians >= -2.5 && radians <= -0.5) {
-            yPos = -16;
-        }
- 
         let targetX = target.x;
         let targetY = target.y;
 
@@ -537,10 +517,10 @@ class Arc extends Component {
             }
 
         } else if (this.__target_type == PLACE) {
-        //    targetX = target.x + this.xCor(xPos, direction);
-        //    targetY = target.y + this.yCor(yPos, direction);
-            targetX = target.x;
-            targetY = target.y;
+            var endPoint = this.getPointFromEnd(sourceX, sourceY,  target.x, target.y, -16);
+
+            targetX = endPoint.x;
+            targetY = endPoint.y;
         }
 
         if (adjust) {
