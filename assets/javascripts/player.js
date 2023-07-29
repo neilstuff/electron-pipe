@@ -10,6 +10,9 @@ class Player extends Engine {
 
     notify() {
 
+        document.getElementById("disable_menu").style.display = "inline-block";
+        document.getElementById("tool_menu").style.opacity = "0.5";
+
         this.environment.decorate = false;
         this.start();
 

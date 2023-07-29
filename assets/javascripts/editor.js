@@ -1323,4 +1323,12 @@ class Editor extends Engine {
 
     }
 
+    notify() {
+        document.getElementById("disable_menu").style.display = "none";
+        document.getElementById("tool_menu").style.opacity = "1";
+
+        this.__environment.decorate = true;
+    }
+
+
 }

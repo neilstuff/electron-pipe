@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.css">
     <link rel="stylesheet" href="node_modules/beardcss/dist/beard.css">
     <link rel="stylesheet" href="assets/stylesheets/pipe.css">
+    <link rel="stylesheet" href="assets/stylesheets/switch.css">
     <link rel="stylesheet" href="assets/stylesheets/toolbar.css">
     <link rel="stylesheet" href="assets/stylesheets/treeview.css">
     <link rel="stylesheet" href="assets/stylesheets/dropdown.css">
@@ -71,35 +72,41 @@
         </div>
 
         <div style="border: 1px solid rgba(0,0,0,0.2); position:absolute; top:40px; bottom:50px; left:10px; padding-top:4px; padding-bottom:10px; padding-left:4px; padding-right:2px; width:42px;">
-            <a id="place" class="actions" style="position:absolute; cursor: grab;  padding:3px; top:4px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
-                <img id="place_mode" src='assets/images/oval.svg' draggable="true" style="margin-left:1px; margin-top:1px; width:24px; height:24px;"></img>
-            </a>
+            <div id="disable_menu" style="position:absolute; top:2px; bottom:2px; left:2px; right:2px; background-color: rgba(0,0,0,0.1); z-index: 1; display: none; opacity:0.2;"> 
+            </div>   
+            <div id="tool_menu" style="position:absolute; top:0px; bottom:0px; left:0px; right:0px; display: inline-block;"> 
+      
+                <a id="place" class="actions" style="position:absolute; cursor: grab; padding:3px; top:4px; left:4px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
+                    <img id="place_mode" src='assets/images/oval.svg' draggable="true" style="margin-left:1px; margin-top:1px; width:24px; height:24px;"></img>
+                </a>
 
-            <a id="event" class="actions" style="position:absolute; cursor: grab; padding:3px; top:50px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
-                <img id="event_mode" src='assets/images/square.svg' draggable="true" style="margin-top:0px; margin-left:1px; width:22px; height:22px;"></img>
-            </a>
-            <a id="process" class="actions" style="position:absolute; cursor: grab; padding:3px; top:82px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
-                <img id="process_mode" src='assets/images/process.svg' draggable="true" style="margin-top:-4px; width:32px; height:32px;"></img>
-            </a>
+                <a id="event" class="actions" style="position:absolute; cursor: grab; padding:3px; top:50px; left:4px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
+                    <img id="event_mode" src='assets/images/square.svg' draggable="true" style="margin-top:0px; margin-left:1px; width:22px; height:22px;"></img>
+                </a>
+                <a id="process" class="actions" style="position:absolute; cursor: grab; padding:3px; top:82px; left:4px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
+                    <img id="process_mode" src='assets/images/process.svg' draggable="true" style="margin-top:-4px; width:32px; height:32px;"></img>
+                </a>
 
-            <a id="container" class="actions" style="position:absolute; cursor: grab; padding:3px; top:140px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
-                <img id="container_mode" src='assets/images/edit.svg' draggable="true" style="width:24px; height:24px; opacity: 0.8;"></img>
-            </a>
+                <a id="container" class="actions" style="position:absolute; cursor: grab; padding:3px; top:140px; left:4px; width:32px; height:32px; background-color: rgba(255,255,255,1.0); border: 1px solid rgba(255,255,255,1.0);">
+                    <img id="container_mode" src='assets/images/edit.svg' draggable="true" style="width:24px; height:24px; opacity: 0.8;"></img>
+                </a>
 
-            <div id="fill" class="available" style="position: absolute; bottom:290px; left:8px; width:32px; height:32px; ">
-                <img src='assets/images/paint-bucket.png' style="width:24px; height:24px;"></img>
-            </div>
+                <div id="fill" class="available" style="position: absolute; bottom:290px; left:8px; width:32px; height:32px; ">
+                    <img src='assets/images/paint-bucket.png' style="width:24px; height:24px;"></img>
+                </div>
 
-            <div id="trash" class="available" style="position: absolute; bottom:260px; left:8px; width:32px; height:32px; ">
-                <img src='assets/images/trash-can.png' style="width:24px; height:24px;"></img>
-            </div>
+                <div id="trash" class="available" style="position: absolute; bottom:260px; left:8px; width:32px; height:32px; ">
+                    <img src='assets/images/trash-can.png' style="width:24px; height:24px;"></img>
+                </div>
 
-            <div id="join-place-transition" class="selection" style="position: absolute; bottom:175px; left:8px; width:32px; height:32px; ">
-                <img src='assets/images/circle-square.png' style="width:24px; height:24px; opacity: 0.6;"></img>
-            </div>
+                <div id="join-place-transition" class="selection" style="position: absolute; bottom:175px; left:8px; width:32px; height:32px; ">
+                    <img src='assets/images/circle-square.png' style="width:24px; height:24px; opacity: 0.6;"></img>
+                </div>
 
-            <div id="join-transition-place" class="selection" style="position: absolute; bottom:140px; left:8px; width:32px; height:32px; ">
-                <img src='assets/images/square-circle.png' style="width:24px; height:24px; opacity: 0.6;"></img>
+                <div id="join-transition-place" class="selection" style="position: absolute; bottom:140px; left:8px; width:32px; height:32px; ">
+                    <img src='assets/images/square-circle.png' style="width:24px; height:24px; opacity: 0.6;"></img>
+                </div>
+
             </div>
 
         </div>
@@ -111,8 +118,11 @@
             </div>
         </div>
         <div style="border: 1px solid rgba(0,0,0,0.2); position:absolute; bottom:10px; height:34px; left:10px; right:10px; overflow:none;">
-            <div style="position: absolute; bottom:0px; left:2px;">
-                <button class="button far fa-play-circle fa-1x top-icon" id="play" style="-webkit-app-region: no-drag; font-size:24px;"></button>
+            <div style="position: absolute; bottom:0px; right:4px; top:5px;">
+                <label class="switch">
+                    <input type="checkbox" id="play">
+                    <span class="slider"></span>
+                </label>           
             </div>
         </div>
     </div>

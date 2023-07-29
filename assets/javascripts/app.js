@@ -420,7 +420,7 @@ $(async() => {
 
     });
 
-    $('#play').on('click', (e) => {
+    $('#play').on('change', (e) => {
 
         environment.mode = environment.mode == 0 ? 1 : 0;
 

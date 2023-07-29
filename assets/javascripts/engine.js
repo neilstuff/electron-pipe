@@ -57,8 +57,4 @@ class Engine {
 
     }
 
-    notify() {
-        this.__environment.decorate = true;
-    }
-
 }
