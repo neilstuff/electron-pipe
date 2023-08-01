@@ -183,7 +183,7 @@ class Player extends Engine {
 
             }
 
-            return (value.type == EVENT || value.type == PROCESS && checkSources(this, value));
+            return ((value.type == EVENT || value.type == PROCESS) && checkSources(this, value));
 
         }, this.environment.placeStateMap);
 
