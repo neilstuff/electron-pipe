@@ -49,7 +49,9 @@ class Player extends Engine {
             "inputs": [],
             "sourceArcs": [],
             "outputs": [],
-            "targetArcs": []
+            "targetArcs": [],
+            "events" : [],
+            "processes" :[]
         }
 
         for (var targetArc in transition.sourceArcs) {
