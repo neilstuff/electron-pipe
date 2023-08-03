@@ -6,6 +6,9 @@ class Process extends Transition {
 
     }
 
+    activate(context) {
+    }
+    
     draw(context) {
 
         context.save();

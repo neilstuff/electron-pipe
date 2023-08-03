@@ -46,12 +46,11 @@ class Player extends Engine {
     processTransition(transition) {
         var state = {
             "transition": transition,
+            "timer" : 0,
             "inputs": [],
             "sourceArcs": [],
             "outputs": [],
-            "targetArcs": [],
-            "events" : [],
-            "processes" :[]
+            "targetArcs": []
         }
 
         for (var targetArc in transition.sourceArcs) {
@@ -225,8 +224,6 @@ class Player extends Engine {
                 states.push(this.processTransition(filteredArtifacts[0]));
             }
         }
-
-        console.log("States: " + states.length);
 
         var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
 
