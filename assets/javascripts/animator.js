@@ -128,10 +128,7 @@ class Animator {
 
     activate(animations, draw) {
         var self = this;
-        var transitions = Object.keys(animations);
-
-        console.log(JSON.stringify(animations));
-        console.log(JSON.stringify(transitions));
+        var events = Object.keys(animations);
 
         function animate(timeStamp) {
             var points = [];
@@ -150,9 +147,9 @@ class Animator {
 
             }
 
-            for (var transition in transitions) {
+            for (var event in events) {
 
-                points.push.apply(points, advance(animations[transitions[transition]].sourcePaths));
+                points.push.apply(points, advance(animations[events[event]].sourcePaths));
 
             }
 
@@ -165,9 +162,9 @@ class Animator {
                 window.requestAnimationFrame(animate);
 
             } else {
-                for (var transition in transitions) {
+                for (var event in events) {
 
-                    points.push.apply(points, advance(animations[transitions[transition]].targetPaths));
+                    points.push.apply(points, advance(animations[events[event]].targetPaths));
 
                 }
 
