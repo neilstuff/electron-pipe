@@ -429,6 +429,20 @@ $(async() => {
 
     });
 
+    $('#restart').on('change', (e) => {
+
+        modes[environment.mode].restart();
+        modes[environment.mode].draw();
+
+    });
+
+    $('#restart').on('change', (e) => {
+
+        modes[environment.mode].step();
+        modes[environment.mode].draw();
+
+    });
+
     $('#fill').on('click', (e) => {
         var node = document.createElement("input");
 

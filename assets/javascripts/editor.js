@@ -1330,5 +1330,12 @@ class Editor extends Engine {
         this.__environment.decorate = true;
     }
 
+    restart() {
+
+    }
+    
+    step() {
+
+    }
 
 }
