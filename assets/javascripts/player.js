@@ -225,7 +225,7 @@ class Player extends Engine {
             }
         }
 
-        var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
+        var filteredEvents = this.environment.artifacts.filter(function(value, index, arr) {
 
             function checkSources(placeStateMap, transition) {
 
@@ -253,8 +253,8 @@ class Player extends Engine {
             }
         }
 
-        for (var transition in filteredTransitions) {
-            this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
+        for (var transition in filteredEvents) {
+            this.environment.activeTransitionMap[filteredEvents[transition].id] = filteredEvents[transition].color;
         }
 
         this.__animator.processStates(states, redraw);
