@@ -14,6 +14,7 @@ class Player extends Engine {
         document.getElementById("tool_menu").style.opacity = "0.5";
 
         this.environment.decorate = false;
+
         this.start();
 
     }
@@ -258,6 +259,12 @@ class Player extends Engine {
         }
 
         this.__animator.processStates(states, redraw);
+
+    }
+
+    restart() {
+
+        this.start();
 
     }
 

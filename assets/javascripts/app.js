@@ -411,15 +411,6 @@ $(async() => {
 
     });
 
-    $('#toggle-editors').on('click', (e) => {
-
-        environment.editors = environment.editors ? false : true;
-        modes[environment.mode].draw();
-
-        return false;
-
-    });
-
     $('#play').on('change', (e) => {
 
         environment.mode = environment.mode == 0 ? 1 : 0;
@@ -429,19 +420,21 @@ $(async() => {
 
     });
 
-    $('#restart').on('change', (e) => {
+    $('#restart').on('click', (e) => {
 
         modes[environment.mode].restart();
         modes[environment.mode].draw();
 
     });
 
-    $('#restart').on('change', (e) => {
+    
+    $('#step').on('click', (e) => {
 
-        modes[environment.mode].step();
+        modes[environment.mode].restart();
         modes[environment.mode].draw();
 
     });
+
 
     $('#fill').on('click', (e) => {
         var node = document.createElement("input");

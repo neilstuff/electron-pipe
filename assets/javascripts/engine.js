@@ -57,4 +57,10 @@ class Engine {
 
     }
 
+    restart() {
+    }
+
+    step() {
+    }
+
 }
