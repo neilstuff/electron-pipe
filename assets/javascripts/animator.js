@@ -36,7 +36,6 @@ class Animator {
 
         var course = calculateCourse(source, target);
 
-        console.log("DX - DY", course.dx, course.dy, course.source.x, course.source.y, course.target.x, course.target.y);
         var coordinates = [];
 
         var x = course.source.x;
@@ -55,15 +54,27 @@ class Animator {
 
     }
 
-    drawBalls(context, points) {
+    drawToken(context, x, y) {
+        context.beginPath();
+        context.arc(x, y, 4, 0, Math.PI * 2);
+        context.fillStyle = "#000000";
+        context.fill();
+        context.closePath();
+    }
+    
+    drawTokens(context, points) {
 
         for (var point in points) {
-            context.beginPath();
-            context.arc(points[point][0], points[point][1], 4, 0, Math.PI * 2);
-            context.fillStyle = "#000000";
-            context.fill();
-            context.closePath();
+            this.drawToken(context, points[point][0], points[point][1]);
+        }
 
+    }
+
+    drawDestinations(context, destinations) {
+
+
+        for (var destination in destinations) {
+             this.drawToken(context, destinations[destination][0], destinations[destination][1]);
         }
 
     }
@@ -99,19 +110,23 @@ class Animator {
 
             for (var sourceArc in states[state].sourceArcs) {
                 var arc = states[state].sourceArcs[sourceArc];
+                
 
-                console.log("Source Arc: " + arc.id);
-
-                sourcePaths.push(this.addPath(arc));
+                sourcePaths.push({
+                    "arc": arc,
+                    "path": this.addPath(arc)
+                });
 
             }
 
             for (var targetArc in states[state].targetArcs) {
+
                 var arc = states[state].targetArcs[targetArc];
 
-                console.log("Target Arc: " + arc.id);
-
-                targetPaths.push(this.addPath(arc));
+                targetPaths.push({
+                    "arc": arc,
+                    "path": this.addPath(arc)
+                });
 
             }
 
@@ -129,18 +144,28 @@ class Animator {
     activate(animations, draw) {
         var self = this;
         var events = Object.keys(animations);
+        var destinations = [];
 
         function animate(timeStamp) {
             var points = [];
 
-            function advance(paths) {
+            function advance(paths, destinations = null) {
+
                 var positions = []
 
                 for (var path in paths) {
 
-                    if (paths[path].length > 0) {
-                        positions.push(paths[path].shift());
+                    if (destinations && paths[path]['path'].length == 1) {
+                        var coordinate = [paths[path]['arc'].target.x, paths[path]['arc'].target.y];
+                        
+                        destinations.push(coordinate);
+ 
                     }
+
+                    if (paths[path]['path'].length > 0) {
+                        positions.push(paths[path]['path'].shift());
+                    }   
+
                 }
 
                 return positions;
@@ -148,7 +173,7 @@ class Animator {
             }
 
             for (var event in events) {
-
+ 
                 points.push.apply(points, advance(animations[events[event]].sourcePaths));
 
             }
@@ -157,24 +182,27 @@ class Animator {
 
                 draw(false);
 
-                self.drawBalls(self.__context, points);
-
+                self.drawTokens(self.__context, points);
+   
                 window.requestAnimationFrame(animate);
 
             } else {
                 for (var event in events) {
 
-                    points.push.apply(points, advance(animations[events[event]].targetPaths));
+                    points.push.apply(points, advance(animations[events[event]].targetPaths, destinations));
 
                 }
 
                 if (points.length > 0) {
+
                     draw(false);
-                    self.drawBalls(self.__context, points);
+
+                    self.drawTokens(self.__context, points);
+                    self.drawDestinations(self.__context, destinations);
+
                     window.requestAnimationFrame(animate);
 
                 } else {
-
                     draw(true);
 
                 }
