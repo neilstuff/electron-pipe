@@ -12,6 +12,8 @@ class Player extends Engine {
 
         document.getElementById("disable_menu").style.display = "inline-block";
         document.getElementById("tool_menu").style.opacity = "0.5";
+        document.getElementById("player_menu").style.display = "inline-block";
+        document.getElementById("placeholder").style.display = "none";
 
         this.environment.decorate = false;
 
@@ -140,6 +142,59 @@ class Player extends Engine {
 
     }
 
+    /**
+     * Show the State
+     * 
+     */
+
+    show() {
+        var playerMenu = document.getElementById("player_menu");
+
+        var html = `<h2 style="font-size:12px; font-style:italic">Places</h2>`;
+ 
+        var places = this.environment.artifacts.filter(function(value, index, arr) {
+            return value.type == PLACE;
+        });
+        var transitions = this.environment.artifacts.filter(function(value, index, arr) {
+            return value.type == EVENT || value.type == PROCESS;
+        });
+
+        html += `<div style="font-size:12px; margin-left:8px; margin-top:4px;">`;
+        html += `<table>`;
+
+        for (var place in places) {
+            html += `<tr>`;
+            html += `<td>`;
+            html += places[place].label;
+            html + `</td>`;
+            html + `</tr>`;
+        }
+
+        html += `</table>`;
+        html += `</div>`;
+
+        html += `<h2 style="font-size:12px; font-style:italic; margin-top:8px;">Transitions</h2>`;
+        html += `<div style="font-size:12px; margin-left:8px; margin-top:4px;">`;
+        html += `<table>`;
+
+        for (var transition in transitions) {
+            html += `<tr>`;
+            html += `<td>`;
+            html += transitions[transition].label;
+            html + `</td>`;
+            html + `</tr>`;
+        }
+
+        html += `</table>`;
+        html += `</div>`;
+        
+        playerMenu.innerHTML = html;
+    }
+
+    /**
+     * Start the Player
+     * 
+     */
     start() {
 
         for (var prop in this.environment.placeStateMap) {
@@ -192,6 +247,8 @@ class Player extends Engine {
         for (var transition in filteredTransitions) {
             this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
         }
+
+        this.show();
 
     }
 

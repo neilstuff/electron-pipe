@@ -54,9 +54,9 @@ class Animator {
 
     }
 
-    drawToken(context, x, y) {
+    drawToken(context, x, y, radius = 4) {
         context.beginPath();
-        context.arc(x, y, 4, 0, Math.PI * 2);
+        context.arc(x, y, radius, 0, Math.PI * 2);
         context.fillStyle = "#000000";
         context.fill();
         context.closePath();
@@ -74,7 +74,7 @@ class Animator {
 
 
         for (var destination in destinations) {
-             this.drawToken(context, destinations[destination][0], destinations[destination][1]);
+            this.drawToken(context, destinations[destination][0], destinations[destination][1], 6);
         }
 
     }
