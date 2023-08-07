@@ -150,7 +150,7 @@ class Player extends Engine {
     show() {
         var playerMenu = document.getElementById("player_menu");
 
-        var html = `<h2 style="font-size:12px; font-style:italic">Places</h2>`;
+        var html = `<button class="collapsible">Places</button>`;
  
         var places = this.environment.artifacts.filter(function(value, index, arr) {
             return value.type == PLACE;
@@ -159,11 +159,11 @@ class Player extends Engine {
             return value.type == EVENT || value.type == PROCESS;
         });
 
-        html += `<div style="font-size:12px; margin-left:8px; margin-top:4px;">`;
+        html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
         html += `<table>`;
 
         for (var place in places) {
-            html += `<tr>`;
+            html += `<tr style="height: 16px;">`;
             html += `<td>`;
             html += places[place].label;
             html + `</td>`;
@@ -173,12 +173,12 @@ class Player extends Engine {
         html += `</table>`;
         html += `</div>`;
 
-        html += `<h2 style="font-size:12px; font-style:italic; margin-top:8px;">Transitions</h2>`;
-        html += `<div style="font-size:12px; margin-left:8px; margin-top:4px;">`;
+        html += `<button class="collapsible"> Transitions</button>`;
+        html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
         html += `<table>`;
 
         for (var transition in transitions) {
-            html += `<tr>`;
+            html += `<tr style="height: 16px;">`;
             html += `<td>`;
             html += transitions[transition].label;
             html + `</td>`;
@@ -187,8 +187,30 @@ class Player extends Engine {
 
         html += `</table>`;
         html += `</div>`;
-        
+
         playerMenu.innerHTML = html;
+
+ 
+        setTimeout(function() {
+            var collapsible = document.getElementsByClassName("collapsible");
+            for (var content = 0; content < collapsible.length; content++) {
+                collapsible[content].addEventListener("click", function() {
+                
+                    this.classList.toggle("collapsible-active");
+                    
+                    var content = this.nextElementSibling;
+                    
+                    if (content.style.maxHeight){
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } 
+        
+                });
+        
+            }
+        }, 10);
+    
     }
 
     /**
