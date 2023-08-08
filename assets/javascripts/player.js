@@ -84,6 +84,17 @@ class Player extends Engine {
 
     }
 
+    updateState(place) {
+        var tokens = this.environment.placeStateMap[place.id].tokens;
+        var element = document.getElementById(`img-${places[place].id}`);
+        if (tokens == 0) {
+            element.src = "assets/images/oval.svg";
+        } else {
+            element.src = "assets/images/circle-dot.svg";
+        }
+
+    }
+
     /**
      * Draw the Objects
      * 
@@ -154,23 +165,27 @@ class Player extends Engine {
  
         var places = this.environment.artifacts.filter(function(value, index, arr) {
             return value.type == PLACE;
+        }).sort(function(from, to) {
+            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
         });
 
         var transitions = this.environment.artifacts.filter(function(value, index, arr) {
             return value.type == EVENT || value.type == PROCESS;
+        }).sort(function(from, to) {
+            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
         });
 
         html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
-        html += `<table>`;
+        html += `<table style="margin-top: 4px;">`;
 
         for (var place in places) {
             html += `<tr style="height: 20px;">`;
             html += `<td>`;
 
             if (places[place].tokens > 0) {
-                html += `<img src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+                html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
             } else {
-                html += `<img src="assets/images/oval.svg" style="width:15px; height:15px; margin-left:1px; margin-right:7px;"></img>`;
+                html += `<img id="img-${places[place].id}" src="assets/images/oval.svg" style="width:15px; height:15px; margin-left:1px; margin-right:7px;"></img>`;
             }
 
             html += `</td>`;            
@@ -185,12 +200,12 @@ class Player extends Engine {
 
         html += `<button class="collapsible"> Transitions</button>`;
         html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
-        html += `<table>`;
+        html += `<table style="margin-top: 4px;">`;
 
         for (var transition in transitions) {
-            html += `<tr style="height: 20px;">`;
+            html += `<tr style="height: 20px; margin-top:4px;">`;
             html += `<td>`;
-            html += `<img src="assets/images/square.svg" style="width:12px; height:12px; margin-top:-2px; margin-right:4px;"></img>`;
+            html += `<img  id="img-${transitions[transition].id} src="assets/images/square.svg" style="width:12px; height:12px; margin-top:-2px; margin-right:4px;"></img>`;
             html += `</td>`;            
             html += `<td>`;
             html += transitions[transition].label;
@@ -222,6 +237,11 @@ class Player extends Engine {
                 });
         
             }
+
+            for (var content = 0; content < collapsible.length; content++) {
+                collapsible[content].click();
+            }
+ 
         }, 10);
     
     }
@@ -230,7 +250,7 @@ class Player extends Engine {
      * Start the Player
      * 
      */
-    start() {
+    start(showMenu = true) {
 
         for (var prop in this.environment.placeStateMap) {
             if (this.environment.placeStateMap.hasOwnProperty(prop)) {
@@ -283,7 +303,9 @@ class Player extends Engine {
             this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
         }
 
-        this.show();
+        if (showMenu) {
+            this.show();
+        }
 
     }
 
@@ -356,7 +378,7 @@ class Player extends Engine {
 
     restart() {
 
-        this.start();
+        this.start(false);
 
     }
 
