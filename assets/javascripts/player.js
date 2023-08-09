@@ -83,6 +83,18 @@ class Player extends Engine {
         return state;
 
     }
+    
+    updateTransition(transition, activate = false) {
+        var element = document.getElementById(`img-${transition.id}`);
+   
+        if (activate) {
+            element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
+        } else {
+            element.style.border = "2px solid black";
+            
+        }
+
+    }
 
     updateState(place) {
         var tokens = this.environment.placeStateMap[place.id].tokens;
@@ -144,6 +156,9 @@ class Player extends Engine {
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
                     var context = this.canvas.getContext('2d');
                     this.artifacts[iArtifact].activate(context);
+                    this.updateTransition(this.artifacts[iArtifact], true);
+                } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
+                    this.updateTransition(this.artifacts[iArtifact], false);
                 }
 
             }
@@ -207,7 +222,16 @@ class Player extends Engine {
         for (var transition in transitions) {
             html += `<tr style="height: 20px; margin-top:4px;">`;
             html += `<td>`;
-            html += `<img  id="img-${transitions[transition].id} src="assets/images/square.svg" style="width:12px; height:12px; margin-top:-2px; margin-right:4px;"></img>`;
+
+            if (this.environment.activeTransitionMap.hasOwnProperty(transitions[transition].id)) {
+                html += `<img id="img-${transitions[transition].id}" src="assets/images/square.svg" style="width:12px; ` + 
+                        `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(0, 0, 255, 0.6);"></img>`;
+            } else {
+                html += `<img id="img-${transitions[transition].id}" src="assets/images/square.svg" style="width:12px; ` + 
+                `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+       
+            }
+
             html += `</td>`;            
             html += `<td>`;
             html += transitions[transition].label;
@@ -250,6 +274,8 @@ class Player extends Engine {
 
     /**
      * Start the Player
+     * 
+     * @param showMenu show the menu or not
      * 
      */
     start(showMenu = true) {
