@@ -86,9 +86,10 @@ class Player extends Engine {
 
     updateState(place) {
         var tokens = this.environment.placeStateMap[place.id].tokens;
-        var element = document.getElementById(`img-${places[place].id}`);
+        var element = document.getElementById(`img-${place.id}`);
+        
         if (tokens == 0) {
-            element.src = "assets/images/oval.svg";
+            element.src = "assets/images/circle.svg";
         } else {
             element.src = "assets/images/circle-dot.svg";
         }
@@ -137,6 +138,7 @@ class Player extends Engine {
 
                 for (var artifact in filteredPlaces) {
                     this.environment.placeStateMap[filteredPlaces[artifact].id].display = true;
+                    this.updateState(filteredPlaces[artifact]);
                 }
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
@@ -185,7 +187,7 @@ class Player extends Engine {
             if (places[place].tokens > 0) {
                 html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
             } else {
-                html += `<img id="img-${places[place].id}" src="assets/images/oval.svg" style="width:15px; height:15px; margin-left:1px; margin-right:7px;"></img>`;
+                html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
             }
 
             html += `</td>`;            
