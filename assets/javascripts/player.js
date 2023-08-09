@@ -237,6 +237,7 @@ class Player extends Engine {
             html += transitions[transition].label;
             html + `</td>`;
             html + `</tr>`;
+
         }
 
         html += `</table>`;
@@ -244,7 +245,6 @@ class Player extends Engine {
 
         playerMenu.innerHTML = html;
 
- 
         setTimeout(function() {
             var collapsible = document.getElementsByClassName("collapsible");
             for (var content = 0; content < collapsible.length; content++) {
@@ -332,7 +332,26 @@ class Player extends Engine {
         }
 
         if (showMenu) {
-            this.show();
+            this.show(showMenu);
+        } else {
+
+             for (var iArtifact in this.artifacts) {
+                var filteredPlaces = this.artifacts.filter(function(value, index, arr) {
+                    return value.type == PLACE;
+                });
+
+                for (var artifact in filteredPlaces) {
+                    this.updateState(filteredPlaces[artifact]);
+                }
+
+                if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
+                      this.updateTransition(this.artifacts[iArtifact], true);
+                } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
+                    this.updateTransition(this.artifacts[iArtifact], false);
+                }
+
+            }
+
         }
 
     }
