@@ -41,12 +41,14 @@ class Animator {
         var x = course.source.x;
         var y = course.source.y;
 
-        for (var i = 16; x < course.target.x || (y < course.target.y); i += 8) {
+        var step = (course.dy <= -280 || course.dy >= 280) ? 2 :  (course.dy <= -120 || course.dy >= 120) ? 4 : 8; 
+
+        for (var iStep = 16; x < course.target.x || (y < course.target.y); iStep += step) {
 
             course.updater(coordinates, [x,y]);
 
-            x = (course.dx == 0) ? course.source.x : course.source.x + i;
-            y = (course.dx == 0) ? y + 8 : Math.round(course.source.y + (i * course.dy) / course.dx);
+            x = (course.dx == 0) ? course.source.x : course.source.x + iStep;
+            y = (course.dx == 0) ? y + 8 : Math.round(course.source.y + (iStep * course.dy) / course.dx);
 
         }
 

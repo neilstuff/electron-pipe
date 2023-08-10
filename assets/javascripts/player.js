@@ -215,7 +215,7 @@ class Player extends Engine {
         html += `</table>`;
         html += `</div>`;
 
-        html += `<button class="collapsible"> Transitions</button>`;
+        html += `<button class="collapsible">Transitions (Events)</button>`;
         html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
         html += `<table style="margin-top: 4px;">`;
 
