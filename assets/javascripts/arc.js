@@ -164,6 +164,10 @@ class Arc extends Component {
     get tokens() {
         return this.__tokens;
     }
+    
+    set tokens(tokens) {
+        this.__tokens = tokens;
+    }
 
     get nodes() {
         return this.__nodes;

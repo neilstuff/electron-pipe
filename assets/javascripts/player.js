@@ -208,9 +208,9 @@ class Player extends Engine {
                 html += `<td>`;
 
                 if (places[place].tokens > 0) {
-                    html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:4px;"></img>`;
                 } else {
-                    html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:4px;"></img>`;
                 }
 
                 html += `</td>`;
@@ -236,11 +236,11 @@ class Player extends Engine {
                 html += `<td>`;
 
                 if (this.environment.activeTransitionMap.hasOwnProperty(events[event].id)) {
-                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:12px; ` +
-                        `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(0, 0, 255, 0.6);"></img>`;
+                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:16px; ` +
+                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(0, 0, 255, 0.6);"></img>`;
                 } else {
-                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:12px; ` +
-                        `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:16px; ` +
+                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
                 }
 
                 html += `</td>`;
@@ -265,11 +265,11 @@ class Player extends Engine {
                 html += `<td>`;
 
                 if (this.environment.activeTransitionMap.hasOwnProperty(processes[process].id)) {
-                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:14px; ` +
-                        `height:14px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 53, 25, 0.6);"></img>`;
+                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
+                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 53, 25, 0.6);"></img>`;
                 } else {
-                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:14px; ` +
-                        `height:14px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
+                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
                 }
 
                 html += `</td>`;

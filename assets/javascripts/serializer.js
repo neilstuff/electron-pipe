@@ -147,6 +147,8 @@ class Serializer {
 
                     var arc = source.addSource(type, target);
 
+                    arc.tokens = arcs[iArcs]['tokens'];
+
                     target.addTarget(type, source, arc);
 
                     var segments = arcs[iArcs]['segments'];
@@ -194,12 +196,11 @@ class Serializer {
 
                             });
 
-
                         }
+
                         __this.__editor.moveArtifacts = false;
                         __this.__editor.draw();
                         __this.__editor.focus();
-
 
                     }
 

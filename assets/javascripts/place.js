@@ -46,7 +46,7 @@ class Place extends Artifact {
     }
 
     drawTokenCount(context, tokens) {
-        let count = `${this.__tokens}`;
+        let count = `${tokens}`;
         let offset = this.getTextWidth(count, "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -77,7 +77,7 @@ class Place extends Artifact {
             context.arc(this.__center.x, this.__center.y, 5, 0, 2 * Math.PI);
             context.fill();
             context.stroke();
-        } else if (this.tokens > 1) {
+        } else if (tokens > 1) {
             context.beginPath();
             context.arc(this.__center.x, this.__center.y - 5, 3, 0, 2 * Math.PI);
             context.fill();
