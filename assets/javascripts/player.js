@@ -6,7 +6,7 @@ class Player extends Engine {
 
     }
 
-    leave(id) {}
+    leave(id) { }
 
     notify() {
 
@@ -49,7 +49,7 @@ class Player extends Engine {
     processTransition(transition) {
         var state = {
             "transition": transition,
-            "timer" : 0,
+            "timer": 0,
             "inputs": [],
             "sourceArcs": [],
             "outputs": [],
@@ -83,15 +83,15 @@ class Player extends Engine {
         return state;
 
     }
-    
+
     updateTransition(transition, activate = false) {
         var element = document.getElementById(`img-${transition.id}`);
-   
+
         if (activate) {
             element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
         } else {
             element.style.border = "2px solid black";
-            
+
         }
 
     }
@@ -99,7 +99,7 @@ class Player extends Engine {
     updateState(place) {
         var tokens = this.environment.placeStateMap[place.id].tokens;
         var element = document.getElementById(`img-${place.id}`);
-        
+
         if (tokens == 0) {
             element.src = "assets/images/circle.svg";
         } else {
@@ -144,7 +144,7 @@ class Player extends Engine {
 
             if (activate) {
 
-                var filteredPlaces = this.artifacts.filter(function(value, index, arr) {
+                var filteredPlaces = this.artifacts.filter(function (value, index, arr) {
                     return value.type == PLACE;
                 });
 
@@ -178,98 +178,139 @@ class Player extends Engine {
     show() {
         var playerMenu = document.getElementById("player_menu");
 
-        var html = `<button class="collapsible">Places</button>`;
- 
-        var places = this.environment.artifacts.filter(function(value, index, arr) {
+        var html = "";
+
+        var places = this.environment.artifacts.filter(function (value, index, arr) {
             return value.type == PLACE;
-        }).sort(function(from, to) {
+        }).sort(function (from, to) {
             return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
         });
 
-        var transitions = this.environment.artifacts.filter(function(value, index, arr) {
-            return value.type == EVENT || value.type == PROCESS;
-        }).sort(function(from, to) {
+        var events = this.environment.artifacts.filter(function (value, index, arr) {
+            return value.type == EVENT;
+        }).sort(function (from, to) {
             return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
         });
 
-        html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
-        html += `<table style="margin-top: 4px;">`;
+        var processes = this.environment.artifacts.filter(function (value, index, arr) {
+            return value.type == PROCESS;
+        }).sort(function (from, to) {
+            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
+        });
 
-        for (var place in places) {
-            html += `<tr style="height: 20px;">`;
-            html += `<td>`;
+        if (places.length > 0) {
+            html = `<button class="collapsible">Places</button>`;
+            html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
+            html += `<table style="margin-top: 4px;">`;
 
-            if (places[place].tokens > 0) {
-                html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
-            } else {
-                html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+            for (var place in places) {
+                html += `<tr style="height: 20px;">`;
+                html += `<td>`;
+
+                if (places[place].tokens > 0) {
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+                } else {
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-right:4px;"></img>`;
+                }
+
+                html += `</td>`;
+                html += `<td>`;
+                html += places[place].label;
+                html + `</td>`;
+                html + `</tr>`;
             }
 
-            html += `</td>`;            
-            html += `<td>`;
-            html += places[place].label;
-            html + `</td>`;
-            html + `</tr>`;
         }
 
         html += `</table>`;
         html += `</div>`;
 
-        html += `<button class="collapsible">Transitions (Events)</button>`;
-        html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
-        html += `<table style="margin-top: 4px;">`;
 
-        for (var transition in transitions) {
-            html += `<tr style="height: 20px; margin-top:4px;">`;
-            html += `<td>`;
+        if (events.length > 0) {
+            html += `<button class="collapsible">Transitions (Events)</button>`;
+            html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
+            html += `<table style="margin-top: 4px;">`;
 
-            if (this.environment.activeTransitionMap.hasOwnProperty(transitions[transition].id)) {
-                html += `<img id="img-${transitions[transition].id}" src="assets/images/square.svg" style="width:12px; ` + 
+            for (var event in events) {
+                html += `<tr style="height: 20px; margin-top:4px;">`;
+                html += `<td>`;
+
+                if (this.environment.activeTransitionMap.hasOwnProperty(events[event].id)) {
+                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:12px; ` +
                         `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(0, 0, 255, 0.6);"></img>`;
-            } else {
-                html += `<img id="img-${transitions[transition].id}" src="assets/images/square.svg" style="width:12px; ` + 
-                `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
-       
+                } else {
+                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:12px; ` +
+                        `height:12px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                }
+
+                html += `</td>`;
+                html += `<td>`;
+                html += events[event].label;
+                html + `</td>`;
+                html + `</tr>`;
+
             }
 
-            html += `</td>`;            
-            html += `<td>`;
-            html += transitions[transition].label;
-            html + `</td>`;
-            html + `</tr>`;
-
+            html += `</table>`;
+            html += `</div>`;
         }
 
-        html += `</table>`;
-        html += `</div>`;
+        if (processes.length > 0) {
+            html += `<button class="collapsible">Transitions (Processes)</button>`;
+            html += `<div class="collapsible-content" style="margin-top:4px; margin-bottom:4px;">`;
+            html += `<table style="margin-top: 4px;">`;
+
+            for (var process in processes) {
+                html += `<tr style="height: 20px; margin-top:4px;">`;
+                html += `<td>`;
+
+                if (this.environment.activeTransitionMap.hasOwnProperty(processes[process].id)) {
+                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:14px; ` +
+                        `height:14px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 53, 25, 0.6);"></img>`;
+                } else {
+                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:14px; ` +
+                        `height:14px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                }
+
+                html += `</td>`;
+                html += `<td>`;
+                html += events[event].label;
+                html + `</td>`;
+                html + `</tr>`;
+
+            }
+
+            html += `</table>`;
+            html += `</div>`;
+        }
 
         playerMenu.innerHTML = html;
 
-        setTimeout(function() {
+        setTimeout(function () {
             var collapsible = document.getElementsByClassName("collapsible");
             for (var content = 0; content < collapsible.length; content++) {
-                collapsible[content].addEventListener("click", function() {
-                
+                collapsible[content].addEventListener("click", function () {
+
                     this.classList.toggle("collapsible-active");
-                    
+
                     var content = this.nextElementSibling;
-                    
-                    if (content.style.maxHeight){
+
+                    if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                     } else {
                         content.style.maxHeight = content.scrollHeight + "px";
-                    } 
-        
+                    }
+
                 });
-        
+
             }
 
             for (var content = 0; content < collapsible.length; content++) {
                 collapsible[content].click();
             }
- 
+
         }, 10);
-    
+
     }
 
     /**
@@ -292,7 +333,7 @@ class Player extends Engine {
             }
         }
 
-        var filteredPlaces = this.environment.artifacts.filter(function(value, index, arr) {
+        var filteredPlaces = this.environment.artifacts.filter(function (value, index, arr) {
             return value.type == PLACE;
         });
 
@@ -305,7 +346,7 @@ class Player extends Engine {
 
         }
 
-        var filteredTransitions = this.environment.artifacts.filter(function(value, index, arr) {
+        var filteredTransitions = this.environment.artifacts.filter(function (value, index, arr) {
 
             function checkSources(placeStateMap, transition) {
 
@@ -335,8 +376,8 @@ class Player extends Engine {
             this.show(showMenu);
         } else {
 
-             for (var iArtifact in this.artifacts) {
-                var filteredPlaces = this.artifacts.filter(function(value, index, arr) {
+            for (var iArtifact in this.artifacts) {
+                var filteredPlaces = this.artifacts.filter(function (value, index, arr) {
                     return value.type == PLACE;
                 });
 
@@ -345,7 +386,7 @@ class Player extends Engine {
                 }
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
-                      this.updateTransition(this.artifacts[iArtifact], true);
+                    this.updateTransition(this.artifacts[iArtifact], true);
                 } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
                     this.updateTransition(this.artifacts[iArtifact], false);
                 }
@@ -356,17 +397,17 @@ class Player extends Engine {
 
     }
 
-    mousemove(event) {}
+    mousemove(event) { }
 
-    mouseout(event) {}
+    mouseout(event) { }
 
-    mouseup(event) {}
+    mouseup(event) { }
 
-    keyup(event) {}
+    keyup(event) { }
 
-    keydown(event) {}
+    keydown(event) { }
 
-    mousedown(event) {}
+    mousedown(event) { }
 
     dblclick(event) {
 
@@ -377,7 +418,7 @@ class Player extends Engine {
     click(event) {
         var states = [];
 
-        var filteredArtifacts = this.environment.artifacts.filter(function(value, index, arr) {
+        var filteredArtifacts = this.environment.artifacts.filter(function (value, index, arr) {
             return value.within(this);
         }, this.getMousePos($('#canvas')[0], event));
 
@@ -387,7 +428,7 @@ class Player extends Engine {
             }
         }
 
-        var filteredEvents = this.environment.artifacts.filter(function(value, index, arr) {
+        var filteredEvents = this.environment.artifacts.filter(function (value, index, arr) {
 
             function checkSources(placeStateMap, transition) {
 
