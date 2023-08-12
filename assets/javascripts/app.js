@@ -427,7 +427,12 @@ $(async() => {
 
     });
 
-    
+    $('#step').on('click', (e) => {
+
+        modes[environment.mode].step();
+
+    });
+
     $('#step').on('click', (e) => {
 
         modes[environment.mode].restart();

@@ -108,6 +108,35 @@ class Player extends Engine {
 
     }
 
+    filterEvents(eventType) {
+        var filteredEvents = this.environment.artifacts.filter(function (value, index, arr) {
+
+            function checkSources(placeStateMap, transition) {
+
+                for (var targetArc in transition.sourceArcs) {
+                    var sourceId = transition.sourceArcs[targetArc].sourceId;
+                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
+
+                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                        return false;
+                    }
+
+                }
+
+                return true;
+
+            }
+
+            return (value.type == eventType && checkSources(this, value));
+
+
+
+        });
+
+        return filteredEvents;
+
+    };
+
     /**
      * Draw the Objects
      * 
@@ -266,10 +295,10 @@ class Player extends Engine {
 
                 if (this.environment.activeTransitionMap.hasOwnProperty(processes[process].id)) {
                     html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 53, 25, 0.6);"></img>`;
+                        `height:16px; margin-top:-2px; margin-right:4px;"></img>`;
                 } else {
                     html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                        `height:16px; margin-top:-2px; margin-right:4px;"></img>`;
                 }
 
                 html += `</td>`;
@@ -470,4 +499,10 @@ class Player extends Engine {
 
     }
 
+    step() {
+
+        var activeProcess = this.filterEvents(PROCESS);
+
+    }
+    
 }

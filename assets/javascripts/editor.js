@@ -1336,11 +1336,9 @@ class Editor extends Engine {
     }
 
     restart() {
-
     }
     
     step() {
-
     }
 
 }
