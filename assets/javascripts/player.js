@@ -87,6 +87,10 @@ class Player extends Engine {
     updateTransition(transition, activate = false) {
         var element = document.getElementById(`img-${transition.id}`);
 
+        if (transition.type == PROCESS) {
+            return;
+        }
+
         if (activate) {
             element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
         } else {
@@ -200,32 +204,33 @@ class Player extends Engine {
     }
 
     /**
-     * Show the State
+     * Sort the Artifacts given a type
+     * 
+     * @param {*} type either PLACE, PROCESS, EVENT
      * 
      */
 
+    sortArtifacts(type) {
+        return this.environment.artifacts.filter(function (value, index, arr) {
+            return value.type == type;
+        }).sort(function (from, to) {
+            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
+        });
+
+    }
+
+    /**
+     * Show the State
+     * 
+     */
     show() {
+        var places = this.sortArtifacts(PLACE);
+        var events = this.sortArtifacts(EVENT);
+        var processes = this.sortArtifacts(PROCESS);
+
         var playerMenu = document.getElementById("player_menu");
 
         var html = "";
-
-        var places = this.environment.artifacts.filter(function (value, index, arr) {
-            return value.type == PLACE;
-        }).sort(function (from, to) {
-            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
-        });
-
-        var events = this.environment.artifacts.filter(function (value, index, arr) {
-            return value.type == EVENT;
-        }).sort(function (from, to) {
-            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
-        });
-
-        var processes = this.environment.artifacts.filter(function (value, index, arr) {
-            return value.type == PROCESS;
-        }).sort(function (from, to) {
-            return (from.label < to.label ? -1 : from.label > to.label ? 1 : 0)
-        });
 
         if (places.length > 0) {
             html = `<button class="collapsible">Places</button>`;
@@ -303,7 +308,7 @@ class Player extends Engine {
 
                 html += `</td>`;
                 html += `<td>`;
-                html += events[event].label;
+                html += processes[process].label;
                 html + `</td>`;
                 html + `</tr>`;
 
@@ -500,9 +505,45 @@ class Player extends Engine {
     }
 
     step() {
+        var states = [];
 
-        var activeProcess = this.filterEvents(PROCESS);
+        var filterProcesses = this.environment.artifacts.filter(function (value, index, arr) {
+
+            function checkSources(placeStateMap, transition) {
+
+                for (var targetArc in transition.sourceArcs) {
+                    var sourceId = transition.sourceArcs[targetArc].sourceId;
+                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
+
+                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                        return false;
+                    }
+
+                }
+
+                return true;
+
+            }
+
+            return (value.type == PROCESS && checkSources(this, value));
+
+        }, this.environment.placeStateMap);
+
+        console.log("Process: " + filterProcesses.length);
+
+        for (var prop in this.environment.activeTransitionMap) {
+            if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
+                delete this.environment.activeTransitionMap[prop];
+            }
+        }
+
+        for (var transition in filterProcesses) {
+            this.environment.activeTransitionMap[filterProcesses[transition].id] = filterProcesses[transition].color;
+            states.push(this.processTransition(filterProcesses[transition]));
+        }
+
+        this.__animator.processStates(states, redraw);
 
     }
-    
+
 }
