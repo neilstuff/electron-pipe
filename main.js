@@ -106,7 +106,8 @@ ipcMain.on('showSaveDialog', async function(event, arg) {
 });
 
 ipcMain.on('showOpenDialog', async function(event, arg) {
-    var result = await dialog.showOpenDialog(os.type() == 'Windows_NT' ? {
+    console.log(os.type());
+    var result = await dialog.showOpenDialog(os.type() != 'Darwin' ? {
         properties: ['createDirectory'],
         filters: [
             { name: 'zip', extensions: ['zip'] },
