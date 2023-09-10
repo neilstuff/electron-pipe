@@ -5,8 +5,6 @@ const CONTAINER = 2;
 const PROCESS = 3;
 const EVENT = 4;
 
-const SPRITE = 5;
-
 class Editor extends Engine {
 
     constructor(frame, canvas, placeholder, images, environment) {

@@ -9,7 +9,6 @@ class Place extends Artifact {
 
         this.__editing = false;
         this.__color = 'rgba(255, 255, 255, 1.0)';
-        this.__sprite = null;      
         this.__icon = null;
 
         this.__category = PLACE;
