@@ -83,7 +83,7 @@ class Place extends Artifact {
 
         }
 
-        this.drawIcon(context, this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.2);
+        this.drawIcon(context, this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.1);
 
     }
 
@@ -164,11 +164,11 @@ class Place extends Artifact {
 
         if (this.environment.decorate) {
             this.decorate(context);
+            this.drawIcon(context, (this.__selected) ? 0.8 : 0.1);
         } else {
             this.drawState(context);
         }
 
-        this.drawIcon(context, (this.__selected) ? 1.0 : 0.2);
         this.drawLabel(context);
 
     }
