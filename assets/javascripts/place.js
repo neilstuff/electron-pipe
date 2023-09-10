@@ -67,7 +67,7 @@ class Place extends Artifact {
 
     }
 
-    drawFill(context) {
+    drawState(context) {
 
         if (this.id in this.environment.placeStateMap) {
             if (this.environment.placeStateMap[this.id].display) {
@@ -80,6 +80,8 @@ class Place extends Artifact {
 
                 }
 
+            } else {
+                this.drawIcon(context, 0.2);
             }
 
         }
@@ -163,15 +165,17 @@ class Place extends Artifact {
 
         if (this.environment.decorate) {
             this.decorate(context);
+            
+            if (this.__icon) {
+
+                this.drawIcon(context, (this.__selected) ? 1.0 : 0.2);
+
+            } 
+
         } else {
-            this.drawFill(context);
+            this.drawState(context);
         }
 
-        if (this.__icon) {
-
-            this.drawIcon(context, (this.__selected) ? 1.0 : 0.2);
-
-        } 
 
         this.drawLabel(context);
 
