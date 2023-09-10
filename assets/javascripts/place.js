@@ -46,6 +46,11 @@ class Place extends Artifact {
     }
 
     drawIcon(context, alpha) {
+
+        if (!this.icon == null) {
+            return;
+        }
+
         context.save();
         context.globalAlpha = alpha;
 
@@ -57,6 +62,7 @@ class Place extends Artifact {
         context.drawImage(image, this.__center.x - 16, this.__center.y - 54, 32, 32);
         context.restore();
     }
+
     drawTokenCount(context, tokens) {
         let count = `${tokens}`;
         let offset = this.getTextWidth(count, "12px Arial");
@@ -76,17 +82,12 @@ class Place extends Artifact {
 
                 if (this.__icon) {
 
-                    this.drawIcon(context, this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.2);
+                    this.drawIcon(context,  this.tokens > 0 ? 1.0 : 0.2);
 
                 }
 
             } else {
-
-                if (this.__icon) {
-
-                    this.drawIcon(context,  this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.2);
-
-                }
+                this.drawIcon(context, this.tokens > 0 ? 1.0 : 0.2);
             }
 
         }
@@ -170,18 +171,11 @@ class Place extends Artifact {
 
         if (this.environment.decorate) {
             this.decorate(context);
-            
-            if (this.__icon) {
-
-                this.drawIcon(context, (this.__selected) ? 1.0 : 0.2);
-
-            } 
-
         } else {
             this.drawState(context);
         }
 
-
+        this.drawIcon(context, (this.__selected) ? 1.0 : 0.2);
         this.drawLabel(context);
 
     }
