@@ -76,12 +76,17 @@ class Place extends Artifact {
 
                 if (this.__icon) {
 
-                    this.drawIcon(context,  this.tokens > 0 ? 1.0 : 0.2);
+                    this.drawIcon(context, this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.2);
 
                 }
 
             } else {
-                this.drawIcon(context, 0.2);
+
+                if (this.__icon) {
+
+                    this.drawIcon(context,  this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.2);
+
+                }
             }
 
         }
