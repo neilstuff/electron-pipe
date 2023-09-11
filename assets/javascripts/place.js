@@ -164,7 +164,7 @@ class Place extends Artifact {
 
         if (this.environment.decorate) {
             this.decorate(context);
-            this.drawIcon(context, (this.__selected) ? 0.8 : 0.1);
+            this.drawIcon(context, (this.__selected) ? 0.8 : 0.4);
         } else {
             this.drawState(context);
         }
