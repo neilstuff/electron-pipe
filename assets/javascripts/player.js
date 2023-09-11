@@ -11,6 +11,7 @@ class Player extends Engine {
     notify() {
 
         document.getElementById("disable_menu").style.display = "inline-block";
+        document.getElementById("disable_toolbar").style.display = "inline-block";
         document.getElementById("tool_menu").style.opacity = "0.5";
         document.getElementById("player_menu").style.display = "inline-block";
         document.getElementById("placeholder").style.display = "none";

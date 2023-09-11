@@ -1325,6 +1325,7 @@ class Editor extends Engine {
 
     notify() {
         document.getElementById("disable_menu").style.display = "none";
+        document.getElementById("disable_toolbar").style.display = "none";
         document.getElementById("player_menu").style.display = "none";
         
         document.getElementById("tool_menu").style.opacity = "1";

@@ -42,7 +42,8 @@
         <img src="assets/images/pipe.png" style="width:32px; height:32px;" alt="Pipe"></img>
     </div>
 
-    <div id="toolbar" style="-webkit-app-region: drag;">
+    <div id="toolbar" style="-webkit-app-region: drag;"> 
+
         <div id="layout">
             <h1 style="height: 30px; padding-left:32px; vertical-align:center">Pipe - Petri-Net Editor</h1>
 
@@ -50,6 +51,9 @@
                 <p id="filename"></p>
             </div>
 
+            <div id="disable_toolbar" style="position:absolute; top:0px; right:80px; width:280px;  height:32px; background-color: rgba(0,0,0,0.1); z-index: 1; display: none; opacity:0.2;"> 
+            </div>   
+    
             <div style="position: absolute; top:0px; right:80px; padding-left:10px;">
                 <button class="button far fa-file fa-1x top-icon" id="new" style="-webkit-app-region: no-drag; font-size:20px;"></button>
                 <button class="button fas fa-folder-open fa-1x top-icon" id="load" style="-webkit-app-region: no-drag; font-size:20px;"></button>
