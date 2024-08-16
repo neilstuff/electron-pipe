@@ -418,28 +418,28 @@ $(async() => {
         modes[environment.mode].notify();
         modes[environment.mode].draw();
 
+        return false;
+
+
     });
 
     $('#restart').on('click', (e) => {
-
+        
         modes[environment.mode].restart();
         modes[environment.mode].draw();
+
+        return false;
 
     });
 
     $('#step').on('click', (e) => {
 
         modes[environment.mode].step();
-
-    });
-
-    $('#step').on('click', (e) => {
-
-        modes[environment.mode].restart();
         modes[environment.mode].draw();
 
-    });
+        return false;
 
+    });
 
     $('#fill').on('click', (e) => {
         var node = document.createElement("input");

@@ -11,7 +11,7 @@ class Transition extends Artifact {
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__measure = 0;
-        this.__confidence = 100;
+        this.__timer = 0;
 
         this.setStatus();
 
@@ -27,12 +27,20 @@ class Transition extends Artifact {
         this.__measure = measure;
     }
 
-    get confidence() {
-        return this.__confidence;
+    get timer() {
+        return this.__timer = 0;
     }
 
-    set confidence(confidence) {
-        this.__confidence = confidence;
+    set timer(timer) {
+        this.__timer = timer;
+    }
+
+    incrementMeasure() {
+        this.__measure += 1;
+    }
+
+    decrementMeasure() {
+        this.__measure -= this.__measure == 0 ? 0 : 1;
     }
 
     decorate(context) {
@@ -65,13 +73,6 @@ class Transition extends Artifact {
             context.fillStyle = "rgba(0, 0, 0, 0.5)";
             context.font = "12px Arial";
 
-            if (this.__confidence < 100) {
-                context.fillText(this.__confidence.toString(), this.__center.x + 23, this.__center.y + 4);
-            } else {
-                context.fillText(this.__confidence.toString(), this.__center.x + 19, this.__center.y + 4);
-
-            }
-
         }
 
         this.drawMenu(context);
@@ -82,7 +83,9 @@ class Transition extends Artifact {
 
     drawMeasure(context) {
 
-        this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__confidence);
+        if (this.__timer > 0) {
+            this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__timer = 0);
+        }
 
         let offset = this.getTextWidth(this.__measure + " ms", "12px Arial");
 
@@ -141,10 +144,10 @@ class Transition extends Artifact {
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.incrementConfidence();
+            this.incrementMeasure();
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
-            this.decrementConfidence();
+            this.decrementMeasure();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
             this.measure(editor);
@@ -152,19 +155,6 @@ class Transition extends Artifact {
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
-
-    }
-
-    incrementConfidence() {
-
-        this.__confidence = (this.__confidence == 100) ? 100 : this.__confidence + 1;
-
-    }
-
-    decrementConfidence() {
-
-        this.__confidence = (this.__confidence == 0) ? 0 : this.__confidence - 1;
-
     }
 
     measure(editor) {
@@ -215,7 +205,7 @@ class Transition extends Artifact {
             type: this.__type,
             label: this.__label,
             measure: this.__measure,
-            confidence: this.__confidence,
+            confidence: this.__timer = 0,
             center: {
                 x: this.x,
                 y: this.y
