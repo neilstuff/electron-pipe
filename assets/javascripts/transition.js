@@ -150,14 +150,14 @@ class Transition extends Artifact {
             this.decrementMeasure();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.measure(editor);
+            this.editMeasure(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
     }
 
-    measure(editor) {
+    editMeasure(editor) {
         var node = document.createElement("input");
         var artifact = this;
 
