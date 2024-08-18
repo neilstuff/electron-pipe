@@ -10,6 +10,7 @@ class Place extends Artifact {
         this.__editing = false;
         this.__color = 'rgba(255, 255, 255, 1.0)';
         this.__icon = null;
+        this.__canvas = null;
 
         this.__category = PLACE;
 
@@ -41,26 +42,49 @@ class Place extends Artifact {
         return this.__icon;
     }
 
-    set icon(icon) {
-        this.__icon = icon;
-    }
+     set icon(icon) {
 
-    drawIcon(context, alpha) {
+        async function convert(__this, icon) {
 
-        if (this.__icon == null) {
+            var image = await __this.convertIcon(icon);
+
+            __this.__canvas.getContext("2d").drawImage(image, 0, 0, 32, 32);
+
+            return image;
+
+        }
+
+        if (icon == null) {
             return;
         }
 
+        this.__icon = icon;
+
+        this.__canvas = document.createElement("canvas");
+        
+        this.__canvas.width = 32;
+        this.__canvas.height = 32;
+
+        convert(this, icon)
+
+    }
+
+    drawIcon(context, alpha) {
+ 
+        if (this.__canvas == null) {
+            return;
+        }
+
+    
         context.save();
         context.globalAlpha = alpha;
 
-        var image = new Image();
-        image.src = this.__icon;
-
         context.fillStyle = '#FFF';
         context.fillRect(this.__center.x - 16, this.__center.y - 54, 32, 32);
-        context.drawImage(image, this.__center.x - 16, this.__center.y - 54, 32, 32);
+
+        context.drawImage(this.__canvas, this.__center.x - 16, this.__center.y - 54);
         context.restore();
+         
     }
 
     drawTokenCount(context, tokens) {
@@ -191,7 +215,7 @@ class Place extends Artifact {
         this.loadFile(".png", async function (files) {
             let icon = await __this.base64Upload(files[0]);
 
-            __this.__icon = icon['default'];
+            __this.icon = icon['default'];
 
         });
 

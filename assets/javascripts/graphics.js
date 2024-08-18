@@ -1,7 +1,7 @@
 'use strict'
 class Graphics {
 
-    constructor() {}
+    constructor() { }
 
     getTextWidth(text, font) {
         var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas"));
@@ -48,7 +48,7 @@ class Graphics {
     getPointFromEnd(startX, startY, endX, endY, length) {
         var dx = startX - endX;
         var dy = startY - endY;
-        var distance = Math.sqrt(dx*dx + dy*dy);
+        var distance = Math.sqrt(dx * dx + dy * dy);
 
         dx /= distance;
         dy /= distance;
@@ -66,7 +66,7 @@ class Graphics {
         loadButton.setAttribute("type", "file");
         loadButton.accept = filter;
 
-        loadButton.addEventListener('change', function(event) {
+        loadButton.addEventListener('change', function (event) {
             callback(event.target.files);
 
             return false;
@@ -97,6 +97,29 @@ class Graphics {
             reader.readAsDataURL(file);
 
         });
+
+    }
+
+    convertIcon(src) {
+
+        return new Promise(async (accept, reject) => {
+
+            var image = new Image();
+
+            image.onload = function () {
+                try {
+                    accept(image);
+
+                } catch (e) {
+                    alert(e);
+                }
+                return;
+            }
+
+            image.src = src
+
+        });
+
 
     }
 

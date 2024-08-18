@@ -5,6 +5,8 @@ var serializer = null;
 
 var modes = {};
 
+var display = null;
+
 var environment = {
     mode: 0,
     connector: 0,

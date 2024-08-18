@@ -1331,6 +1331,8 @@ class Editor extends Engine {
         document.getElementById("tool_menu").style.opacity = "1";
 
         document.getElementById("placeholder").style.display = "inline-block";
+        
+        document.getElementById("disable_playbar").style.display = "inline-block";
 
         this.__environment.decorate = true;
 

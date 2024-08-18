@@ -15,7 +15,9 @@ class Player extends Engine {
         document.getElementById("tool_menu").style.opacity = "0.5";
         document.getElementById("player_menu").style.display = "inline-block";
         document.getElementById("placeholder").style.display = "none";
-
+        
+        document.getElementById("disable_playbar").style.display = "none";
+      
         this.environment.decorate = false;
 
         this.start();
