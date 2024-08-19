@@ -10,8 +10,7 @@ class Transition extends Artifact {
         this.__category = TRANSITION;
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
-        this.__measure = 0;
-        this.__timer = 0;
+        this.__measure = 0
 
         this.setStatus();
 
@@ -27,16 +26,8 @@ class Transition extends Artifact {
         this.__measure = measure;
     }
 
-    get timer() {
-        return this.__timer = 0;
-    }
-
-    set timer(timer) {
-        this.__timer = timer;
-    }
-
     incrementMeasure() {
-        this.__measure += 1;
+        this.__measure = parseInt(this.__measure) + 1;
     }
 
     decrementMeasure() {
