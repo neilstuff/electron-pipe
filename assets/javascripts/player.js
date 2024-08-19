@@ -4,6 +4,10 @@ class Player extends Engine {
 
         this.__animator = new Animator(canvas);
 
+        this.__timmers = {
+
+        };
+
     }
 
     leave(id) { }
