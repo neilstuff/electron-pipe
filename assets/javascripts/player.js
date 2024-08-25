@@ -362,6 +362,14 @@ class Player extends Engine {
      */
     start(showMenu = true) {
 
+        for (var artificat in this.environment.artifacts) {
+           
+            if (this.environment.artifacts[artifact].type == PROCESS || this.environment.artifacts[artifact].type == EVENT) {
+                this.environment.artifacts[artifact].timer = 0;
+            }
+
+        }
+
         for (var prop in this.environment.placeStateMap) {
             if (this.environment.placeStateMap.hasOwnProperty(prop)) {
                 delete this.environment.placeStateMap[prop];
