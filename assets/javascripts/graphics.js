@@ -107,12 +107,8 @@ class Graphics {
             var image = new Image();
 
             image.onload = function () {
-                try {
-                    accept(image);
+                accept(image);
 
-                } catch (e) {
-                    alert(e);
-                }
                 return;
             }
 
