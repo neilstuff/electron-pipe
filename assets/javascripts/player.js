@@ -3,8 +3,9 @@ class Player extends Engine {
         super(frame, canvas, images, environment);
 
         this.__animator = new Animator(canvas);
+        this.__canvas = canvas;
 
-        this.__timmers = {
+        this.__activators = {
 
         };
 
@@ -61,6 +62,12 @@ class Player extends Engine {
             "sourceArcs": [],
             "outputs": [],
             "targetArcs": []
+        }
+
+        if (transition.timer > 0) {
+
+
+            return;
         }
 
         for (var targetArc in transition.sourceArcs) {
@@ -195,6 +202,7 @@ class Player extends Engine {
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
                     var context = this.canvas.getContext('2d');
+        
                     this.artifacts[iArtifact].activate(context);
                     this.updateTransition(this.artifacts[iArtifact], true);
                 } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
@@ -362,14 +370,16 @@ class Player extends Engine {
      */
     start(showMenu = true) {
 
-        for (var artificat in this.environment.artifacts) {
+        this.environment.artifacts.forEach(function (value, index) {
            
-            if (this.environment.artifacts[artifact].type == PROCESS || this.environment.artifacts[artifact].type == EVENT) {
-                this.environment.artifacts[artifact].timer = 0;
+            if (value.type == PROCESS || value.type == EVENT) {
+
+                this.__activators[value.id] = new Activator(this.__canvas, value);
+
             }
 
-        }
-
+        }, this);
+ 
         for (var prop in this.environment.placeStateMap) {
             if (this.environment.placeStateMap.hasOwnProperty(prop)) {
                 delete this.environment.placeStateMap[prop];
@@ -506,7 +516,8 @@ class Player extends Engine {
         }
 
         for (var transition in filteredEvents) {
-            this.environment.activeTransitionMap[filteredEvents[transition].id] = filteredEvents[transition].color;
+            this.environment.activeTransitionMap[filteredEvents[transition].id] = filteredEvents[transition].id;
+            this.__activators[filteredEvents[transition].id].activate();
         }
 
         this.__animator.processStates(states, redraw);
@@ -521,6 +532,17 @@ class Player extends Engine {
 
     step() {
         var states = [];
+
+        this.environment.artifacts.forEach(function (value, index) {
+           
+            if (value.type == PROCESS || value.type == EVENT) {
+                
+                this.__activators[value.id].progress(parseInt(document.getElementById("progression")));
+                this.__activators[value.id].draw();
+
+            }
+
+        }, this);
 
         var filterProcesses = this.environment.artifacts.filter(function (value, index, arr) {
 
@@ -544,8 +566,6 @@ class Player extends Engine {
 
         }, this.environment.placeStateMap);
 
-        console.log("Process: " + filterProcesses.length);
-
         for (var prop in this.environment.activeTransitionMap) {
             if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
                 delete this.environment.activeTransitionMap[prop];
@@ -555,6 +575,7 @@ class Player extends Engine {
         for (var transition in filterProcesses) {
             this.environment.activeTransitionMap[filterProcesses[transition].id] = filterProcesses[transition].color;
             states.push(this.processTransition(filterProcesses[transition]));
+            this.__activators[filterProcesses[transition].id].activate();
         }
 
         this.__animator.processStates(states, redraw);

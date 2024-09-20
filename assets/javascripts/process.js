@@ -17,7 +17,7 @@ class Process extends Transition {
         context.filter = 'blur(1px)';
         context.stroke();
         context.filter = 'none';
-
+        
     }
 
     draw(context) {
@@ -69,7 +69,7 @@ class Process extends Transition {
         context.fill();
         context.stroke();
 
-        this.drawMeasure(context);
+        this.drawRuntime(context);
 
         if (this.environment.decorate) {
             this.decorate(context);

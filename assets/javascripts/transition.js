@@ -10,8 +10,9 @@ class Transition extends Artifact {
         this.__category = TRANSITION;
 
         this.__color = 'rgba(255, 255, 255, 1.0)';
-        this.__measure = 0;
-        this.__timer = 0;
+        this.__variance = 0;
+        this.__runtime = 0;
+        this.__inhibited = false;
 
         this.setStatus();
 
@@ -19,28 +20,37 @@ class Transition extends Artifact {
 
     }
 
-    get measure() {
-        return this.__measure;
+    get variance() {
+        return this.__variance;
     }
 
-    set measure(measure) {
-        this.__measure = measure;
+    set variance(variance) {
+        this.__variance = variance;
     }
 
-    incrementMeasure() {
-        this.__measure = parseInt(this.__measure) + 1;
+    incrementVariance() {
+        this.__variance = this.__variance == 100 ? 100 : parseInt(this.__variance) + 1;
     }
 
-    decrementMeasure() {
-        this.__measure -= this.__measure == 0 ? 0 : 1;
+    decrementVariance() {
+        this.__variance -= this.__variance == 0 ? 0 : 1;
+    }
+    
+    get runtime() {
+        return this.__runtime;
     }
 
-    get timer() {
-        return this.__timer;
+    set runtime(runtime) {
+        this.__runtime = runtime;
     }
 
-    set timer(timer) {
-        this.__timer = timer;
+
+    get inhibited() {
+        return this.__inhibited;
+    }
+
+    set inhibited(inhibited) {
+        this.__inhibited = inhibited;
     }
 
     decorate(context) {
@@ -81,18 +91,18 @@ class Transition extends Artifact {
 
     }
 
-    drawMeasure(context) {
+    drawRuntime(context) {
 
         if (this.__timer > 0) {
             this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__timer = 0);
         }
 
-        let offset = this.getTextWidth(this.__measure + " ms", "12px Arial");
+        let offset = this.getTextWidth(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance + "%", "12px Arial");
 
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
         context.font = "12px Arial";
 
-        context.fillText(this.__measure + " ms", this.__center.x - (offset / 2), this.__center.y - 24);
+        context.fillText(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance + "%", this.__center.x - (offset / 2), this.__center.y - 24);
 
     }
 
@@ -120,7 +130,7 @@ class Transition extends Artifact {
             return true;
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.__measureSelectable = true;
+            this.__runtimeSelectable = true;
             return true;
         }
 
@@ -144,25 +154,25 @@ class Transition extends Artifact {
 
         if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.incrementMeasure();
+            this.incrementVariance();
         } else if (x > this.__center.x + 18 && x < this.__center.x + 34 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
-            this.decrementMeasure();
+            this.decrementVariance();
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y - 20 && y < this.__center.y - 4) {
-            this.editMeasure(editor);
+            this.editRuntime(editor);
         } else if (x > this.__center.x - 36 && x < this.__center.x - 24 &&
             y > this.__center.y + 4 && y < this.__center.y + 24) {
             this.rename(editor);
         }
     }
 
-    editMeasure(editor) {
+    editRuntime(editor) {
         var node = document.createElement("input");
         var artifact = this;
 
         node.setAttribute("type", "number");
-        node.value = this.__measure;
+        node.value = this.__runtime;
 
         $(`#${this.__frame}`)[0].appendChild(node);
 
@@ -178,7 +188,7 @@ class Transition extends Artifact {
 
         node.addEventListener("blur", function() {
 
-            artifact.__measure = node.value;
+            artifact.__runtime = node.value;
             artifact.updateArcs();
 
             editor.draw();
@@ -204,8 +214,8 @@ class Transition extends Artifact {
             id: this.__id,
             type: this.__type,
             label: this.__label,
-            measure: this.__measure,
-            confidence: this.__timer = 0,
+            runtime: this.__runtime,
+            variance: this.__variance,
             center: {
                 x: this.x,
                 y: this.y

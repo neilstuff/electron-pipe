@@ -34,7 +34,7 @@ class Event extends Transition {
         context.fill();
         context.stroke();
 
-        this.drawMeasure(context);
+        this.drawRuntime(context); 
 
         if (this.environment.decorate) {
             this.decorate(context);
@@ -45,6 +45,7 @@ class Event extends Transition {
         this.drawLabel(context);
 
         context.restore();
+
     }
 
 }

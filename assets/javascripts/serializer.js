@@ -105,12 +105,12 @@ class Serializer {
                     object.color = ('color' in artifact) ? artifact['color'] : 'rgba(255, 255, 255, 1.0)';
                 }
 
-                if ('measure' in object) {
-                    object.measure = ('measure' in artifact) ? artifact['measure'] : 0;
+                if ('runtime' in object) {
+                    object.runtime = ('runtime' in artifact) ? artifact['runtime'] : 0;
                 }
 
-                if ('confidence' in object) {
-                    object.confidence = ('confidence' in artifact) ? artifact['confidence'] : 100;
+                if ('variance' in object) {
+                    object.variance = ('variance' in artifact) ? artifact['variance'] : 0;
                 }
 
                 if ('icon' in object) {

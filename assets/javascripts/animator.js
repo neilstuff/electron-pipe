@@ -2,6 +2,7 @@ class Animator {
     constructor(canvas) {
 
         this.__context = canvas.getContext('2d');
+    
     }
 
     getCoordinates(source, target) {
@@ -57,11 +58,13 @@ class Animator {
     }
 
     drawToken(context, x, y, radius = 4) {
+
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fillStyle = "#000000";
         context.fill();
         context.closePath();
+    
     }
     
     drawTokens(context, points) {
@@ -113,7 +116,6 @@ class Animator {
             for (var sourceArc in states[state].sourceArcs) {
                 var arc = states[state].sourceArcs[sourceArc];
                 
-
                 sourcePaths.push({
                     "arc": arc,
                     "path": this.addPath(arc)
@@ -134,7 +136,8 @@ class Animator {
 
             animations[transition.id] = {
                 "sourcePaths": sourcePaths,
-                "targetPaths": targetPaths
+                "targetPaths": targetPaths,
+                "transition": transition
             }
 
         }
@@ -185,6 +188,8 @@ class Animator {
                 draw(false);
 
                 self.drawTokens(self.__context, points);
+
+                animations[events[event]].transition.draw(self.__context);
    
                 window.requestAnimationFrame(animate);
 
@@ -201,6 +206,8 @@ class Animator {
 
                     self.drawTokens(self.__context, points);
                     self.drawDestinations(self.__context, destinations);
+                    
+                    animations[events[event]].transition.draw(self.__context);
 
                     window.requestAnimationFrame(animate);
 
