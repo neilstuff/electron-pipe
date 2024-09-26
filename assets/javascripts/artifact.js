@@ -300,7 +300,7 @@ class Artifact extends Component {
     drawLabel(context) {
         let offset = this.getTextWidth(this.__label, "12px Arial");
 
-        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.fillStyle = "rgba(0, 0, 0, 0.8)";
         context.font = "12px Arial";
         context.fillText(this.__label, this.__center.x - (offset / 2), this.__center.y + 32);
 

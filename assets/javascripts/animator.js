@@ -105,36 +105,39 @@ class Animator {
     }
 
     processStates(states, draw) {
-        var animations = {}
+        var animations = {};
 
         for (var state in states) {
             var transition = states[state].transition;
-
             var sourcePaths = [];
             var targetPaths = [];
 
             for (var sourceArc in states[state].sourceArcs) {
+
                 var arc = states[state].sourceArcs[sourceArc];
                 
                 sourcePaths.push({
                     "arc": arc,
                     "path": this.addPath(arc)
                 });
-
+            
             }
 
-            for (var targetArc in states[state].targetArcs) {
+            if (states[state].transition.elapsed == 0) {
 
-                var arc = states[state].targetArcs[targetArc];
+                for (var targetArc in states[state].targetArcs) {
 
-                targetPaths.push({
-                    "arc": arc,
-                    "path": this.addPath(arc)
-                });
+                    var arc = states[state].targetArcs[targetArc];
 
+                    targetPaths.push({
+                        "arc": arc,
+                        "path": this.addPath(arc)
+                    });
+
+                }
             }
 
-            animations[transition.id] = {
+            animations[transition.transition.id] = {
                 "sourcePaths": sourcePaths,
                 "targetPaths": targetPaths,
                 "transition": transition
@@ -149,6 +152,7 @@ class Animator {
     activate(animations, draw) {
         var self = this;
         var events = Object.keys(animations);
+
         var destinations = [];
 
         function animate(timeStamp) {

@@ -4,22 +4,23 @@ class Activator extends Graphics {
         super();
 
         this.__context = canvas.getContext('2d');
-        this.__elapased = 0;
+        this.__elapsed = 0;
         this.__transition = transition;
         this.__duration = 0;
+        this.__elapsed = 0;
 
     }
 
     get elapsed() {
-        return this.__elapased;
+        return this.__elapsed;
     }
 
     set elapsed(elapsed) {
-        this.__elpased = elapsed;
+        this.__elapsed = elapsed;
     }
     
     get duration() {
-        return this.__timer;
+        return this.__duration;
     }
 
     set duration(duration) {
@@ -30,32 +31,30 @@ class Activator extends Graphics {
         return this.__transition;
     }
 
-    get targetArcs() {
-        return this.transition.targetArcs;
-    }
-
-    get sourceArcs() {
-        return this.transition.sourceArcs;
-    }
-
     activate() {
+      
+        this.duration = this.transition.runtime;
 
-        this.__duration = this.transition.runtime + Math.floor((this.transition.runtime * Math.random() ) * this.transition.variance/100);
-
-        console.log(this.__duration);
+        console.log("Activate - " + this.duration + ":" + this.transition.runtime + ":" +  this.transition.variance);
+        this.elapsed = this.duration;
 
     }
 
     progress(unit) {
 
-        this.__elapased =  this.__elapased - unit < 0 ? 0 : this.__elapased - unit;
+        console.log("Progress - " + this.duration + ":" + this.transition.runtime + ":" +  this.transition.variance );
+        this.elapsed =  this.elapsed - unit < 0 ? 0 : this.elapsed - unit;
+   
 
     }
 
     draw() {
 
         this.transition.draw(this.__context);
-        this.drawDonut(this.__context, this.transition.center.x, this.transition.center.y, 7, 0, Math.PI * 2, 5, "#fff", 100);
+
+        if (this.elapsed > 0) {
+            this.drawDonut(this.__context, this.transition.center.x, this.transition.center.y, 7, 0, Math.PI * 2, 5, "#fff", (this.elapsed * 100)/this.duration);
+        }
 
     }
 

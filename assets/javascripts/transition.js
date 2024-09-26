@@ -97,12 +97,12 @@ class Transition extends Artifact {
             this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__timer = 0);
         }
 
-        let offset = this.getTextWidth(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance + "%", "12px Arial");
+        let offset = this.getTextWidth(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance, "12px Arial");
 
-        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.fillStyle = "rgba(0, 0, 0, 0.8)";
         context.font = "12px Arial";
 
-        context.fillText(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance + "%", this.__center.x - (offset / 2), this.__center.y - 24);
+        context.fillText(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance, this.__center.x - (offset / 2), this.__center.y - 24);
 
     }
 

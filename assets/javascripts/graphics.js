@@ -38,7 +38,7 @@ class Graphics {
         var data = {
             numberOfParts: 2,
             parts: { "pt": [confidence, 100 - confidence] }, //percentage of each parts 
-            colors: { "cs": ["rgba(0,100,0,0.8)", "rgba(255,0,0,0.5)"] } //color of each part
+            colors: { "cs": ["rgba(0,100,0,0.8)", "rgba(0,100,0,0.3)"] } //color of each part
         };
 
         draw(data);
