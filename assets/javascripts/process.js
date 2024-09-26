@@ -13,8 +13,6 @@ class Process extends Transition {
         context.setLineDash([0, 0]);
         context.strokeStyle = "rgba(1, 50, 32, 0.6)";
 
-  //      context.rect(this.__center.x - 20, this.__center.y - 20, 40, 40);
-
         context.arc(this.__center.x, this.__center.y, 20, 0, 2 * Math.PI);
 
         context.filter = 'blur(1px)';

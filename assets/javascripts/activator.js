@@ -31,21 +31,24 @@ class Activator extends Graphics {
         return this.__transition;
     }
 
+    isActive() {
+
+        return this.elapsed > 0;
+
+    }
+
     activate() {
       
         this.duration = this.transition.runtime;
 
-        console.log("Activate - " + this.duration + ":" + this.transition.runtime + ":" +  this.transition.variance);
         this.elapsed = this.duration;
 
     }
 
     progress(unit) {
 
-        console.log("Progress - " + this.duration + ":" + this.transition.runtime + ":" +  this.transition.variance );
         this.elapsed =  this.elapsed - unit < 0 ? 0 : this.elapsed - unit;
    
-
     }
 
     draw() {

@@ -20,9 +20,9 @@ class Player extends Engine {
         document.getElementById("tool_menu").style.opacity = "0.5";
         document.getElementById("player_menu").style.display = "inline-block";
         document.getElementById("placeholder").style.display = "none";
-        
+
         document.getElementById("disable_playbar").style.display = "none";
-      
+
         this.environment.decorate = false;
 
         this.start();
@@ -81,7 +81,7 @@ class Player extends Engine {
             var targetId = transition.targetArcs[sourceArc].targetId;
 
             if (this.__activators[transition.id].elapsed == 0) {
-               this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
+                this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
                     transition.targetArcs[sourceArc].tokens;
 
             }
@@ -101,16 +101,17 @@ class Player extends Engine {
         var element = document.getElementById(`img-${transition.id}`);
 
         if (transition.type == PROCESS) {
-            return;
-        }
-
-        if (activate) {
-            element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
+            if (this.__activators[transition.id].isActive()) {
+                element.style.border = "2px solid rgba(1, 50, 32)";
+                element.style.borderRadius = "8px";
+            }
         } else {
-            element.style.border = "2px solid black";
-
+            if (activate) {
+                element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
+            } else {
+                element.style.border = "2px solid black";
+            }
         }
-
     }
 
     updateState(place) {
@@ -207,9 +208,9 @@ class Player extends Engine {
                 }
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
-        
+
                     var context = this.canvas.getContext('2d');
-        
+
                     this.artifacts[iArtifact].activate(context);
 
 
@@ -225,7 +226,7 @@ class Player extends Engine {
             } else {
                 this.artifacts[iArtifact].draw(context);
             }
-            
+
             this.artifacts[iArtifact].drawSourceArcs(context);
 
         }
@@ -327,9 +328,11 @@ class Player extends Engine {
                 html += `<tr style="height: 20px; margin-top:4px;">`;
                 html += `<td>`;
 
-                if (this.environment.activeTransitionMap.hasOwnProperty(processes[process].id)) {
+                console.log(processes[process].id, this.__activators[processes[process].id].elapsed);
+
+                if (this.__activators[processes[process].id].isActive()) {
                     html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px;"></img>`;
+                        `height:16px; margin-top:-2px; margin-right:4px; border:2px solid rgba(1, 50, 32); border-radius:8px;"></img>`;
                 } else {
                     html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
                         `height:16px; margin-top:-2px; margin-right:4px;"></img>`;
@@ -385,7 +388,7 @@ class Player extends Engine {
     start(showMenu = true) {
 
         this.environment.artifacts.forEach(function (value, index) {
-           
+
             if (value.type == PROCESS || value.type == EVENT) {
 
                 this.__activators[value.id] = new Activator(this.__canvas, value);
@@ -393,7 +396,7 @@ class Player extends Engine {
             }
 
         }, this);
- 
+
         for (var prop in this.environment.placeStateMap) {
             if (this.environment.placeStateMap.hasOwnProperty(prop)) {
                 delete this.environment.placeStateMap[prop];
@@ -427,11 +430,11 @@ class Player extends Engine {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
-                   // Direcotr Arc conditions must have sufficient tokens to fire
-                   if (transition.sourceArcs[targetArc].type == DIRECTOR && requiredTokens > placeStateMap[sourceId].tokens) {
+                    // Direcotr Arc conditions must have sufficient tokens to fire
+                    if (transition.sourceArcs[targetArc].type == DIRECTOR && requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    // Inibitor Arc conditions are satisified this will prevent the transition from firing 
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens ) {
+                        // Inibitor Arc conditions are satisified this will prevent the transition from firing 
+                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -515,7 +518,7 @@ class Player extends Engine {
 
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens ) {
+                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -554,11 +557,22 @@ class Player extends Engine {
         var states = [];
 
         this.environment.artifacts.forEach(function (value, index) {
-           
+
             if (value.type == PROCESS || value.type == EVENT) {
-                
-                this.__activators[value.id].progress(parseInt(document.getElementById("progression").value));
-                this.__activators[value.id].draw();
+
+
+                if (this.__activators[value.id].isActive()) {
+                    this.__activators[value.id].progress(parseInt(document.getElementById("progression").value));
+                    this.__activators[value.id].draw();
+
+                    if (this.__activators[value.id].elapsed == 0) {
+                        var state = this.processTransition(this.__activators[value.id].transition);
+
+                        state.sourceArcs = [];
+
+                        states.push(state);
+                    }
+                }
 
             }
 
@@ -574,7 +588,7 @@ class Player extends Engine {
 
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens ) {
+                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -587,7 +601,7 @@ class Player extends Engine {
             return (value.type == PROCESS && checkSources(this, value));
 
         }, this.environment.placeStateMap);
- 
+
         for (var prop in this.environment.activeTransitionMap) {
 
             function validate(transition) {
@@ -597,7 +611,7 @@ class Player extends Engine {
 
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens ) {
+                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -610,17 +624,17 @@ class Player extends Engine {
             if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
 
                 var transition = this.environment.activeTransitionMap[[prop]];
-                
+
                 if (!validate(transition)) {
                     delete this.environment.activeTransitionMap[prop];
                 }
-                
+
             }
         }
- 
+
         for (var transition in filterTransitions) {
 
-            
+
             this.__activators[filterTransitions[transition].id].activate();
             this.__activators[filterTransitions[transition].id].progress(parseInt(document.getElementById("progression").value));
 
