@@ -102,14 +102,14 @@ class Player extends Engine {
 
         if (transition.type == PROCESS) {
             if (this.__activators[transition.id].isActive()) {
-                element.style.border = "2px solid rgba(1, 50, 32)";
-                element.style.borderRadius = "8px";
+                element.style.border = "2px solid rgba(1, 50, 32, 0.6)";
+                element.style.borderRadius = "10px";
             }
         } else {
             if (activate) {
                 element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
             } else {
-                element.style.border = "2px solid black";
+                element.style.border = "2px solid rgba(255, 255, 255, 0.0)";
             }
         }
     }
@@ -268,13 +268,13 @@ class Player extends Engine {
             html += `<table style="margin-top: 4px;">`;
 
             for (var place in places) {
-                html += `<tr style="height: 20px;">`;
+                html += `<tr style="height: 24px;">`;
                 html += `<td>`;
 
                 if (places[place].tokens > 0) {
-                    html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:4px;"></img>`;
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle-dot.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:8px; margin-left:4px;"></img>`;
                 } else {
-                    html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:4px;"></img>`;
+                    html += `<img id="img-${places[place].id}" src="assets/images/circle.svg" style="width:16px; height:16px; margin-top: -1px; margin-right:8px; margin-left:4px;"></img>`;
                 }
 
                 html += `</td>`;
@@ -296,15 +296,19 @@ class Player extends Engine {
             html += `<table style="margin-top: 4px;">`;
 
             for (var event in events) {
-                html += `<tr style="height: 20px; margin-top:4px;">`;
+                html += `<tr style="height: 24px; margin-top:4px;">`;
                 html += `<td>`;
 
                 if (this.environment.activeTransitionMap.hasOwnProperty(events[event].id)) {
-                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(0, 0, 255, 0.6);"></img>`;
+                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` + 
+                        `margin-top:-2px; margin-right:4px; border-radius:2px; border:2px solid rgba(0, 0, 255, 0.6)"> `+
+                        `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
+                        `</img></div>`;
                 } else {
-                    html += `<img id="img-${events[event].id}" src="assets/images/square.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid black;"></img>`;
+                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` + 
+                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0)"> `+
+                    `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
+                    `</img></div>`;
                 }
 
                 html += `</td>`;
@@ -325,17 +329,21 @@ class Player extends Engine {
             html += `<table style="margin-top: 4px;">`;
 
             for (var process in processes) {
-                html += `<tr style="height: 20px; margin-top:4px;">`;
+                html += `<tr style="height: 24px; margin-top:4px;">`;
                 html += `<td>`;
 
                 console.log(processes[process].id, this.__activators[processes[process].id].elapsed);
 
                 if (this.__activators[processes[process].id].isActive()) {
-                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px; border:2px solid rgba(1, 50, 32); border-radius:8px;"></img>`;
+                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` + 
+                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 50, 32, 0.8); border-radius:10px;"> `+
+                    `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
+                    `</img></div>`;
                 } else {
-                    html += `<img id="img-${processes[process].id}" src="assets/images/cog.svg" style="width:16px; ` +
-                        `height:16px; margin-top:-2px; margin-right:4px;"></img>`;
+                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` + 
+                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0); border-radius:10px;"> `+
+                    `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
+                    `</img></div>`;              
                 }
 
                 html += `</td>`;
