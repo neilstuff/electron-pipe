@@ -64,12 +64,11 @@ class Player extends Engine {
             "targetArcs": []
         }
 
-        console.log(this.__activators[transition.id].transition.id);
-
         for (var targetArc in transition.sourceArcs) {
             var sourceId = transition.sourceArcs[targetArc].sourceId;
 
-            this.environment.placeStateMap[sourceId].tokens = this.environment.placeStateMap[sourceId].tokens -
+            this.environment.placeStateMap[sourceId].tokens = this.environment.placeStateMap[sourceId].tokens == 0 ? 0 :
+                this.environment.placeStateMap[sourceId].tokens -
                 transition.sourceArcs[targetArc].tokens;
 
             state.inputs.push(this.environment.artifactMap[sourceId]);
@@ -81,8 +80,14 @@ class Player extends Engine {
             var targetId = transition.targetArcs[sourceArc].targetId;
 
             if (this.__activators[transition.id].elapsed == 0) {
+
+                console.log(this.environment.placeStateMap[targetId].tokens);
+
                 this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
                     transition.targetArcs[sourceArc].tokens;
+
+                console.log(transition.targetArcs[sourceArc].tokens);
+                console.log(this.environment.placeStateMap[targetId]);
 
             }
 
@@ -177,7 +182,11 @@ class Player extends Engine {
 
             if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
                 var context = this.canvas.getContext('2d');
-                this.artifacts[iArtifact].activate(context);
+
+                if (!this.__activators[this.artifacts[iArtifact].id].isActive()) {
+                    this.artifacts[iArtifact].activate(context);
+                }
+
             }
 
         }
@@ -209,10 +218,12 @@ class Player extends Engine {
 
                 if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
 
-                    var context = this.canvas.getContext('2d');
 
-                    this.artifacts[iArtifact].activate(context);
+                    if (!this.__activators[this.artifacts[iArtifact].id].isActive()) {
+                        var context = this.canvas.getContext('2d');
+                        this.artifacts[iArtifact].activate(context);
 
+                    }
 
                     this.updateTransition(this.artifacts[iArtifact], true);
                 } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
@@ -239,7 +250,6 @@ class Player extends Engine {
      * @param {*} type either PLACE, PROCESS, EVENT
      * 
      */
-
     sortArtifacts(type) {
         return this.environment.artifacts.filter(function (value, index, arr) {
             return value.type == type;
@@ -300,15 +310,15 @@ class Player extends Engine {
                 html += `<td>`;
 
                 if (this.environment.activeTransitionMap.hasOwnProperty(events[event].id)) {
-                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` + 
-                        `margin-top:-2px; margin-right:4px; border-radius:2px; border:2px solid rgba(0, 0, 255, 0.6)"> `+
+                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` +
+                        `margin-top:-2px; margin-right:4px; border-radius:2px; border:2px solid rgba(0, 0, 255, 0.6)"> ` +
                         `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
                         `</img></div>`;
                 } else {
-                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` + 
-                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0)"> `+
-                    `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
-                    `</img></div>`;
+                    html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` +
+                        `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0)"> ` +
+                        `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
+                        `</img></div>`;
                 }
 
                 html += `</td>`;
@@ -332,18 +342,16 @@ class Player extends Engine {
                 html += `<tr style="height: 24px; margin-top:4px;">`;
                 html += `<td>`;
 
-                console.log(processes[process].id, this.__activators[processes[process].id].elapsed);
-
                 if (this.__activators[processes[process].id].isActive()) {
-                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` + 
-                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 50, 32, 0.8); border-radius:10px;"> `+
-                    `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
-                    `</img></div>`;
+                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` +
+                        `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 50, 32, 0.8); border-radius:10px;"> ` +
+                        `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
+                        `</img></div>`;
                 } else {
-                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` + 
-                    `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0); border-radius:10px;"> `+
-                    `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
-                    `</img></div>`;              
+                    html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` +
+                        `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(255,255, 255, 0.0); border-radius:10px;"> ` +
+                        `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
+                        `</img></div>`;
                 }
 
                 html += `</td>`;
@@ -579,6 +587,7 @@ class Player extends Engine {
                         state.sourceArcs = [];
 
                         states.push(state);
+
                     }
                 }
 
@@ -588,15 +597,18 @@ class Player extends Engine {
 
         var filterTransitions = this.environment.artifacts.filter(function (value, index, arr) {
 
-            function checkSources(placeStateMap, transition) {
+            function checkSources(runner, transition) {
 
                 for (var targetArc in transition.sourceArcs) {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
-                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                    if (runner.__activators[transition.id].isActive()) {
                         return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
+                    } else if (requiredTokens > runner.environment.placeStateMap[sourceId].tokens) {
+                        return false;
+                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR &&
+                        requiredTokens >= runner.environment.placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -608,7 +620,7 @@ class Player extends Engine {
 
             return (value.type == PROCESS && checkSources(this, value));
 
-        }, this.environment.placeStateMap);
+        }, this);
 
         for (var prop in this.environment.activeTransitionMap) {
 
@@ -617,7 +629,9 @@ class Player extends Engine {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
-                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                    if (this.__activators[transition.id].isActive()) {
+                        return false;
+                    } else if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
                     } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
                         return false;

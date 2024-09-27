@@ -12,7 +12,6 @@ class Process extends Transition {
         context.lineJoin = "mitre";
         context.setLineDash([0, 0]);
         context.strokeStyle = "rgba(1, 50, 32, 0.6)";
-
         context.arc(this.__center.x, this.__center.y, 20, 0, 2 * Math.PI);
 
         context.filter = 'blur(1px)';
