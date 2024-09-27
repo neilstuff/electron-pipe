@@ -575,13 +575,16 @@ class Player extends Engine {
         this.environment.artifacts.forEach(function (value, index) {
 
             if (value.type == PROCESS || value.type == EVENT) {
-
+                this.__activators[value.id].processed = true;
 
                 if (this.__activators[value.id].isActive()) {
                     this.__activators[value.id].progress(parseInt(document.getElementById("progression").value));
                     this.__activators[value.id].draw();
 
                     if (this.__activators[value.id].elapsed == 0) {
+
+                        this.__activators[value.id].processed = false;
+
                         var state = this.processTransition(this.__activators[value.id].transition);
 
                         state.sourceArcs = [];
@@ -589,6 +592,7 @@ class Player extends Engine {
                         states.push(state);
 
                     }
+                    
                 }
 
             }
@@ -604,6 +608,8 @@ class Player extends Engine {
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
                     if (runner.__activators[transition.id].isActive()) {
+                        return false;                   
+                    } else if (!runner.__activators[transition.id].processed) {
                         return false;
                     } else if (requiredTokens > runner.environment.placeStateMap[sourceId].tokens) {
                         return false;
@@ -630,6 +636,8 @@ class Player extends Engine {
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
                     if (this.__activators[transition.id].isActive()) {
+                        return false;
+                    } else if (!this.__activators[transition.id].processed) {
                         return false;
                     } else if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;

@@ -8,6 +8,7 @@ class Activator extends Graphics {
         this.__transition = transition;
         this.__duration = 0;
         this.__elapsed = 0;
+        this.__processed = false;
 
     }
 
@@ -29,6 +30,14 @@ class Activator extends Graphics {
         
     get transition() {
         return this.__transition;
+    }
+
+    get processed() {
+        return this.__processed;
+    }
+
+    set processed(processed) {
+        this.__processed = processed;
     }
 
     isActive() {
