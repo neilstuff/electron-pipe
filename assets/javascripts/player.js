@@ -475,12 +475,15 @@ class Player extends Engine {
 
         if (filteredArtifacts.length > 0) {
 
-            if (filteredArtifacts[0].id in this.__activators) {
+            if (filteredArtifacts[0].id in this.__activators && this.__activators[filteredArtifacts[0].id].isEnabled() ) {
                 states.push(this.processTransition(this.__activators[filteredArtifacts[0].id].transition));
             }
 
         }
 
+        if (states.length == 0) {
+            return;
+        }
 
         for (const [key, value] of Object.entries(this.__activators)) {
  
@@ -549,22 +552,18 @@ class Player extends Engine {
 
         }, this);
 
-        var filterTransitions = this.environment.artifacts.filter(function (value, index, arr) {
+        for (const [key, value] of Object.entries(this.__activators)) {
+ 
+            function checkSources(placeStateMap, transition) {
 
-            function checkSources(runner, transition) {
+                for (var sourceArc in transition.sourceArcs) {
+                    var sourceId = transition.sourceArcs[sourceArc].sourceId;
+                    var requiredTokens = transition.sourceArcs[sourceArc].tokens;
 
-                for (var targetArc in transition.sourceArcs) {
-                    var sourceId = transition.sourceArcs[targetArc].sourceId;
-                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
-
-                    if (runner.__activators[transition.id].isActive()) {
-                        return false;                   
-                    } else if (!runner.__activators[transition.id].processed) {
+                    if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    } else if (requiredTokens > runner.environment.placeStateMap[sourceId].tokens) {
-                        return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR &&
-                        requiredTokens >= runner.environment.placeStateMap[sourceId].tokens) {
+                        
+                    } else if (transition.sourceArcs[sourceArc].type == INHIBITOR && requiredTokens <= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -574,51 +573,18 @@ class Player extends Engine {
 
             }
 
-            return (value.type == PROCESS && checkSources(this, value));
+            value.enabled = checkSources(this.__placeholders, value.transition);
 
-        }, this);
-
-        for (var prop in this.environment.activeTransitionMap) {
-
-            function validate(transition) {
-                for (var targetArc in transition.sourceArcs) {
-                    var sourceId = transition.sourceArcs[targetArc].sourceId;
-                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
-
-                    if (this.__activators[transition.id].isActive()) {
-                        return false;
-                    } else if (!this.__activators[transition.id].processed) {
-                        return false;
-                    } else if (requiredTokens > placeStateMap[sourceId].tokens) {
-                        return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
-                        return false;
-                    }
-
-                }
-
-                return true;
-
-            }
-
-            if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
-
-                var transition = this.environment.activeTransitionMap[[prop]];
-
-                if (!validate(transition)) {
-                    delete this.environment.activeTransitionMap[prop];
-                }
-
-            }
         }
 
-        for (var transition in filterTransitions) {
+        this.resetTransactions(false);
 
-            this.__activators[filterTransitions[transition].id].activate();
-            this.__activators[filterTransitions[transition].id].progress(parseInt(document.getElementById("progression").value));
+        for (const [key, value] of Object.entries(this.__activators)) {
 
-            this.environment.activeTransitionMap[filterTransitions[transition].id] = filterTransitions[transition].id;
-            states.push(this.processTransition(filterTransitions[transition]));
+            
+            if (!value.isActive()) {
+                states.push(this.processTransition(value));
+             }
 
         }
 

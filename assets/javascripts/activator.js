@@ -11,7 +11,7 @@ class Activator extends Graphics {
         this.__processed = false;
         this.__enabled = false;
         this.__selectable = true;
-        this.__color = (transition.type == EVENT) ? "rgba(0, 0, 255, 0.6)" : rgba(1, 50, 32, 0.6);
+        this.__color = (transition.type == EVENT) ? "rgba(0, 0, 255, 0.6)" : "rgba(1, 50, 32, 0.6)";
 
     }
 
