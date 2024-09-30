@@ -104,7 +104,7 @@ class Animator {
 
     }
 
-    processStates(states, draw) {
+    processStates(states, mark, draw) {
         var animations = {};
 
         for (var state in states) {
@@ -145,13 +145,13 @@ class Animator {
 
         }
 
-        this.activate(animations, draw);
+        this.activate(animations, mark, draw);
 
     };
 
-    activate(animations, draw) {
+    activate(animations, mark, draw) {
         var self = this;
-        var events = Object.keys(animations);
+        var actions = Object.keys(animations);
 
         var destinations = [];
 
@@ -181,9 +181,21 @@ class Animator {
 
             }
 
-            for (var event in events) {
- 
-                points.push.apply(points, advance(animations[events[event]].sourcePaths));
+            function updateMarks(paths, mark) {
+                
+                for (var path in paths) {
+
+                    mark(paths[path]['arc'].source);
+
+                }
+
+            }
+
+            for (var action in actions) {
+                
+
+                updateMarks(animations[actions[action]].sourcePaths, mark);
+                points.push.apply(points, advance(animations[actions[action]].sourcePaths));
 
             }
 
@@ -193,14 +205,14 @@ class Animator {
 
                 self.drawTokens(self.__context, points);
 
-                animations[events[event]].transition.draw(self.__context);
+                animations[actions[action]].transition.draw(self.__context);
    
                 window.requestAnimationFrame(animate);
 
             } else {
-                for (var event in events) {
+                for (var action in actions) {
 
-                    points.push.apply(points, advance(animations[events[event]].targetPaths, destinations));
+                    points.push.apply(points, advance(animations[actions[action]].targetPaths, destinations));
 
                 }
 
@@ -211,13 +223,12 @@ class Animator {
                     self.drawTokens(self.__context, points);
                     self.drawDestinations(self.__context, destinations);
                     
-                    animations[events[event]].transition.draw(self.__context);
+                    animations[actions[action]].transition.draw(self.__context);
 
                     window.requestAnimationFrame(animate);
 
                 } else {
                     draw(true);
-
                 }
             }
 

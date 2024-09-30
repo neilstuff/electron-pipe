@@ -5,20 +5,6 @@ class Event extends Transition {
         super(EVENT, environment, images, id);
 
     }
-
-    activate(context) {
-        context.beginPath();
-        context.lineWidth = 2;
-        context.lineJoin = "mitre";
-        context.setLineDash([0, 0]);
-        context.strokeStyle = "rgba(0, 0, 255, 0.6)";
-
-        context.rect(this.__center.x - 20, this.__center.y - 20, 40, 40);
-        context.filter = 'blur(1px)';
-        context.stroke();
-        context.filter = 'none';
-
-    }
     
     draw(context) {
         context.save();

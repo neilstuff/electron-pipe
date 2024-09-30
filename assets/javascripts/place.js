@@ -97,20 +97,6 @@ class Place extends Artifact {
 
     }
 
-    drawState(context) {
-
-        if (this.id in this.environment.placeStateMap) {
-            if (this.environment.placeStateMap[this.id].display) {
-                this.drawTokens(context, this.environment.placeStateMap[this.id].tokens,
-                    this.environment.placeStateMap[this.id].color);
-            }
-
-        }
-
-        this.drawIcon(context, this.environment.placeStateMap[this.id].tokens > 0 ? 1.0 : 0.1);
-
-    }
-
     drawTokens(context, tokens, color = "rgba(0,0,0,0.6)") {
 
         context.fillStyle = this.__color == 'rgba(255, 255, 255, 1.0)' ? 'rgba(0, 0, 0, 0.9)' : this.__color;
@@ -189,9 +175,7 @@ class Place extends Artifact {
         if (this.environment.decorate) {
             this.decorate(context);
             this.drawIcon(context, (this.__selected) ? 0.8 : 0.4);
-        } else {
-            this.drawState(context);
-        }
+        } 
 
         this.drawLabel(context);
 

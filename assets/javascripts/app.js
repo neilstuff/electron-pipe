@@ -19,8 +19,6 @@ var environment = {
     artifactMap: {},
     arcMap: {},
     arcNodeMap: {},
-    placeStateMap: {},
-    activeTransitionMap: {},
     joinEnabled: function(enable) {
 
         if (enable) {
@@ -44,9 +42,15 @@ function leave(id) {
 
 }
 
-function redraw(id) {
+function mark(place) {
 
-    modes[environment.mode].redraw(id);
+    modes[environment.mode].mark(place);
+
+}
+
+function redraw(status) {
+
+    modes[environment.mode].redraw(status);
 
 }
 

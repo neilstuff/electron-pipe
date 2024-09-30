@@ -6,7 +6,9 @@ class Player extends Engine {
         this.__canvas = canvas;
 
         this.__activators = {
+        };
 
+        this.__placeholders = {
         };
 
     }
@@ -47,6 +49,22 @@ class Player extends Engine {
     }
 
     /**
+     * Update the Place Marks (Tokens) required for the animation
+     * @param {*} place to update Markings
+     */    
+    mark(place) {
+
+        console.log("Mark: " + place.label);
+
+        this.__placeholders[place.id].mark();
+
+        console.log("Mark: " + this.__placeholders[place.id]. __marks +  ":" +  this.__placeholders[place.id]. __tokens);
+        
+        this.updateState(place);
+
+    }
+
+    /**
      * Process the transition
      * 
      * @param(*) transition the process transition
@@ -64,37 +82,30 @@ class Player extends Engine {
             "targetArcs": []
         }
 
-        for (var targetArc in transition.sourceArcs) {
-            var sourceId = transition.sourceArcs[targetArc].sourceId;
+        for (var sourceArc in transition.sourceArcs) {
+            var sourceId = transition.sourceArcs[sourceArc].sourceId;
 
-            this.environment.placeStateMap[sourceId].tokens = this.environment.placeStateMap[sourceId].tokens == 0 ? 0 :
-                this.environment.placeStateMap[sourceId].tokens -
-                transition.sourceArcs[targetArc].tokens;
+            this.__placeholders[sourceId].subtractTokens(transition.sourceArcs[sourceArc].tokens);
 
             state.inputs.push(this.environment.artifactMap[sourceId]);
-            state.sourceArcs.push(transition.sourceArcs[targetArc]);
+            state.sourceArcs.push(transition.sourceArcs[sourceArc]);
 
         }
 
-        for (var sourceArc in transition.targetArcs) {
-            var targetId = transition.targetArcs[sourceArc].targetId;
+        for (var targetArc in transition.targetArcs) {
+            var targetId = transition.targetArcs[targetArc].targetId;
 
             if (this.__activators[transition.id].elapsed == 0) {
 
-                console.log(this.environment.placeStateMap[targetId].tokens);
+                console.log(this.__placeholders[targetId].tokens);
 
-                this.environment.placeStateMap[targetId].tokens = this.environment.placeStateMap[targetId].tokens +
-                    transition.targetArcs[sourceArc].tokens;
-
-                console.log(transition.targetArcs[sourceArc].tokens);
-                console.log(this.environment.placeStateMap[targetId]);
+                this.__placeholders[targetId].addTokens(
+                    transition.targetArcs[targetArc].tokens);
 
             }
 
-            this.environment.placeStateMap[targetId].display = false;
-
             state.outputs.push(this.environment.artifactMap[targetId]);
-            state.targetArcs.push(transition.targetArcs[sourceArc]);
+            state.targetArcs.push(transition.targetArcs[targetArc]);
 
         }
 
@@ -102,7 +113,7 @@ class Player extends Engine {
 
     }
 
-    updateTransition(transition, activate = false) {
+    updateTransition(transition) {
         var element = document.getElementById(`img-${transition.id}`);
 
         if (transition.type == PROCESS) {
@@ -111,7 +122,7 @@ class Player extends Engine {
                 element.style.borderRadius = "10px";
             }
         } else {
-            if (activate) {
+            if (this.__activators[transition.id].isEnabled()) {
                 element.style.border = "2px solid rgba(0, 0, 255, 0.6)";
             } else {
                 element.style.border = "2px solid rgba(255, 255, 255, 0.0)";
@@ -120,7 +131,7 @@ class Player extends Engine {
     }
 
     updateState(place) {
-        var tokens = this.environment.placeStateMap[place.id].tokens;
+        var tokens = this.__placeholders[place.id].tokens;
         var element = document.getElementById(`img-${place.id}`);
 
         if (tokens == 0) {
@@ -140,7 +151,7 @@ class Player extends Engine {
                     var sourceId = transition.sourceArcs[targetArc].sourceId;
                     var requiredTokens = transition.sourceArcs[targetArc].tokens;
 
-                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                    if (requiredTokens > this.__placeholders[sourceId].tokens) {
                         return false;
                     }
 
@@ -160,6 +171,13 @@ class Player extends Engine {
 
     };
 
+    resetTransactions(selectable) {
+
+        for (const [key, value] of Object.entries(this.__activators)) {
+            value.selectable = selectable;
+        }
+    }
+
     /**
      * Draw the Objects
      * 
@@ -172,22 +190,14 @@ class Player extends Engine {
         for (var iArtifact in this.artifacts) {
 
             if (this.artifacts[iArtifact].type == PROCESS || this.artifacts[iArtifact].type == EVENT) {
-                this.artifacts[iArtifact].draw(context);
                 this.__activators[this.artifacts[iArtifact].id].draw();
+            } else if (this.artifacts[iArtifact].type == PLACE) {
+               this.__placeholders[this.artifacts[iArtifact].id].draw();
             } else {
-                this.artifacts[iArtifact].draw(context);
+               this.artifacts[iArtifact].draw(context);
             }
 
-            this.artifacts[iArtifact].drawSourceArcs(context);
-
-            if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
-                var context = this.canvas.getContext('2d');
-
-                if (!this.__activators[this.artifacts[iArtifact].id].isActive()) {
-                    this.artifacts[iArtifact].activate(context);
-                }
-
-            }
+           this.artifacts[iArtifact].drawSourceArcs(context);
 
         }
 
@@ -197,51 +207,43 @@ class Player extends Engine {
      * Update the Objects
      * 
      */
-    redraw(activate = false) {
-
+    redraw(completed = false) {
         var context = this.canvas.getContext('2d');
-
+ 
         this.clearGrid(this.__canvas, context);
 
         for (var iArtifact in this.artifacts) {
+ 
+            if (completed) {
+                if (this.artifacts[iArtifact].id in this.__placeholders) {
+                    this.__placeholders[this.artifacts[iArtifact].id].mark();
+                    this.updateState(this.artifacts[iArtifact]);
 
-            if (activate) {
-
-                var filteredPlaces = this.artifacts.filter(function (value, index, arr) {
-                    return value.type == PLACE;
-                });
-
-                for (var artifact in filteredPlaces) {
-                    this.environment.placeStateMap[filteredPlaces[artifact].id].display = true;
-                    this.updateState(filteredPlaces[artifact]);
+                    this.__placeholders[this.artifacts[iArtifact].id].draw();  
                 }
 
-                if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
-
-
-                    if (!this.__activators[this.artifacts[iArtifact].id].isActive()) {
-                        var context = this.canvas.getContext('2d');
-                        this.artifacts[iArtifact].activate(context);
-
-                    }
-
-                    this.updateTransition(this.artifacts[iArtifact], true);
-                } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
-                    this.updateTransition(this.artifacts[iArtifact], false);
+                if (this.artifacts[iArtifact].id in this.__activators) {
+                    this.updateTransition(this.artifacts[iArtifact]);
+                    this.__activators[this.artifacts[iArtifact].id].selectable = true;
+                    this.__activators[this.artifacts[iArtifact].id].draw();
                 }
 
-            }
-
-            if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
-                this.__activators[this.artifacts[iArtifact].id].draw();
             } else {
-                this.artifacts[iArtifact].draw(context);
+ 
+                if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
+                    this.__activators[this.artifacts[iArtifact].id].draw(false);
+                } else if (this.artifacts[iArtifact].type == PLACE) { 
+                    this.__placeholders[this.artifacts[iArtifact].id].draw(); 
+                } else {
+                    this.artifacts[iArtifact].draw(context);   
+                } 
+                
             }
 
             this.artifacts[iArtifact].drawSourceArcs(context);
-
+      
         }
-
+ 
     }
 
     /**
@@ -309,7 +311,7 @@ class Player extends Engine {
                 html += `<tr style="height: 24px; margin-top:4px;">`;
                 html += `<td>`;
 
-                if (this.environment.activeTransitionMap.hasOwnProperty(events[event].id)) {
+                if (this.__activators[events[event].id].isEnabled()) {
                     html += `<div id="img-${events[event].id}"  style="width:20px; height:20px; ` +
                         `margin-top:-2px; margin-right:4px; border-radius:2px; border:2px solid rgba(0, 0, 255, 0.6)"> ` +
                         `<img src="assets/images/square.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0);">` +
@@ -342,7 +344,7 @@ class Player extends Engine {
                 html += `<tr style="height: 24px; margin-top:4px;">`;
                 html += `<td>`;
 
-                if (this.__activators[processes[process].id].isActive()) {
+                if (this.__activators[processes[process].id].isEnabled()) {
                     html += `<div id="img-${processes[process].id}"  style="width:20px; height:20px; ` +
                         `margin-top:-2px; margin-right:4px; border-radius: 2px; border:2px solid rgba(1, 50, 32, 0.8); border-radius:10px;"> ` +
                         `<img src="assets/images/cog.svg" style="width:16px; height:16px; border:1px solid rgba(255,255, 255, 1.0); border-radius:8px;">` +
@@ -409,48 +411,26 @@ class Player extends Engine {
 
                 this.__activators[value.id] = new Activator(this.__canvas, value);
 
+            } else if (value.type == PLACE ) {
+
+                this.__placeholders[value.id] = new Placeholder(this.__canvas, value);
+            
             }
 
         }, this);
 
-        for (var prop in this.environment.placeStateMap) {
-            if (this.environment.placeStateMap.hasOwnProperty(prop)) {
-                delete this.environment.placeStateMap[prop];
-            }
-        }
+        for (const [key, value] of Object.entries(this.__activators)) {
+ 
+            function checkSources(placeHolders, transition) {
 
-        for (var prop in this.environment.activeTransitionMap) {
-            if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
-                delete this.environment.activeTransitionMap[prop];
-            }
-        }
-
-        var filteredPlaces = this.environment.artifacts.filter(function (value, index, arr) {
-            return value.type == PLACE;
-        });
-
-        for (var artifact in filteredPlaces) {
-            this.environment.placeStateMap[filteredPlaces[artifact].id] = {
-                tokens: filteredPlaces[artifact].tokens,
-                color: "rgba(0,0,0,0.6)",
-                display: true
-            }
-
-        }
-
-        var filteredTransitions = this.environment.artifacts.filter(function (value, index, arr) {
-
-            function checkSources(placeStateMap, transition) {
-
-                for (var targetArc in transition.sourceArcs) {
-                    var sourceId = transition.sourceArcs[targetArc].sourceId;
-                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
-
-                    // Direcotr Arc conditions must have sufficient tokens to fire
-                    if (transition.sourceArcs[targetArc].type == DIRECTOR && requiredTokens > placeStateMap[sourceId].tokens) {
+                for (var sourceArc in transition.sourceArcs) {
+                    var sourceId = transition.sourceArcs[sourceArc].sourceId;
+                    var requiredTokens = transition.sourceArcs[sourceArc].tokens;
+                    // The directed Arc must have sufficient tokens to fire
+                    if (transition.sourceArcs[sourceArc].type == DIRECTOR && requiredTokens > placeHolders[sourceId].tokens) {
                         return false;
-                        // Inibitor Arc conditions are satisified this will prevent the transition from firing 
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
+                    // Inibitor Arc conditions are satisified this will prevent the transition from firing 
+                    } else if (transition.sourceArcs[sourceArc].type == INHIBITOR && requiredTokens >= placeHolders[sourceId].tokens) {
                         return false;
                     }
 
@@ -460,36 +440,11 @@ class Player extends Engine {
 
             }
 
-            return ((value.type == EVENT || value.type == PROCESS) && checkSources(this, value));
-
-        }, this.environment.placeStateMap);
-
-        for (var transition in filteredTransitions) {
-            this.environment.activeTransitionMap[filteredTransitions[transition].id] = filteredTransitions[transition].color;
-        }
-
-        if (showMenu) {
-            this.show(showMenu);
-        } else {
-
-            for (var iArtifact in this.artifacts) {
-                var filteredPlaces = this.artifacts.filter(function (value, index, arr) {
-                    return value.type == PLACE;
-                });
-
-                for (var artifact in filteredPlaces) {
-                    this.updateState(filteredPlaces[artifact]);
-                }
-
-                if (this.artifacts[iArtifact].id in this.environment.activeTransitionMap) {
-                    this.updateTransition(this.artifacts[iArtifact], true);
-                } else if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
-                    this.updateTransition(this.artifacts[iArtifact], false);
-                }
-
-            }
+           value.enabled = checkSources(this.__placeholders, value.transition);
 
         }
+
+        this.show(showMenu);
 
     }
 
@@ -519,22 +474,26 @@ class Player extends Engine {
         }, this.getMousePos($('#canvas')[0], event));
 
         if (filteredArtifacts.length > 0) {
-            if (filteredArtifacts[0].id in this.environment.activeTransitionMap) {
-                states.push(this.processTransition(filteredArtifacts[0]));
+
+            if (filteredArtifacts[0].id in this.__activators) {
+                states.push(this.processTransition(this.__activators[filteredArtifacts[0].id].transition));
             }
+
         }
 
-        var filteredEvents = this.environment.artifacts.filter(function (value, index, arr) {
 
+        for (const [key, value] of Object.entries(this.__activators)) {
+ 
             function checkSources(placeStateMap, transition) {
 
-                for (var targetArc in transition.sourceArcs) {
-                    var sourceId = transition.sourceArcs[targetArc].sourceId;
-                    var requiredTokens = transition.sourceArcs[targetArc].tokens;
+                for (var sourceArc in transition.sourceArcs) {
+                    var sourceId = transition.sourceArcs[sourceArc].sourceId;
+                    var requiredTokens = transition.sourceArcs[sourceArc].tokens;
 
                     if (requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
-                    } else if (transition.sourceArcs[targetArc].type == INHIBITOR && requiredTokens >= placeStateMap[sourceId].tokens) {
+                        
+                    } else if (transition.sourceArcs[sourceArc].type == INHIBITOR && requiredTokens <= placeStateMap[sourceId].tokens) {
                         return false;
                     }
 
@@ -544,22 +503,13 @@ class Player extends Engine {
 
             }
 
-            return (value.type == EVENT && checkSources(this, value));
+            value.enabled = checkSources(this.__placeholders, value.transition);
 
-        }, this.environment.placeStateMap);
-
-        for (var prop in this.environment.activeTransitionMap) {
-            if (this.environment.activeTransitionMap.hasOwnProperty(prop)) {
-                delete this.environment.activeTransitionMap[prop];
-            }
         }
 
-        for (var transition in filteredEvents) {
-            this.environment.activeTransitionMap[filteredEvents[transition].id] = filteredEvents[transition].id;
-            this.__activators[filteredEvents[transition].id].activate();
-        }
+        this.resetTransactions(false);
 
-        this.__animator.processStates(states, redraw);
+        this.__animator.processStates(states, mark, redraw);
 
     }
 
@@ -664,7 +614,6 @@ class Player extends Engine {
 
         for (var transition in filterTransitions) {
 
-
             this.__activators[filterTransitions[transition].id].activate();
             this.__activators[filterTransitions[transition].id].progress(parseInt(document.getElementById("progression").value));
 
@@ -673,7 +622,7 @@ class Player extends Engine {
 
         }
 
-        this.__animator.processStates(states, redraw);
+        this.__animator.processStates(states, mark, redraw);
 
     }
 

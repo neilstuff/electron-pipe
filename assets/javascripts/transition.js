@@ -29,7 +29,7 @@ class Transition extends Artifact {
     }
 
     incrementVariance() {
-        this.__variance = this.__variance == 100 ? 100 : parseInt(this.__variance) + 1;
+        this.__variance += 1;
     }
 
     decrementVariance() {
@@ -92,10 +92,6 @@ class Transition extends Artifact {
     }
 
     drawRuntime(context) {
-
-        if (this.__timer > 0) {
-            this.drawDonut(context, this.__center.x, this.__center.y, 7, 0, Math.PI * 2, 5, "#fff", this.__timer = 0);
-        }
 
         let offset = this.getTextWidth(this.__runtime + " " + String.fromCharCode(177) + " " + this.__variance, "12px Arial");
 
