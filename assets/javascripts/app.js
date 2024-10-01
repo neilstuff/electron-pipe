@@ -48,9 +48,9 @@ function mark(place) {
 
 }
 
-function redraw(status) {
+function redraw(status = false, object = null) {
 
-    modes[environment.mode].redraw(status);
+    modes[environment.mode].redraw(status, object);
 
 }
 

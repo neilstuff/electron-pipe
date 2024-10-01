@@ -54,12 +54,8 @@ class Player extends Engine {
      */    
     mark(place) {
 
-        console.log("Mark: " + place.label);
-
         this.__placeholders[place.id].mark();
-
-        console.log("Mark: " + this.__placeholders[place.id]. __marks +  ":" +  this.__placeholders[place.id]. __tokens);
-        
+     
         this.updateState(place);
 
     }
@@ -204,13 +200,20 @@ class Player extends Engine {
     }
 
     /**
-     * Update the Objects
+     * Update the Objects Status
      * 
      */
-    redraw(completed = false) {
+    redraw(completed = false, object = null) {
+
         var context = this.canvas.getContext('2d');
- 
+
         this.clearGrid(this.__canvas, context);
+
+        if (object != null && object.type == PLACE) {
+            this.__placeholders[object.id].mark();
+            this.updateState(object);
+            this.__placeholders[object.id].draw();
+        }
 
         for (var iArtifact in this.artifacts) {
  
@@ -241,6 +244,7 @@ class Player extends Engine {
             }
 
             this.artifacts[iArtifact].drawSourceArcs(context);
+
       
         }
  

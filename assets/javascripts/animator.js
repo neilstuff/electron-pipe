@@ -75,11 +75,10 @@ class Animator {
 
     }
 
-    drawDestinations(context, destinations) {
-
-
-        for (var destination in destinations) {
-            this.drawToken(context, destinations[destination][0], destinations[destination][1], 6);
+    drawDestinations(context, destinations, draw) {
+        
+        for (var destination = destinations.shift(); destination != null;  destination = destinations.shift()) {
+            draw(false,  destination.target);
         }
 
     }
@@ -167,7 +166,10 @@ class Animator {
                     if (destinations && paths[path]['path'].length == 1) {
                         var coordinate = [paths[path]['arc'].target.x, paths[path]['arc'].target.y];
                         
-                        destinations.push(coordinate);
+                        destinations.push({
+                            "target": paths[path]['arc'].target,
+                            "coordinate" : coordinate
+                         });
  
                     }
 
@@ -193,7 +195,6 @@ class Animator {
 
             for (var action in actions) {
                 
-
                 updateMarks(animations[actions[action]].sourcePaths, mark);
                 points.push.apply(points, advance(animations[actions[action]].sourcePaths));
 
@@ -221,7 +222,7 @@ class Animator {
                     draw(false);
 
                     self.drawTokens(self.__context, points);
-                    self.drawDestinations(self.__context, destinations);
+                    self.drawDestinations(self.__context, destinations, draw);
                     
                     animations[actions[action]].transition.draw(self.__context);
 
