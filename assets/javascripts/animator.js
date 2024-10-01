@@ -107,7 +107,8 @@ class Animator {
         var animations = {};
 
         for (var state in states) {
-            var transition = states[state].transition;
+
+            var activator = states[state].activator;
             var sourcePaths = [];
             var targetPaths = [];
 
@@ -121,25 +122,22 @@ class Animator {
                 });
             
             }
+            
+            for (var targetArc in states[state].targetArcs) {
 
-            if (states[state].transition.elapsed == 0) {
+                var arc = states[state].targetArcs[targetArc];
 
-                for (var targetArc in states[state].targetArcs) {
+                targetPaths.push({
+                    "arc": arc,
+                    "path": this.addPath(arc)
+                });
 
-                    var arc = states[state].targetArcs[targetArc];
-
-                    targetPaths.push({
-                        "arc": arc,
-                        "path": this.addPath(arc)
-                    });
-
-                }
             }
 
-            animations[transition.transition.id] = {
+            animations[activator.id] = {
                 "sourcePaths": sourcePaths,
                 "targetPaths": targetPaths,
-                "transition": transition
+                "transition": activator
             }
 
         }

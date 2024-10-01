@@ -35,6 +35,9 @@ class Activator extends Graphics {
         return this.__transition;
     }
 
+    get id() {
+        return this.__transition.id;
+    }
     get processed() {
         return this.__processed;
     }
@@ -91,23 +94,45 @@ class Activator extends Graphics {
 
     }
 
-    draw(a) {
+    draw() {
 
         this.__transition.draw(this.__context);
  
-        if (this.__enabled && this.__selectable) {
-            this.__context.save();
-            this.__context.beginPath();
-            this.__context.lineWidth = 2;
-            this.__context.lineJoin = "mitre";
-            this.__context.setLineDash([0, 0]);
-            this.__context.strokeStyle = this.__color;
+        if (this.__transition.type == EVENT) {
+            if (this.__enabled && this.__selectable) {
 
-            this.__context.rect(this.transition.__center.x - 20, this.transition.__center.y - 20, 40, 40);
-            this.__context.filter = 'blur(1px)';
-            this.__context.stroke();
-            this.__context.filter = 'none';
-            this.__context.restore();
+                if (this.__transition)
+                this.__context.save();
+                this.__context.beginPath();
+                this.__context.lineWidth = 2;
+                this.__context.lineJoin = "mitre";
+                this.__context.setLineDash([0, 0]);
+                this.__context.strokeStyle = this.__color;
+
+                this.__context.rect(this.transition.__center.x - 20, this.transition.__center.y - 20, 40, 40);
+                this.__context.filter = 'blur(1px)';
+                this.__context.stroke();
+                this.__context.filter = 'none';
+                this.__context.restore();
+            }
+
+        } else if (this.__transition.type == PROCESS) {
+           if (this.__enabled && this.__selectable) {
+
+                if (this.__transition)
+                this.__context.save();
+                this.__context.beginPath();
+                this.__context.lineWidth = 2;
+                this.__context.lineJoin = "mitre";
+                this.__context.setLineDash([0, 0]);
+                this.__context.strokeStyle = this.__color;
+
+                this.__context.arc(this.transition.__center.x, this.transition.__center.y, 20, 0, 2 * Math.PI);
+                this.__context.filter = 'blur(1px)';
+                this.__context.stroke();
+                this.__context.filter = 'none';
+                this.__context.restore();
+            }
         }
  
         if (this.elapsed > 0) {
