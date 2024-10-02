@@ -99,7 +99,7 @@ class Animator {
 
         to = [arc.target.x, arc.target.y]
 
-        return coordinates.concat(this.getCoordinates(from, to));
+        return (arc.type == INHIBITOR) ? coordinates.concat(this.getCoordinates(from, to)).reverse() : coordinates.concat(this.getCoordinates(from, to));
 
     }
 

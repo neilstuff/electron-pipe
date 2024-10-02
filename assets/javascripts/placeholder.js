@@ -19,6 +19,10 @@ class Placeholder extends Graphics {
         this.__tokens = tokens;
     }
 
+    get place() {
+        return this.__place;
+    }
+
     addTokens(tokens) {
 
         this.__tokens += tokens;
