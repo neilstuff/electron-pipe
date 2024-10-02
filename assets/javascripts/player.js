@@ -118,7 +118,7 @@ class Player extends Engine {
             for (var targetArc in transition.targetArcs) {
                 var targetId = transition.targetArcs[targetArc].targetId;
 
-                if (transition.sourceArcs[sourceArc].type == INHIBITOR) {
+                if (transition.targetArcs[targetArc].type == INHIBITOR) {
                    this.__placeholders[targetId].subtractTokens(
                    transition.targetArcs[targetArc].tokens);
                 } else {
@@ -532,9 +532,8 @@ class Player extends Engine {
                         return false;
 
                     } else if (transition.sourceArcs[sourceArc].type == INHIBITOR) {
-                        console.log("Required Tokens: " +  placeHolders[sourceId].place.label  +  ":" + requiredTokens  +  ":" + placeHolders[sourceId].tokens );
-
-                        return placeHolders[sourceId].tokens < requiredTokens;
+   
+                        return placeStateMap[sourceId].tokens < requiredTokens;
 
                     }
 
@@ -595,7 +594,7 @@ class Player extends Engine {
 
             value.processed = true;
 
-            if (value.isActive()) {
+            if ( value.isActive()) {
                 value.progress(parseInt(document.getElementById("progression").value));
                 value.draw();
 
