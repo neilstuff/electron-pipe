@@ -265,7 +265,7 @@ class Player extends Engine {
             } else {
 
                 if (this.artifacts[iArtifact].type == EVENT || this.artifacts[iArtifact].type == PROCESS) {
-                    this.__activators[this.artifacts[iArtifact].id].draw(false);
+                    this.__activators[this.artifacts[iArtifact].id].draw();
                 } else if (this.artifacts[iArtifact].type == PLACE) {
                     this.__placeholders[this.artifacts[iArtifact].id].draw();
                 } else {
@@ -437,6 +437,12 @@ class Player extends Engine {
      */
     start(showMenu = true) {
 
+        this.__activators = {
+        };
+
+        this.__placeholders = {
+        };
+
         this.environment.artifacts.forEach(function (value, index) {
 
             if (value.type == PROCESS || value.type == EVENT) {
@@ -528,13 +534,11 @@ class Player extends Engine {
                     var sourceId = transition.sourceArcs[sourceArc].sourceId;
                     var requiredTokens = transition.sourceArcs[sourceArc].tokens;
 
-                    if (requiredTokens > placeStateMap[sourceId].tokens) {
+                    if (transition.sourceArcs[sourceArc].type == DIRECTOR && requiredTokens > placeStateMap[sourceId].tokens) {
                         return false;
 
                     } else if (transition.sourceArcs[sourceArc].type == INHIBITOR) {
-   
                         return placeStateMap[sourceId].tokens < requiredTokens;
-
                     }
 
                 }
@@ -574,10 +578,7 @@ class Player extends Engine {
                         return false;
 
                     } else if (transition.sourceArcs[sourceArc].type == INHIBITOR) {
-                        console.log("Required Tokens: " +   placeStateMap[sourceId].place.label  +  ":" + requiredTokens  +  ":" +  placeStateMap[sourceId].tokens );
-
-                        return placeStateMap[sourceId].tokens < requiredTokens;
-
+                       return placeStateMap[sourceId].tokens < requiredTokens;
                     }
 
                 }
@@ -594,13 +595,11 @@ class Player extends Engine {
 
             value.processed = true;
 
-            if ( value.isActive()) {
+            if (value.isActive()) {
                 value.progress(parseInt(document.getElementById("progression").value));
                 value.draw();
 
                 if (!value.isActive()) {
-                    console.log("Transition Finished: " +  value.transition.label);
-
                     value.processed = false;
 
                     var state = this.processTransition(value.transition);
